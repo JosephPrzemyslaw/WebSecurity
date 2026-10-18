@@ -18,22 +18,18 @@ app.get("/login", (req: Request, res: Response) => {
     return;
   }
 
-  try {
-    const query = `SELECT login, password FROM users WHERE login = '${login}' AND password = '${password}'`;
-    const user = db
-      .prepare(query)
-      .get() as { login: string; password: string } | undefined;
-    
-    if(user === undefined) {
-      res.redirect("/?error=invalid");
-      return;
-    } 
-
-    res.redirect("/members.html");
-  } catch (error) {
-    res.redirect("/?error=server");
+  const query = `SELECT login, password FROM users WHERE login = '${login}' AND password = '${password}'`;
+  const user = db
+    .prepare(query)
+    .get() as { login: string; password: string } | undefined;
+  
+  if(user === undefined) {
+    res.redirect("/?error=invalid");
     return;
-  }
+  } 
+
+  res.redirect("/members.html");
+
 });
 
 app.listen(port, (error?: Error) => {

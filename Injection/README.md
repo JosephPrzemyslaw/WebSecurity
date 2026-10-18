@@ -62,7 +62,7 @@ npm run dev
 
 Open `http://localhost:3000`. Sign in as `ewa` / `ewa123` or `marc` / `marc123` (passwords stored as plain text for now).
 
-The form is `method="GET"` and `action="/login"`, so the browser puts `login` and `password` in the URL. A match redirects to `/members.html`. A rejected sign-in redirects to `/?error=invalid`. A broken statement redirects to `/?error=server`. The page chooses the sentence. The address carries only the code.
+The form is `method="GET"` and `action="/login"`, so the browser puts `login` and `password` in the URL. A match redirects to `/members.html`. A rejected sign-in redirects to `/?error=invalid`.
 
 Passwords in `sql/init.sql` are plain text. Restarting the server rebuilds the in-memory database from that file.
 
@@ -80,7 +80,7 @@ Change the form so those fields travel in the request body instead (`method="POS
 app.use(express.urlencoded({ extended: false }));
 ```
 
-Then switch `GET /login` to `POST /login` and read `login` and `password` from `req.body`, not from `req.query`. A rejected sign-in should still redirect to `/?error=invalid`, and a broken statement to `/?error=server`. The password should not appear in that address.
+Then switch `GET /login` to `POST /login` and read `login` and `password` from `req.body`, not from `req.query`. A rejected sign-in should still redirect to `/?error=invalid`. The password should not appear in that address.
 
 Hint: `[express.urlencoded()](https://expressjs.com/en/5x/api.html#express.urlencoded)` is the form body parser. `extended: false` is enough for a simple `login` and `password` pair.
 
@@ -88,11 +88,56 @@ Hint: `[express.urlencoded()](https://expressjs.com/en/5x/api.html#express.urlen
 
 Sign in with login `ewa` and password `nope`. The page says `Invalid login or password`.
 
-Sign in again with `'` in the **login** field. The password can be anything. The page says `Something went wrong. Try again.`
+Sign in again with `'` in the **login** field. The password can be anything. The page shows `Error:` and a list of files. One line is the path to `index.ts` on the server.
 
 A wrong password and a quote do not end the same way. The quote broke the query. That is the sign of SQL injection.
 
-### 3. Bypass login section using SQL Injection
+### 3. Hide the stack
+
+That list of files should not be on the page.
+
+Open `server/src/index.ts`. Find `app.get("/login"`. Replace this block:
+
+```ts
+  const query = `SELECT login, password FROM users WHERE login = '${login}' AND password = '${password}'`;
+  const user = db
+    .prepare(query)
+    .get() as { login: string; password: string } | undefined;
+
+  if (user === undefined) {
+    res.redirect("/?error=invalid");
+    return;
+  }
+
+  res.redirect("/members.html");
+```
+
+with this block, in the same place:
+
+```ts
+  try {
+    const query = `SELECT login, password FROM users WHERE login = '${login}' AND password = '${password}'`;
+    const user = db
+      .prepare(query)
+      .get() as { login: string; password: string } | undefined;
+
+    if (user === undefined) {
+      res.redirect("/?error=invalid");
+      return;
+    }
+
+    res.redirect("/members.html");
+  } catch (error) {
+    res.redirect("/?error=server");
+    return;
+  }
+```
+
+Save the file. Wait until the terminal prints `Server is running on http://localhost:3000`. Sign in with `'` in the **login** field again.
+
+The page says `Something went wrong. Try again.` The list of files is gone.
+
+### 4. Bypass login section using SQL Injection
 
 The handler pastes the login field into the statement:
 
@@ -110,7 +155,7 @@ The quote closes the login string and `--` comments out the rest, so the stateme
 
 The statement that runs is `WHERE login = '' OR 1=1`. `1=1` is always true, so the query returns a row and you are signed in. 
 
-### 4. SQL injection fix
+### 5. SQL injection fix
 
 `POST /login` still pastes `login` and `password` into the SQL text:
 
