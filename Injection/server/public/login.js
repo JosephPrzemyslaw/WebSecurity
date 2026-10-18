@@ -1,7 +1,14 @@
 const error = document.getElementById("error");
 
-if (error !== null && new URLSearchParams(location.search).get("error") === "1") {
+const messages = {
+  invalid: "Invalid login or password",
+  server: "Something went wrong. Try again.",
+};
+
+const code = new URLSearchParams(location.search).get("error");
+if (error && code && messages[code]) {
   error.hidden = false;
+  error.textContent = messages[code];
 }
 
 const toggle = document.getElementById("toggle-password");
