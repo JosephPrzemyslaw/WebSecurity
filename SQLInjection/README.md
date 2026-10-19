@@ -37,7 +37,7 @@ npm -v
 ## Project layout (already in git)
 
 ```text
-Injection/
+SQLInjection/
   README.md
   server/
     src/index.ts
