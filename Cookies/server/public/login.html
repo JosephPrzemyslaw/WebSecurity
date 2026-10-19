@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Sign in</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,560;9..144,640&family=Figtree:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/style.css" />
+    <script src="/login.js" defer></script>
+  </head>
+  <body>
+    <div class="stage">
+      <section class="intro">
+        <p class="eyebrow">Cookie lab</p>
+        <h1>The members floor is behind this door.</h1>
+        <p class="lede">
+          Sign in with the account from the course database. The password stays
+          in the form body, not in the address bar.
+        </p>
+      </section>
+
+      <section class="panel">
+        <p id="error" class="error" hidden></p>
+        <form method="POST" action="/login">
+          <div class="field">
+            <label for="login">Login</label>
+            <input
+              id="login"
+              name="login"
+              autocomplete="username"
+              required
+            />
+          </div>
+          <div class="field">
+            <div class="field-head">
+              <label for="password">Password</label>
+              <button type="button" id="toggle-password">Show</button>
+            </div>
+            <input
+              id="password"
+              name="password"
+              type="password"
+              autocomplete="current-password"
+              required
+            />
+          </div>
+          <button class="submit" type="submit">Sign in</button>
+        </form>
+      </section>
+    </div>
+  </body>
+</html>
