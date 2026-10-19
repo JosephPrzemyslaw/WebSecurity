@@ -9,12 +9,15 @@ const publicDir = join(import.meta.dirname, "..", "public");
 
 app.use(express.static(publicDir));
 
+app.get("/", (req: Request, res: Response) => {
+  res.redirect("/login.html");
+});
+
 app.get("/login", (req: Request, res: Response) => {
-  
   const login = req.query.login;
   const password = req.query.password;
   if (typeof login !== "string" || typeof password !== "string") {
-    res.redirect("/?error=invalid");
+    res.redirect("/login.html?error=invalid");
     return;
   }
 
@@ -24,7 +27,7 @@ app.get("/login", (req: Request, res: Response) => {
     .get() as { login: string; password: string } | undefined;
   
   if(user === undefined) {
-    res.redirect("/?error=invalid");
+    res.redirect("/login.html?error=invalid");
     return;
   } 
 

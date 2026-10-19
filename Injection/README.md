@@ -44,7 +44,7 @@ Injection/
     src/db.ts
     sql/init.sql
     public/
-      index.html      # sign-in form
+      login.html      # sign-in form
       login.js        # shows the sentence for ?error=invalid or ?error=server
       members.html
       style.css
@@ -60,9 +60,9 @@ npm install
 npm run dev
 ```
 
-Open `http://localhost:3000`. Sign in as `ewa` / `ewa123` or `marc` / `marc123` (passwords stored as plain text for now).
+Open `http://localhost:3000/login.html`. Sign in as `ewa` / `ewa123` or `marc` / `marc123` (passwords stored as plain text for now).
 
-The form is `method="GET"` and `action="/login"`, so the browser puts `login` and `password` in the URL. A match redirects to `/members.html`. A rejected sign-in redirects to `/?error=invalid`.
+The form is `method="GET"` and `action="/login"`, so the browser puts `login` and `password` in the URL. A match redirects to `/members.html`. A rejected sign-in redirects to `/login.html?error=invalid`.
 
 Passwords in `sql/init.sql` are plain text. Restarting the server rebuilds the in-memory database from that file.
 
@@ -80,7 +80,7 @@ Change the form so those fields travel in the request body instead (`method="POS
 app.use(express.urlencoded({ extended: false }));
 ```
 
-Then switch `GET /login` to `POST /login` and read `login` and `password` from `req.body`, not from `req.query`. A rejected sign-in should still redirect to `/?error=invalid`. The password should not appear in that address.
+Then switch `GET /login` to `POST /login` and read `login` and `password` from `req.body`, not from `req.query`. A rejected sign-in should still redirect to `/login.html?error=invalid`. The password should not appear in that address.
 
 Hint: `[express.urlencoded()](https://expressjs.com/en/5x/api.html#express.urlencoded)` is the form body parser. `extended: false` is enough for a simple `login` and `password` pair.
 
@@ -105,7 +105,7 @@ Open `server/src/index.ts`. Find `app.get("/login"`. Replace this block:
     .get() as { login: string; password: string } | undefined;
 
   if (user === undefined) {
-    res.redirect("/?error=invalid");
+    res.redirect("/login.html?error=invalid");
     return;
   }
 
@@ -122,13 +122,13 @@ with this block, in the same place:
       .get() as { login: string; password: string } | undefined;
 
     if (user === undefined) {
-      res.redirect("/?error=invalid");
+      res.redirect("/login.html?error=invalid");
       return;
     }
 
     res.redirect("/members.html");
   } catch (error) {
-    res.redirect("/?error=server");
+    res.redirect("/login.html?error=server");
     return;
   }
 ```
