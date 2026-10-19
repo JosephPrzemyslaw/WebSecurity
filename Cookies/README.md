@@ -2,11 +2,11 @@
 
 This folder is the cookie lab. It starts as the sign-in app. Cookie work is added here.
 
-No session cookie is set yet. A successful sign-in only redirects to `/members.html`.
+A successful sign-in sets a `session` cookie and redirects to `/members`. The server remembers that session in memory. Opening `/members` without it redirects to `/login`.
 
 The app is already in this folder. Install dependencies and start the server.
 
-- **Frontend:** HTML + vanilla JavaScript, served by Express from `server/public/`
+- **Frontend:** HTML, CSS, and vanilla JavaScript. Pages are sent by routes. CSS and `login.js` are served from `server/public/`
 - **Backend:** Node.js + Express + TypeScript
 - **Database:** in-memory SQLite (`node:sqlite`, `:memory:`). Schema and users are in `server/sql/init.sql`. Each `npm run dev` loads a fresh database.
 
@@ -38,11 +38,13 @@ Cookies/
   server/
     src/index.ts
     src/db.ts
+    src/session.ts
     sql/init.sql
+    pages/
+      login.html      # sign-in form, served at /login
+      members.html    # members page, served at /members
     public/
-      login.html      # sign-in form
       login.js        # shows the sentence for ?error=invalid or ?error=server
-      members.html
       style.css
 ```
 
@@ -54,10 +56,10 @@ npm install
 npm run dev
 ```
 
-Open `http://localhost:3000/login.html`. Sign in as `ewa` / `ewa123` or `marc` / `marc123` (passwords stored as plain text for now).
+Open `http://localhost:3000/login`. Sign in as `ewa` / `ewa123` or `marc` / `marc123` (passwords stored as plain text for now).
 
-The form is `method="POST"` and `action="/login"`, so `login` and `password` travel in the request body. A match redirects to `/members.html`. A rejected sign-in redirects to `/login.html?error=invalid`.
+The form is `method="POST"` and `action="/login"`, so `login` and `password` travel in the request body. A match redirects to `/members`. A rejected sign-in redirects to `/login?error=invalid`.
 
-Passwords in `sql/init.sql` are plain text. Restarting the server rebuilds the in-memory database from that file.
+Passwords in `sql/init.sql` are plain text. Restarting the server rebuilds the in-memory database from that file and clears the session map.
 
 This server uses port `3000`.
