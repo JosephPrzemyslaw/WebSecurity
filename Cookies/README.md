@@ -56,10 +56,10 @@ npm install
 npm run dev
 ```
 
-Open `http://localhost:3000/login`. Sign in as `ewa` / `ewa123` or `marc` / `marc123` (passwords stored as plain text for now).
+Open `http://localhost:3001/login`. Sign in as `ewa` / `ewa123` or `marc` / `marc123` (passwords stored as plain text for now).
 
 The form is `method="POST"` and `action="/login"`, so `login` and `password` travel in the request body. A match redirects to `/members`. A rejected sign-in redirects to `/login?error=invalid`.
 
 Passwords in `sql/init.sql` are plain text. Restarting the server rebuilds the in-memory database from that file and clears the session map.
 
-This server uses port `3000`.
+This server uses port `3001`.

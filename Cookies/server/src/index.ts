@@ -3,7 +3,7 @@ import express, { type Express, type Request, type Response } from "express";
 import { prepareDatabase } from "./db.ts";
 import { redirectToLoginIfNoSession, redirectToMembersIfSession, createSessionID } from "./session.ts";
 
-const port = 3000;
+const port = 3001;
 const db = await prepareDatabase();
 const app: Express = express();
 const publicDir = join(import.meta.dirname, "..", "public");
@@ -12,11 +12,7 @@ const membersPage = join(import.meta.dirname, "..", "pages", "members.html");
 
 app.use(express.urlencoded({ extended: false }));
 
-app.get("/", redirectToMembersIfSession, (_: Request, res: Response) => {
-  res.redirect("/login");
-});
-
-app.get("/login", redirectToMembersIfSession, (_: Request, res: Response) => {
+app.get(["/", "/login"], redirectToMembersIfSession, (_: Request, res: Response) => {
   res.sendFile(loginPage);
 });
 
@@ -24,10 +20,10 @@ app.post("/login", redirectToMembersIfSession, (req: Request, res: Response) => 
   const login = req.body.login;
   const password = req.body.password;
   if (typeof login !== "string" || typeof password !== "string") {
-    res.redirect("/login?error=invalid");
+    res.redirect(`/login?error=invalid`);
     return;
   }
-
+  
   try {
     const query = `SELECT login, password FROM users WHERE login = ? AND password = ?`;
     const user = db
@@ -40,7 +36,7 @@ app.post("/login", redirectToMembersIfSession, (req: Request, res: Response) => 
     }
 
     const sessionId = createSessionID(user.login);
-    res.setHeader("Set-Cookie", `session=${sessionId}; Path=/;`);
+    res.setHeader("Set-Cookie", `session=${sessionId}; Path=/; SameSite=strict; Secure`);
     res.redirect("/members");
   } catch {
     res.redirect("/login?error=server");

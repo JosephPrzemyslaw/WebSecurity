@@ -6,7 +6,7 @@ This folder is the SQL injection lab: a login form whose query is built from use
 
 The app is already in this folder. Install dependencies and start the server.
 
-- **Frontend:** HTML + vanilla JavaScript, served by Express from `server/public/`
+- **Frontend:** HTML, CSS, and vanilla JavaScript. The sign-in and members pages are sent by routes. CSS and `login.js` are served from `server/public/`
 - **Backend:** Node.js + Express + TypeScript
 - **Database:** in-memory SQLite (`node:sqlite`, `:memory:`). Schema and users are in `server/sql/init.sql`. Each `npm run dev` loads a fresh database.
 
@@ -43,10 +43,11 @@ SQLInjection/
     src/index.ts
     src/db.ts
     sql/init.sql
+    pages/
+      login.html      # sign-in form, served at /
+      members.html    # served at /members
     public/
-      login.html      # sign-in form
       login.js        # shows the sentence for ?error=invalid or ?error=server
-      members.html
       style.css
 ```
 
@@ -60,9 +61,9 @@ npm install
 npm run dev
 ```
 
-Open `http://localhost:3000/login.html`. Sign in as `ewa` / `ewa123` or `marc` / `marc123` (passwords stored as plain text for now).
+Open `http://localhost:3000/`. Sign in as `ewa` / `ewa123` or `marc` / `marc123` (passwords stored as plain text for now).
 
-The form is `method="GET"` and `action="/login"`, so the browser puts `login` and `password` in the URL. A match redirects to `/members.html`. A rejected sign-in redirects to `/login.html?error=invalid`.
+The form is `method="GET"` and `action="/login"`, so the browser puts `login` and `password` in the URL. A match redirects to `/members`. A rejected sign-in redirects to `/?error=invalid`.
 
 Passwords in `sql/init.sql` are plain text. Restarting the server rebuilds the in-memory database from that file.
 
@@ -80,7 +81,7 @@ Change the form so those fields travel in the request body instead (`method="POS
 app.use(express.urlencoded({ extended: false }));
 ```
 
-Then switch `GET /login` to `POST /login` and read `login` and `password` from `req.body`, not from `req.query`. A rejected sign-in should still redirect to `/login.html?error=invalid`. The password should not appear in that address.
+Then switch `GET /login` to `POST /login` and read `login` and `password` from `req.body`, not from `req.query`. A rejected sign-in should still redirect to `/?error=invalid`. The password should not appear in that address.
 
 Hint: `[express.urlencoded()](https://expressjs.com/en/5x/api.html#express.urlencoded)` is the form body parser. `extended: false` is enough for a simple `login` and `password` pair.
 
@@ -96,7 +97,7 @@ A wrong password and a quote do not end the same way. The quote broke the query.
 
 That list of files should not be on the page.
 
-Open `server/src/index.ts`. Find `app.get("/login"`. Replace this block:
+Open `server/src/index.ts`. Find the `/login` handler. Replace this block:
 
 ```ts
   const query = `SELECT login, password FROM users WHERE login = '${login}' AND password = '${password}'`;
@@ -105,11 +106,11 @@ Open `server/src/index.ts`. Find `app.get("/login"`. Replace this block:
     .get() as { login: string; password: string } | undefined;
 
   if (user === undefined) {
-    res.redirect("/login.html?error=invalid");
+    res.redirect("/?error=invalid");
     return;
   }
 
-  res.redirect("/members.html");
+  res.redirect("/members");
 ```
 
 with this block, in the same place:
@@ -122,13 +123,13 @@ with this block, in the same place:
       .get() as { login: string; password: string } | undefined;
 
     if (user === undefined) {
-      res.redirect("/login.html?error=invalid");
+      res.redirect("/?error=invalid");
       return;
     }
 
-    res.redirect("/members.html");
+    res.redirect("/members");
   } catch (error) {
-    res.redirect("/login.html?error=server");
+    res.redirect("/?error=server");
     return;
   }
 ```

@@ -6,18 +6,20 @@ const port = 3000;
 const db = await prepareDatabase();
 const app: Express = express();
 const publicDir = join(import.meta.dirname, "..", "public");
+const membersPage = join(import.meta.dirname, "..", "pages", "members.html");
+const loginPage = join(import.meta.dirname, "..", "pages", "login.html");
 
 app.use(express.static(publicDir));
 
-app.get("/", (req: Request, res: Response) => {
-  res.redirect("/login.html");
+app.get("/", (_: Request, res: Response) => {
+  res.sendFile(loginPage);
 });
 
 app.get("/login", (req: Request, res: Response) => {
   const login = req.query.login;
   const password = req.query.password;
   if (typeof login !== "string" || typeof password !== "string") {
-    res.redirect("/login.html?error=invalid");
+    res.redirect("/?error=invalid");
     return;
   }
 
@@ -27,12 +29,16 @@ app.get("/login", (req: Request, res: Response) => {
     .get() as { login: string; password: string } | undefined;
   
   if(user === undefined) {
-    res.redirect("/login.html?error=invalid");
+    res.redirect("/?error=invalid");
     return;
   } 
 
-  res.redirect("/members.html");
+  res.redirect("/members");
 
+});
+
+app.get("/members", (_: Request, res: Response) => {
+  res.sendFile(membersPage);
 });
 
 app.listen(port, (error?: Error) => {
