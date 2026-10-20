@@ -63,3 +63,17 @@ The form is `method="POST"` and `action="/login"`, so `login` and `password` tra
 Passwords in `sql/init.sql` are plain text. Restarting the server rebuilds the in-memory database from that file and clears the session map.
 
 This server uses port `3001`.
+
+## Exercises
+
+
+
+### 1. Session value
+
+Sign in as `ewa` / `ewa123`. The browser stores a cookie named `session`.
+
+Open `server/src/session.ts` and find `createSessionID`. See what is used as the cookie value. Do not change the file.
+
+The value is `ewa`, the same as the login. Anyone who knows that name can send the same cookie and reach the members page without the password.
+
+Propose a safer value. It must not be the login, and another person must not be able to guess it.

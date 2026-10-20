@@ -36,7 +36,7 @@ app.post("/login", redirectToMembersIfSession, (req: Request, res: Response) => 
     }
 
     const sessionId = createSessionID(user.login);
-    res.setHeader("Set-Cookie", `session=${sessionId}; Path=/; SameSite=strict; Secure`);
+    res.setHeader("Set-Cookie", `session=${sessionId}; Path=/`);
     res.redirect("/members");
   } catch {
     res.redirect("/login?error=server");
