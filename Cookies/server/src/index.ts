@@ -9,7 +9,6 @@ const app: Express = express();
 const publicDir = join(import.meta.dirname, "..", "public");
 const loginPage = join(import.meta.dirname, "..", "pages", "login.html");
 const membersPage = join(import.meta.dirname, "..", "pages", "members.html");
-
 app.use(express.urlencoded({ extended: false }));
 
 app.get(["/", "/login"], redirectToMembersIfSession, (_: Request, res: Response) => {

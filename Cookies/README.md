@@ -45,6 +45,8 @@ Cookies/
       members.html    # members page, served at /members
     public/
       login.js        # shows the sentence for ?error=invalid or ?error=server
+      chatbot.js      # support widget shipped with the app
+      chatbot.css
       style.css
 ```
 
@@ -57,6 +59,8 @@ npm run dev
 ```
 
 Open `http://localhost:3001/login`. Sign in as `ewa` / `ewa123` or `marc` / `marc123` (passwords stored as plain text for now).
+
+The members page loads `/chatbot.js` from this same server. The widget shows what `document.cookie` returns. The `session` cookie has no `HttpOnly` flag, so the script can read it.
 
 The form is `method="POST"` and `action="/login"`, so `login` and `password` travel in the request body. A match redirects to `/members`. A rejected sign-in redirects to `/login?error=invalid`.
 
@@ -77,3 +81,11 @@ Open `server/src/session.ts` and find `createSessionID`. See what is used as the
 The value is `ewa`, the same as the login. Anyone who knows that name can send the same cookie and reach the members page without the password.
 
 Propose a safer value. It must not be the login, and another person must not be able to guess it.
+
+### 2. HttpOnly
+
+Sign in as `ewa` / `ewa123` and open the support chat. It shows `session=ewa`. A script on the page can see that cookie.
+
+In `server/src/index.ts`, add `HttpOnly` to `Set-Cookie`. Sign in again.
+
+The chat should no longer show `session`. The members page still opens. The browser keeps sending the cookie. The script cannot read it.

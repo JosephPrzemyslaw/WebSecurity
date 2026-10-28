@@ -1,0 +1,207 @@
+.chat-widget {
+  position: fixed;
+  right: clamp(1rem, 3vw, 1.75rem);
+  bottom: clamp(1rem, 3vw, 1.75rem);
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.85rem;
+  font-family: Figtree, "Segoe UI", sans-serif;
+}
+
+.chat-fab {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  border: 1px solid rgba(246, 241, 232, 0.12);
+  border-radius: 999px;
+  padding: 0.65rem 1rem 0.65rem 0.85rem;
+  font: inherit;
+  font-weight: 600;
+  color: var(--paper);
+  background: linear-gradient(145deg, #2a221c, #1a1612);
+  cursor: pointer;
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.35);
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.chat-fab:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.4);
+}
+
+.chat-fab-icon {
+  display: grid;
+  place-items: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 999px;
+  background: rgba(224, 122, 61, 0.22);
+  font-size: 0.95rem;
+  line-height: 1;
+}
+
+.chat-fab-label {
+  padding-right: 0.15rem;
+}
+
+.chat-widget--open .chat-fab {
+  opacity: 0.92;
+}
+
+.chat-panel {
+  width: min(22rem, calc(100vw - 2rem));
+  overflow: hidden;
+  border: 1px solid var(--paper-edge);
+  border-radius: 1.25rem;
+  background: var(--paper);
+  color: var(--ink);
+  box-shadow: 0 28px 70px rgba(0, 0, 0, 0.38);
+  transform-origin: bottom right;
+  animation: chat-panel-in 0.22s ease;
+}
+
+.chat-panel[hidden] {
+  display: none;
+}
+
+@keyframes chat-panel-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.chat-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 1rem 1rem 0.85rem;
+  border-bottom: 1px solid var(--paper-edge);
+  background: linear-gradient(180deg, #fffaf3, var(--paper));
+}
+
+.chat-header-title {
+  margin: 0;
+  font-family: Fraunces, Georgia, serif;
+  font-size: 1.15rem;
+  font-weight: 640;
+  line-height: 1.2;
+}
+
+.chat-header-meta {
+  margin: 0.2rem 0 0;
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+
+.chat-header-meta::before {
+  content: "";
+  display: inline-block;
+  width: 0.45rem;
+  height: 0.45rem;
+  margin-right: 0.35rem;
+  border-radius: 999px;
+  background: #3d9a5d;
+  vertical-align: 0.05em;
+}
+
+.chat-close {
+  flex-shrink: 0;
+  width: 2rem;
+  height: 2rem;
+  border: 0;
+  border-radius: 999px;
+  font-size: 1.35rem;
+  line-height: 1;
+  color: var(--muted);
+  background: transparent;
+  cursor: pointer;
+}
+
+.chat-close:hover {
+  color: var(--ink);
+  background: rgba(26, 22, 18, 0.06);
+}
+
+.chat-body {
+  min-height: 9rem;
+  max-height: 14rem;
+  padding: 1rem;
+  overflow-y: auto;
+  background:
+    radial-gradient(circle at 100% 0%, rgba(224, 122, 61, 0.08), transparent 42%),
+    var(--paper);
+}
+
+.chat-bubble {
+  max-width: 88%;
+  padding: 0.75rem 0.9rem;
+  border-radius: 1rem 1rem 1rem 0.35rem;
+  background: #fff;
+  border: 1px solid var(--paper-edge);
+  box-shadow: 0 6px 18px rgba(26, 22, 18, 0.06);
+}
+
+.chat-bubble p {
+  margin: 0;
+  font-size: 0.92rem;
+  line-height: 1.45;
+  color: #4e463d;
+}
+
+.chat-bubble--cookie {
+  margin-top: 0.75rem;
+  max-width: 100%;
+}
+
+.chat-bubble--cookie p {
+  font-family: ui-monospace, "SFMono-Regular", Menlo, monospace;
+  font-size: 0.82rem;
+  overflow-wrap: anywhere;
+}
+
+.chat-footer {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.5rem;
+  padding: 0.85rem 1rem 1rem;
+  border-top: 1px solid var(--paper-edge);
+  background: #faf6ef;
+}
+
+.chat-input {
+  width: 100%;
+  padding: 0.65rem 0.85rem;
+  border: 1px solid var(--paper-edge);
+  border-radius: 999px;
+  font: inherit;
+  font-size: 0.9rem;
+  color: var(--ink);
+  background: #fff;
+}
+
+.chat-input:disabled {
+  opacity: 0.72;
+  cursor: not-allowed;
+}
+
+.chat-send {
+  width: 2.35rem;
+  height: 2.35rem;
+  border: 0;
+  border-radius: 999px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--paper);
+  background: var(--ember);
+  cursor: not-allowed;
+  opacity: 0.55;
+}
