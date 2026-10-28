@@ -47,6 +47,7 @@ Cookies/
       login.js        # shows the sentence for ?error=invalid or ?error=server
       chatbot.js      # support widget shipped with the app
       chatbot.css
+      reading-room.svg
       style.css
 ```
 
@@ -89,3 +90,13 @@ Sign in as `ewa` / `ewa123` and open the support chat. It shows `session=ewa`. A
 In `server/src/index.ts`, add `HttpOnly` to `Set-Cookie`. Sign in again.
 
 The chat should no longer show `session`. The members page still opens. The browser keeps sending the cookie. The script cannot read it.
+
+### 3. Secure
+
+Assume the whole site is served over HTTPS, except the article picture. That picture is the only plain HTTP request.
+
+Open `/members`. The article picture comes from `http://localhost:3001/reading-room.svg`.
+
+The `session` cookie has no `Secure` flag, so the browser can send it with that picture.
+
+With `Secure`, the browser would keep the cookie for HTTPS and would not send it with that picture.

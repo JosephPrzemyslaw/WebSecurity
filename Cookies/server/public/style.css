@@ -173,6 +173,28 @@ input:focus {
   line-height: 1.5;
 }
 
+.article {
+  margin-top: 1.75rem;
+  padding-top: 1.4rem;
+  border-top: 1px solid var(--paper-edge);
+}
+
+.article h2 {
+  margin: 0 0 0.85rem;
+  font-family: Fraunces, Georgia, serif;
+  font-size: 1.55rem;
+  font-weight: 640;
+  line-height: 1.2;
+}
+
+.article img {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: 0 0 0.85rem;
+  border-radius: 0.9rem;
+}
+
 @media (max-width: 860px) {
   .stage {
     grid-template-columns: 1fr;
