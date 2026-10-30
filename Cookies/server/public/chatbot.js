@@ -35,6 +35,7 @@
   const seen = document.createElement("div");
   seen.className = "chat-bubble chat-bubble--cookie";
   const line = document.createElement("p");
+  // Exercise 3: reads session cookie because Set-Cookie lacks HttpOnly (CWE-1004, OWASP A02).
   const value = document.cookie;
   line.textContent = value.length > 0 ? "This script can read " + value : "This script can read no cookies.";
   seen.append(line);

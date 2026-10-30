@@ -1,54 +1,26 @@
 # Cookies
 
-This folder is the cookie lab. It starts as the sign-in app. Cookie work is added here.
+Sign-in app for cookie exercises. A successful login sets a `session` cookie and redirects to `/members`. Without it, `/members` redirects to `/login`.
 
-A successful sign-in sets a `session` cookie and redirects to `/members`. The server remembers that session in memory. Opening `/members` without it redirects to `/login`.
-
-The app is already in this folder. Install dependencies and start the server.
-
-- **Frontend:** HTML, CSS, and vanilla JavaScript. Pages are sent by routes. CSS and `login.js` are served from `server/public/`
-- **Backend:** Node.js + Express + TypeScript
-- **Database:** in-memory SQLite (`node:sqlite`, `:memory:`). Schema and users are in `server/sql/init.sql`. Each `npm run dev` loads a fresh database.
-
-Application logic on the server is TypeScript (`.ts`). The browser files are HTML, CSS, and JavaScript.
-
-## Supported platforms
-
-macOS, Windows, and Ubuntu.
-
-- Start the app with `npm run dev` (`node --watch src/index.ts`).
-- SQLite uses Node’s `node:sqlite` (`DatabaseSync` on Node 26.5). Not `better-sqlite3`.
-- On Windows use PowerShell or the editor terminal.
+- **Stack:** HTML/CSS/JS in the browser; Express + TypeScript on the server; in-memory SQLite from `server/sql/init.sql` (fresh on each `npm run dev`).
+- **Port:** `3001`
 
 ## Prerequisites
 
-1. **Node.js 22+** (includes npm): [https://nodejs.org](https://nodejs.org). This lab is written for Node 26.5 (`DatabaseSync`).
-2. A terminal and a browser
+Node.js 22+ and a browser.
 
-```bash
-node -v
-npm -v
-```
-
-## Project layout (already in git)
+## Layout
 
 ```text
 Cookies/
   README.md
+  assets/presentation/   # Keynote: samesite-compare (all), lax/none POST, lax-get/strict GET
+  cross-site.html   # exercise 5 — open locally or on your own second origin
   server/
     src/index.ts
-    src/db.ts
     src/session.ts
-    sql/init.sql
-    pages/
-      login.html      # sign-in form, served at /login
-      members.html    # members page, served at /members
-    public/
-      login.js        # shows the sentence for ?error=invalid or ?error=server
-      chatbot.js      # support widget shipped with the app
-      chatbot.css
-      reading-room.svg
-      style.css
+    pages/login.html, members.html
+    public/…
 ```
 
 ## Run
@@ -59,44 +31,91 @@ npm install
 npm run dev
 ```
 
-Open `http://localhost:3001/login`. Sign in as `ewa` / `ewa123` or `marc` / `marc123` (passwords stored as plain text for now).
+Open **`http://localhost:3001/login`**. Users: `ewa` / `ewa123`, `marc` / `marc123`. Login is `POST /login`; failures redirect to `/login?error=invalid`.
 
-The members page loads `/chatbot.js` from this same server. The widget shows what `document.cookie` returns. The `session` cookie has no `HttpOnly` flag, so the script can read it.
+There is **no second server in this repo**. Exercise 5 uses `cross-site.html` from **another origin** that you provide (see exercise 5). Slides use `shop.lab` / `partner.lab` as generic labels.
 
-The form is `method="POST"` and `action="/login"`, so `login` and `password` travel in the request body. A match redirects to `/members`. A rejected sign-in redirects to `/login?error=invalid`.
+Restarting the server clears in-memory sessions, purchases, and the database.
 
-Passwords in `sql/init.sql` are plain text. Restarting the server rebuilds the in-memory database from that file and clears the session map.
-
-This server uses port `3001`.
+The members page loads `/chatbot.js`. The starter cookie has no `HttpOnly`, so the widget can print `session` from `document.cookie`. It uses `SameSite=None; Secure`.
 
 ## Exercises
 
+**OWASP Top 10:2025 framing:** exercises **3–4** match **[A02 Security Misconfiguration](https://owasp.org/Top10/2025/A02_2025-Security_Misconfiguration/)** mapped CWEs (**CWE-1004**, **CWE-614**). **Exercise 2** is **[A07 Authentication Failures](https://owasp.org/Top10/2025/A07_2025-Authentication_Failures/)** (**CWE-287** / **CWE-565**). **Exercise 5** is **[A01 Broken Access Control](https://owasp.org/Top10/2025/A01_2025-Broken_Access_Control/)** — OWASP lists **CWE-352** (CSRF) and **CWE-1275** (improper `SameSite`) under A01, not A02. **Exercise 1** (predictable id) is grouped with misconfiguration in the workshop; OWASP A02’s official CWE list does not include **CWE-330** (see A07 / session hardening in ASVS).
 
+### 1. Predictable session token
 
-### 1. Session value
+**Vulnerability:** session identifier that is easy to guess or reuse (session hijacking without the password).
 
-Sign in as `ewa` / `ewa123`. The browser stores a cookie named `session`.
+Sign in as `ewa` / `ewa123`. In DevTools, note the `session` cookie.
 
-Open `server/src/session.ts` and find `createSessionID`. See what is used as the cookie value. Do not change the file.
+Open `server/src/session.ts` and read `createSessionID` (do not edit). The value is the login name (`ewa`). Anyone who knows it can set the same cookie and open `/members` without signing in.
 
-The value is `ewa`, the same as the login. Anyone who knows that name can send the same cookie and reach the members page without the password.
+Propose a safer value: not the login, hard to guess, unique per sign-in.
 
-Propose a safer value. It must not be the login, and another person must not be able to guess it.
+**OWASP Top 10:2025:** A02 Security Misconfiguration (insecure session id) · **CWE-330** (Insufficiently Random Values) · **CWE-287** (Improper Authentication)
 
-### 2. HttpOnly
+### 2. Session cookie not checked against server store
 
-Sign in as `ewa` / `ewa123` and open the support chat. It shows `session=ewa`. A script on the page can see that cookie.
+**Vulnerability:** the app treats any `session=…` cookie as proof of login. It never checks that the server actually issued that session (e.g. after a successful login).
 
-In `server/src/index.ts`, add `HttpOnly` to `Set-Cookie`. Sign in again.
+Restart the shop (`npm run dev`) so the in-memory session map is empty. **Do not sign in.**
 
-The chat should no longer show `session`. The members page still opens. The browser keeps sending the cookie. The script cannot read it.
+In DevTools → Application → Cookies for `http://localhost:3001`, add `session` with value `not-in-database` (any string you like).
 
-### 3. Secure
+Open **`http://localhost:3001/members`**. With the starter code, the members page loads even though nobody logged in and that id was never stored server-side.
 
-Assume the whole site is served over HTTPS, except the article picture. That picture is the only plain HTTP request.
+Open `server/src/session.ts` and find `currentSessionId`. Restore the check: uncomment `|| !session.has(sessionId)` so only ids created by `createSessionID` on login are accepted.
 
-Open `/members`. The article picture comes from `http://localhost:3001/reading-room.svg`.
+Repeat with a fresh cookie `not-in-database` — `/members` should redirect to `/login`. Sign in normally; `/members` should work again.
 
-The `session` cookie has no `Secure` flag, so the browser can send it with that picture.
+**Takeaway:** the cookie is sent by the browser; the server must look up the session id in its own store (database, cache, etc.), not trust the value alone.
 
-With `Secure`, the browser would keep the cookie for HTTPS and would not send it with that picture.
+**OWASP Top 10:2025:** A07 Authentication Failures · **CWE-287** (Improper Authentication) · **CWE-565** (cookie not validated against server state)
+
+### 3. Missing HttpOnly
+
+**Vulnerability:** session cookie readable by any script on the page (often discussed together with XSS or a compromised third-party script).
+
+Sign in as `ewa` and open the support chat. It prints `document.cookie`, including `session=ewa`.
+
+In `server/src/index.ts`, add `HttpOnly` to `Set-Cookie`. Sign in again (old cookies may lack the flag until you get a new one).
+
+The chat must no longer list `session`. Open `/members` — it should still work; the browser still sends the cookie to your server, only JavaScript cannot read it.
+
+**Takeaway:** HttpOnly protects the cookie value from JS; it does not stop the browser from sending the cookie on requests to your app.
+
+**OWASP Top 10:2025:** A02 Security Misconfiguration · **CWE-1004** (Sensitive Cookie Without `HttpOnly`)
+
+### 4. Missing Secure (mixed content)
+
+**Vulnerability:** session cookie sent with non-HTTPS requests to the same host (e.g. passive mixed content).
+
+Assume the shop runs over HTTPS on `shop.lab`. For the mixed-content demo, change the cover on `/members` from `/gone-with-the-wind.svg` to an absolute `http://shop.lab:3001/gone-with-the-wind.svg` URL.
+
+The starter cookie includes `Secure`, so the browser should not send it with that HTTP image request. If you removed `Secure`, the same cookie could leak on that subresource request.
+
+**Takeaway:** `Secure` limits the cookie to HTTPS URLs on this host.
+
+**OWASP Top 10:2025:** A02 Security Misconfiguration · **CWE-614** (Sensitive Cookie Without `Secure` on HTTPS)
+
+### 5. Permissive SameSite (cross-site cookie on POST)
+
+**Vulnerability:** browser attaches the session cookie to a cross-site state-changing request (CSRF-style abuse of `/buy`).
+
+Buy the book once from `/members` on **`http://localhost:3001`**. Keep `SameSite=None; Secure` (on plain HTTP some browsers refuse `Secure` cookies—adjust flags for your setup if login does not stick).
+
+**Cross-site page (you host it):** use [`cross-site.html`](cross-site.html). It is not part of the shop app. Open it from an origin **other than** `http://localhost:3001`, for example:
+
+- Open the file in the browser (`file:///…/cross-site.html`), **or**
+- Serve the `Cookies/` folder yourself, e.g. `python3 -m http.server 8080` in that directory and open `http://127.0.0.1:8080/cross-site.html` (different site from `localhost:3001`).
+
+Sign in on **`http://localhost:3001`** (same host as the form’s `action`). Click **Buy the book for me** on your cross-site page — `POST` to **`http://localhost:3001/buy`** (hidden iframe; check `/members` on the shop tab).
+
+With `SameSite=None; Secure`, the session cookie should go with that cross-site `POST` and the book can be bought without using the shop UI.
+
+Change the cookie to `SameSite=Lax`, sign in again on `localhost:3001`, and repeat from your cross-site page. The cross-site `POST` should not include the session; the purchase should not go through.
+
+**Takeaway:** `Lax` blocks many cross-site `POST`s. `None` allows them—needed for some cross-site flows, dangerous for endpoints like `/buy` unless you add other defenses (CSRF tokens, later).
+
+**OWASP Top 10:2025:** **[A01 Broken Access Control](https://owasp.org/Top10/2025/A01_2025-Broken_Access_Control/)** · **CWE-352** (Cross-Site Request Forgery) · **CWE-1275** (Sensitive Cookie with Improper SameSite Attribute). The risky `Set-Cookie` flag is misconfiguration in plain language; OWASP’s Top 10 data maps CSRF and bad `SameSite` to **A01**, not A02.
