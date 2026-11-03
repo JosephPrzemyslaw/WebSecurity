@@ -5,8 +5,7 @@ const purchases = new Set<string>();
 
 export function createSessionID(login:string): string {
     // INCORRECT (exercise 1): session id equals login — easy to guess/reuse.
-    // OWASP Top 10:2025 — A02 Security Misconfiguration (insecure session id).
-    // CWE-330 Use of Insufficiently Random Values; CWE-287 Improper Authentication.
+    // OWASP Top 10:2025 — A04 Cryptographic Failures (mapped CWE-330, CWE-340).
     const sessionId = login;
     session.set(sessionId, login);
 
@@ -19,8 +18,8 @@ export function currentSessionId(cookie: string | undefined): string | undefined
 
     // INCORRECT (exercise 2): only checks that a session cookie exists, not that the
     // value was issued by this server. OWASP Top 10:2025 — A07 Authentication Failures
-    // (missing server-side session validation). CWE-287 Improper Authentication;
-    // see also CWE-565 (cookie not validated against server state).
+    // (missing server-side session validation). OWASP A07 — CWE-287 (Top 10 mapped).
+    // CWE-565 related but not on Top 10:2025 category lists.
     if (sessionId === undefined) { // || !session.has(sessionId)) {
         return undefined;
     }

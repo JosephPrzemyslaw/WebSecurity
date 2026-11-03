@@ -41,7 +41,7 @@ The members page loads `/chatbot.js`. The starter cookie has no `HttpOnly`, so t
 
 ## Exercises
 
-**OWASP Top 10:2025 framing:** exercises **3–4** match **[A02 Security Misconfiguration](https://owasp.org/Top10/2025/A02_2025-Security_Misconfiguration/)** mapped CWEs (**CWE-1004**, **CWE-614**). **Exercise 2** is **[A07 Authentication Failures](https://owasp.org/Top10/2025/A07_2025-Authentication_Failures/)** (**CWE-287** / **CWE-565**). **Exercise 5** is **[A01 Broken Access Control](https://owasp.org/Top10/2025/A01_2025-Broken_Access_Control/)** — OWASP lists **CWE-352** (CSRF) and **CWE-1275** (improper `SameSite`) under A01, not A02. **Exercise 1** (predictable id) is grouped with misconfiguration in the workshop; OWASP A02’s official CWE list does not include **CWE-330** (see A07 / session hardening in ASVS).
+**OWASP Top 10:2025 (official mapped CWE lists only):** **1** → [A04 Cryptographic Failures](https://owasp.org/Top10/2025/A04_2025-Cryptographic_Failures/) (**CWE-330**, **CWE-340**). **2** → [A07 Authentication Failures](https://owasp.org/Top10/2025/A07_2025-Authentication_Failures/) (**CWE-287**). **3–4** → [A02 Security Misconfiguration](https://owasp.org/Top10/2025/A02_2025-Security_Misconfiguration/) (**CWE-1004**, **CWE-614**). **5** → [A01 Broken Access Control](https://owasp.org/Top10/2025/A01_2025-Broken_Access_Control/) (**CWE-352**, **CWE-1275**). **CWE-565** (exercise 2) is a valid MITRE weakness but **not** on any Top 10:2025 category list — use it as extra detail, not as a Top 10 mapped CWE.
 
 ### 1. Predictable session token
 
@@ -53,7 +53,7 @@ Open `server/src/session.ts` and read `createSessionID` (do not edit). The value
 
 Propose a safer value: not the login, hard to guess, unique per sign-in.
 
-**OWASP Top 10:2025:** A02 Security Misconfiguration (insecure session id) · **CWE-330** (Insufficiently Random Values) · **CWE-287** (Improper Authentication)
+**OWASP Top 10:2025:** [A04 Cryptographic Failures](https://owasp.org/Top10/2025/A04_2025-Cryptographic_Failures/) · **CWE-330** (Insufficiently Random Values) · **CWE-340** (Predictable session identifier). A07 *describes* strong session ids in “How to prevent” but does **not** list CWE-330.
 
 ### 2. Session cookie not checked against server store
 
@@ -71,7 +71,7 @@ Repeat with a fresh cookie `not-in-database` — `/members` should redirect to `
 
 **Takeaway:** the cookie is sent by the browser; the server must look up the session id in its own store (database, cache, etc.), not trust the value alone.
 
-**OWASP Top 10:2025:** A07 Authentication Failures · **CWE-287** (Improper Authentication) · **CWE-565** (cookie not validated against server state)
+**OWASP Top 10:2025:** [A07 Authentication Failures](https://owasp.org/Top10/2025/A07_2025-Authentication_Failures/) · **CWE-287** (Improper Authentication). Related (not on Top 10 lists): **CWE-565** (reliance on cookie without validation).
 
 ### 3. Missing HttpOnly
 
@@ -87,15 +87,13 @@ The chat must no longer list `session`. Open `/members` — it should still work
 
 **OWASP Top 10:2025:** A02 Security Misconfiguration · **CWE-1004** (Sensitive Cookie Without `HttpOnly`)
 
-### 4. Missing Secure (mixed content)
+### 4. Missing Secure
 
-**Vulnerability:** session cookie sent with non-HTTPS requests to the same host (e.g. passive mixed content).
+**Vulnerability:** without `Secure`, the session cookie can be sent on plain **HTTP** subrequests (e.g. mixed content: **HTTPS** page, **HTTP** image). The lab runs on **`http://localhost:3001`** — you will not see blocking here; explain the HTTPS case on slides (`shop.lab` + `http://…` cover).
 
-Assume the shop runs over HTTPS on `shop.lab`. For the mixed-content demo, change the cover on `/members` from `/gone-with-the-wind.svg` to an absolute `http://shop.lab:3001/gone-with-the-wind.svg` URL.
+Sign in as `ewa`. In DevTools, note **`Secure`** on `session` (`server/src/index.ts`). Optionally remove `Secure`, sign in again, then restore it before exercise 5.
 
-The starter cookie includes `Secure`, so the browser should not send it with that HTTP image request. If you removed `Secure`, the same cookie could leak on that subresource request.
-
-**Takeaway:** `Secure` limits the cookie to HTTPS URLs on this host.
+**Takeaway:** `Secure` keeps the cookie off non-HTTPS requests in production.
 
 **OWASP Top 10:2025:** A02 Security Misconfiguration · **CWE-614** (Sensitive Cookie Without `Secure` on HTTPS)
 
@@ -103,14 +101,11 @@ The starter cookie includes `Secure`, so the browser should not send it with tha
 
 **Vulnerability:** browser attaches the session cookie to a cross-site state-changing request (CSRF-style abuse of `/buy`).
 
-Buy the book once from `/members` on **`http://localhost:3001`**. Keep `SameSite=None; Secure` (on plain HTTP some browsers refuse `Secure` cookies—adjust flags for your setup if login does not stick).
+Buy the book once from `/members` on **`http://localhost:3001`**. Keep `SameSite=None; Secure`.
 
-**Cross-site page (you host it):** use [`cross-site.html`](cross-site.html). It is not part of the shop app. Open it from an origin **other than** `http://localhost:3001`, for example:
+**Partner page (instructor setup):** [`cross-site.html`](cross-site.html) is a **neutral-looking promo page** (no lab hints on the page). Serve it from a **different site** than the shop, e.g. `python3 -m http.server 8000` in `Cookies/` and open **`http://127.0.0.1:8000/cross-site.html`** (not `http://localhost:8000` — same host as the shop would be same-site for `SameSite`). Avoid `file://` for reliable cookie behavior.
 
-- Open the file in the browser (`file:///…/cross-site.html`), **or**
-- Serve the `Cookies/` folder yourself, e.g. `python3 -m http.server 8080` in that directory and open `http://127.0.0.1:8080/cross-site.html` (different site from `localhost:3001`).
-
-Sign in on **`http://localhost:3001`** (same host as the form’s `action`). Click **Buy the book for me** on your cross-site page — `POST` to **`http://localhost:3001/buy`** (hidden iframe; check `/members` on the shop tab).
+Sign in on **`http://localhost:3001`**, then open the partner URL in another tab. The page looks like a club invitation; the button submits a `POST` to `http://localhost:3001/buy` (debrief with page source / Network). Check `/members` on the shop tab.
 
 With `SameSite=None; Secure`, the session cookie should go with that cross-site `POST` and the book can be bought without using the shop UI.
 
