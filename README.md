@@ -1,7 +1,12 @@
 # WebSecurity
 
-**[SQLInjection/](SQLInjection/)** — SQL injection lab only. The login query is built from the query string; the fix is a parameterized query. See [SQLInjection/README.md](SQLInjection/README.md).
+| Folder | Topic | Port |
+|--------|--------|------|
+| [SQLInjection/](SQLInjection/) | SQL injection | (see README) |
+| [Cookies/](Cookies/) | Cookie flags, SameSite | **3001** |
+| [CSRF/](CSRF/) | CSRF token, forged POST/GET | **3003** |
+| [XSS/](XSS/) | Stored XSS | **3002** |
 
-Clone this repository, then follow [SQLInjection/README.md](SQLInjection/README.md). Folders are already in the repo: install dependencies and run the server. Do not create `SQLInjection`, `server`, or `sql`.
+Clone this repository, then open the README in the lab folder you are working on. Install dependencies under each lab’s `server/` and run `npm run dev`.
 
 All rights reserved. This material is provided for the workshop.

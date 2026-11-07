@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Invitation — Inner Circle</title>
+    <style>
+      :root {
+        color: #1a2b44;
+        background: #0f1419;
+      }
+      body {
+        font-family: "Segoe UI", system-ui, sans-serif;
+        max-width: 26rem;
+        margin: 0 auto;
+        padding: 2rem 1.15rem 2.5rem;
+        line-height: 1.5;
+        min-height: 100vh;
+        box-sizing: border-box;
+      }
+      .wrap {
+        background: linear-gradient(180deg, #faf8f3 0%, #fff 40%);
+        border-radius: 14px;
+        padding: 1.6rem 1.35rem 1.4rem;
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+        border: 1px solid #d4a574;
+      }
+      .seal {
+        width: 48px;
+        height: 48px;
+        margin: 0 auto 1rem;
+        border-radius: 50%;
+        background: #1a2b44;
+        color: #d4a574;
+        font-size: 1.35rem;
+        line-height: 48px;
+        text-align: center;
+        font-family: Georgia, serif;
+      }
+      .pill {
+        display: block;
+        text-align: center;
+        font-size: 0.68rem;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: #92400e;
+        margin-bottom: 0.65rem;
+      }
+      h1 {
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 1.45rem;
+        font-weight: 600;
+        margin: 0 0 0.55rem;
+        text-align: center;
+        line-height: 1.25;
+        color: #1a2b44;
+      }
+      .sub {
+        color: #4b5563;
+        font-size: 0.92rem;
+        margin: 0 0 1.15rem;
+        text-align: center;
+      }
+      button {
+        width: 100%;
+        font: inherit;
+        font-size: 1.02rem;
+        font-weight: 600;
+        padding: 0.8rem 1rem;
+        cursor: pointer;
+        color: #faf8f3;
+        background: linear-gradient(180deg, #2a3f5f 0%, #1a2b44 100%);
+        border: 1px solid #d4a574;
+        border-radius: 10px;
+      }
+      footer {
+        margin-top: 1.25rem;
+        font-size: 0.72rem;
+        color: #6b7280;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <div class="seal" aria-hidden="true">◆</div>
+      <span class="pill">Personal invitation</span>
+      <h1>Join the Inner Circle</h1>
+      <p class="sub">Accept below to activate membership on the shop account you are signed in with.</p>
+      <iframe name="club-checkout" hidden title=""></iframe>
+      <form action="http://localhost:3003/buy" method="POST" target="club-checkout">
+        <input type="hidden" name="bookId" value="1" />
+        <button type="submit">Accept invitation &amp; join</button>
+      </form>
+    </div>
+    <footer>Inner Circle · by invitation only</footer>
+  </body>
+</html>
