@@ -1,6 +1,6 @@
 import { access } from "node:fs/promises";
 import { createReadStream } from "node:fs";
-import { join, resolve } from "node:path";
+import { resolve, sep } from "node:path";
 import type { Express, Request, Response } from "express";
 import type { AppDeps } from "../appDeps.ts";
 import { HttpStatus, sendPlain } from "../responses.ts";
@@ -9,28 +9,32 @@ import { redirectToLoginIfNoSession } from "../session.ts";
 /**
  * CWE-22 read: user-controlled path under content/library/books/{book}/chapters/.
  * File upload (CWE-434) uses deps.paths.uploads — not this handler.
+ *
+ * Exercises 1–3: leave the next line as-is (`false`).
+ * Exercise 4: uncomment the line below and comment out `false` (Fix A — jail under chapters/).
  */
+const USE_SAFE_CHAPTER_PATH = false;
+// const USE_SAFE_CHAPTER_PATH = true;
+
 function resolveChapterPath(deps: AppDeps, bookName: string, rawChapterRel: string): string {
   const chapterRel = decodeURIComponent(rawChapterRel);
   const libraryRoot = deps.paths.contentLibrary;
 
-  /* Exercise 4 (optional): naive strip — uncomment ONLY for bypass demo; remove for exercises 1–3
-  const stripped = chapterRel.replaceAll("../", "");
-  return resolve(libraryRoot, "books", bookName, "chapters", stripped);
-  */
-
-  /* Exercise fix A: uncomment and use instead of the vulnerable line below
-  const chaptersDir = resolve(libraryRoot, "books", bookName, "chapters");
-  const candidate = resolve(chaptersDir, chapterRel);
-  const root = resolve(chaptersDir);
-  if (candidate !== root && !candidate.startsWith(root + join.sep)) {
-    throw new Error("outside chapters dir");
+  if (USE_SAFE_CHAPTER_PATH) {
+    // Allowed root (exercise 1), e.g. …/server/content/library/books/gone-with-the-wind/chapters
+    const chaptersDir = resolve(libraryRoot, "books", bookName, "chapters");
+    // Where we would read if chapterRel were honest, e.g. …/chapters/chapter-01.txt
+    const candidate = resolve(chaptersDir, chapterRel);
+    // Exercise 2 blocks when chapterRel is ../../../../../data/internal/publisher-rebates.csv
+    // → candidate becomes …/server/data/internal/publisher-rebates.csv (outside chaptersDir)
+    if (!candidate.startsWith(chaptersDir + sep)) {
+      throw new Error("outside chapters dir");
+    }
+    return candidate;
   }
-  return candidate;
-  */
 
-  /* Exercise fix B (allowlist): if (bookName !== deps.bookSlug || chapterRel !== deps.chapterFile) throw … */
-
+  // Exercises 1–3 (vulnerable): user input in chapterRel can escape via resolve("..")
+  // e.g. chapterRel ../../../../../data/internal/publisher-rebates.csv
   return resolve(libraryRoot, "books", bookName, "chapters", chapterRel);
 }
 
@@ -70,7 +74,8 @@ export function registerLibraryRoutes(app: Express, deps: AppDeps): void {
     "/library/books/:bookName/chapters/*chapterRelPath",
     redirectToLoginIfNoSession,
     async (req: Request, res: Response) => {
-      const bookName = req.params.bookName;
+      const bookNameRaw = req.params.bookName;
+      const bookName = Array.isArray(bookNameRaw) ? bookNameRaw[0] : bookNameRaw;
       const raw = req.params.chapterRelPath;
       const chapterRel = Array.isArray(raw) ? raw.join("/") : raw;
       if (chapterRel === undefined || chapterRel.trim() === "") {
