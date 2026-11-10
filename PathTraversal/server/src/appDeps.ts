@@ -12,8 +12,6 @@ export type PagePaths = {
 export type StoragePaths = {
   /** Root for GET /library/books/:book/chapters/* (CWE-22 read). */
   contentLibrary: string;
-  /** Not web-served; traversal target in exercises. */
-  internalData: string;
   /** Reserved for CWE-434 avatar upload in the next module; served via static only. */
   uploads: string;
 };
@@ -43,7 +41,6 @@ export function createAppDeps(db: DatabaseSync, srcDir: string): AppDeps {
     },
     paths: {
       contentLibrary: join(serverDir, "content", "library"),
-      internalData: join(serverDir, "data", "internal"),
       uploads: join(serverDir, "public", "uploads"),
     },
   };

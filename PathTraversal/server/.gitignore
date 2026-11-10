@@ -1,4 +1,6 @@
 node_modules
 dist
+
+# File upload lab (CWE-434): keep the folder, ignore uploaded files — see PathTraversal/README.md
 public/uploads/*
 !public/uploads/.gitkeep

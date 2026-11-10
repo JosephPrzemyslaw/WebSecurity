@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Path traversal — trzy epoki</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,560;9..144,640&family=Figtree:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+      }
+
+      body {
+        min-height: 100vh;
+        margin: 20px;
+        display: grid;
+        place-items: center;
+        background: #fff;
+        padding: 1rem;
+        font-family: Figtree, system-ui, sans-serif;
+        color: #1a2b44;
+      }
+
+      .slide {
+        width: min(1280px, 100%);
+        aspect-ratio: 16 / 9;
+        background: #fff;
+        border-radius: 20px;
+        padding: 1.75rem 2.4rem 1.4rem;
+        display: grid;
+        grid-template-rows: auto 1fr auto;
+        gap: 0.9rem;
+        box-shadow: none;
+      }
+
+      header h1 {
+        font-family: Fraunces, Georgia, serif;
+        font-size: clamp(1.6rem, 2.8vw, 2.15rem);
+        font-weight: 640;
+        letter-spacing: -0.02em;
+      }
+
+      header p {
+        margin-top: 0.35rem;
+        color: #5c6b7a;
+        font-size: 1rem;
+      }
+
+      .eras {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 0.85rem;
+        min-height: 0;
+        align-items: center;
+      }
+
+      .era {
+        display: flex;
+        flex-direction: column;
+        gap: 0.45rem;
+        border: 1px solid #e4ddd2;
+        border-radius: 16px;
+        padding: 0.9rem 1rem 0.85rem;
+        background: #fff;
+        position: relative;
+        min-height: 0;
+      }
+
+      .count {
+        font-family: Fraunces, Georgia, serif;
+        font-size: 2.4rem;
+        font-weight: 640;
+        letter-spacing: -0.03em;
+        line-height: 1;
+        color: #9a3b2f;
+      }
+
+      .era h2 {
+        font-size: 1.05rem;
+        font-weight: 600;
+      }
+
+      .kinds {
+        color: #5c6b7a;
+        font-size: 0.92rem;
+        line-height: 1.4;
+      }
+
+      .example {
+        margin-top: 0.45rem;
+        display: grid;
+        gap: 0.2rem;
+        background: #fdecea;
+        border-radius: 12px;
+        padding: 0.75rem 0.85rem;
+      }
+
+      .example .label {
+        font-size: 0.72rem;
+        font-weight: 600;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: #5c6b7a;
+      }
+
+      .example strong {
+        font-family: "IBM Plex Mono", ui-monospace, monospace;
+        font-size: 0.82rem;
+        font-weight: 500;
+      }
+
+      .example span {
+        color: #5c6b7a;
+        font-size: 0.82rem;
+        line-height: 1.35;
+      }
+
+      .kev {
+        display: flex;
+        align-items: center;
+        gap: 0.85rem;
+        border: 1px solid #e4ddd2;
+        border-radius: 16px;
+        padding: 0.65rem 1rem;
+      }
+
+      .tag {
+        font-size: 0.72rem;
+        font-weight: 600;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        border-radius: 999px;
+        padding: 0.35rem 0.55rem;
+        background: #fdecea;
+        color: #9a3b2f;
+        white-space: nowrap;
+      }
+
+      .kev p {
+        color: #5c6b7a;
+        font-size: 0.9rem;
+      }
+
+      .kev strong {
+        font-family: "IBM Plex Mono", ui-monospace, monospace;
+        font-weight: 500;
+        color: #1a2b44;
+      }
+    </style>
+  </head>
+  <body>
+    <article class="slide">
+      <header>
+        <h1>Ta sama klasa, trzy epoki</h1>
+        <p>22 wpisy z tabeli, pogrupowane po roku w identyfikatorze CVE.</p>
+      </header>
+      <div class="eras">
+        <section class="era">
+          <p class="count">11</p>
+          <h2>2006–2010</h2>
+          <p class="kinds">PHP, FTP, torrent, emotikona, newsletter.</p>
+          <div class="example">
+            <p class="label">Przykład</p>
+            <strong>CVE-2009-4581</strong>
+            <span>„..” w nazwie pliku podanej do include()</span>
+          </div>
+        </section>
+        <section class="era">
+          <p class="count">8</p>
+          <h2>2019–2022</h2>
+          <p class="kinds">Zip Slip, Kubernetes, paczki Pythona, wirtualizacja.</p>
+          <div class="example">
+            <p class="label">Przykład</p>
+            <strong>CVE-2019-10743</strong>
+            <span>Zip Slip, „../” w nazwach plików w zip</span>
+          </div>
+        </section>
+        <section class="era">
+          <p class="count">3</p>
+          <h2>2024</h2>
+          <p class="kinds">Rejestr modeli LLM, API tekstowe, zbiory treningowe.</p>
+          <div class="example">
+            <p class="label">Przykład</p>
+            <strong>CVE-2024-37032</strong>
+            <span>Probllama, digest z prywatnego rejestru modeli</span>
+          </div>
+        </section>
+      </div>
+      <div class="kev">
+        <div class="tag">CISA KEV</div>
+        <p>
+          Opisane jako wykorzystane w sieci:
+          <strong>CVE-2020-3452</strong>
+          ·
+          <strong>CVE-2021-21972</strong>
+        </p>
+      </div>
+    </article>
+  </body>
+</html>

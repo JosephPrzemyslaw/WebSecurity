@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Path traversal — wiele drzwi</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,560;9..144,640&family=Figtree:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+      }
+
+      body {
+        min-height: 100vh;
+        margin: 20px;
+        display: grid;
+        place-items: center;
+        background: #fff;
+        padding: 1rem;
+        font-family: Figtree, system-ui, sans-serif;
+        color: #1a2b44;
+      }
+
+      .slide {
+        width: min(1280px, 100%);
+        aspect-ratio: 16 / 9;
+        background: #fff;
+        border-radius: 20px;
+        padding: 1.6rem 2.2rem 1.25rem;
+        display: grid;
+        grid-template-rows: auto 1fr auto;
+        gap: 0.85rem;
+        box-shadow: none;
+      }
+
+      header h1 {
+        font-family: Fraunces, Georgia, serif;
+        font-size: clamp(1.6rem, 2.8vw, 2.15rem);
+        font-weight: 640;
+        letter-spacing: -0.02em;
+      }
+
+      header p {
+        margin-top: 0.3rem;
+        color: #5c6b7a;
+        font-size: 1rem;
+      }
+
+      .stage {
+        display: grid;
+        grid-template-columns: 1fr 15.5rem 1fr;
+        gap: 0.75rem;
+        align-items: stretch;
+        min-height: 0;
+      }
+
+      .doors {
+        display: grid;
+        grid-template-rows: 1fr 1fr 1fr;
+        gap: 0.55rem;
+        min-height: 0;
+      }
+
+      .door {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 0.2rem;
+        border: 1px solid #e4ddd2;
+        border-radius: 16px;
+        padding: 0.55rem 0.85rem;
+        min-height: 0;
+      }
+
+      .door-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        gap: 0.6rem;
+      }
+
+      .door h2 {
+        font-size: 0.98rem;
+        font-weight: 600;
+        letter-spacing: -0.01em;
+      }
+
+      .door p {
+        color: #5c6b7a;
+        font-size: 0.8rem;
+        line-height: 1.3;
+      }
+
+      .cve {
+        font-family: "IBM Plex Mono", ui-monospace, monospace;
+        font-size: 0.72rem;
+        font-weight: 500;
+        color: #9a3b2f;
+        text-align: right;
+        line-height: 1.35;
+      }
+
+      .vault {
+        display: grid;
+        align-content: center;
+        justify-items: center;
+        text-align: center;
+        gap: 0.45rem;
+        border: 1px solid #1d6b4f;
+        background: #e5f4ec;
+        border-radius: 16px;
+        padding: 1rem;
+      }
+
+      .vault .tag {
+        font-size: 0.72rem;
+        font-weight: 600;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        border-radius: 999px;
+        padding: 0.35rem 0.55rem;
+        background: #fff;
+        color: #1d6b4f;
+      }
+
+      .vault code {
+        font-family: "IBM Plex Mono", ui-monospace, monospace;
+        font-size: 0.95rem;
+        color: #1a2b44;
+      }
+
+      .vault p {
+        color: #1d6b4f;
+        font-size: 0.85rem;
+        max-width: 12rem;
+        line-height: 1.35;
+      }
+
+      .chain {
+        border: 1px solid #e4ddd2;
+        border-radius: 16px;
+        padding: 0.55rem 0.9rem;
+        color: #5c6b7a;
+        font-size: 0.82rem;
+        line-height: 1.4;
+      }
+
+      .chain strong {
+        font-family: "IBM Plex Mono", ui-monospace, monospace;
+        font-weight: 500;
+        color: #1a2b44;
+      }
+    </style>
+  </head>
+  <body>
+    <article class="slide">
+      <header>
+        <h1>Wiele drzwi, jeden katalog</h1>
+        <p>Ścieżka z tabeli nie zawsze przychodzi z paska adresu.</p>
+      </header>
+      <div class="stage">
+        <div class="doors">
+          <section class="door">
+            <div class="door-head">
+              <h2>Nazwa w URL</h2>
+              <p class="cve">CVE-2010-0467</p>
+            </div>
+            <p>sekwencje „../” w module newslettera</p>
+          </section>
+          <section class="door">
+            <div class="door-head">
+              <h2>Content-Disposition</h2>
+              <p class="cve">CVE-2024-0520</p>
+            </div>
+            <p>ścieżka względna i absolutna, nadpisanie pliku</p>
+          </section>
+          <section class="door">
+            <div class="door-head">
+              <h2>Wpis w zip / tar</h2>
+              <p class="cve">CVE-2019-10743</p>
+            </div>
+            <p>Zip Slip, „../” w nazwie pliku w archiwum</p>
+          </section>
+        </div>
+        <div class="vault">
+          <div class="tag">Katalog</div>
+          <code>/var/app/data</code>
+          <p>aplikacja ma tu zostać</p>
+        </div>
+        <div class="doors">
+          <section class="door">
+            <div class="door-head">
+              <h2>YAML, język, motyw</h2>
+              <p class="cve">CVE-2022-24877<br />CVE-2008-5748</p>
+            </div>
+            <p>„../” w yaml oraz język i motyw użytkownika</p>
+          </section>
+          <section class="door">
+            <div class="door-head">
+              <h2>Polecenie FTP</h2>
+              <p class="cve">CVE-2009-4194<br />CVE-2009-4053</p>
+            </div>
+            <p>„..” w DELE usuwa plik, w MKD tworzy katalog</p>
+          </section>
+          <section class="door">
+            <div class="door-head">
+              <h2>Digest modelu</h2>
+              <p class="cve">CVE-2024-37032</p>
+            </div>
+            <p>Probllama, względna ścieżka z rejestru modeli</p>
+          </section>
+        </div>
+      </div>
+      <p class="chain">
+        Część opisów to łańcuch:
+        <strong>CVE-2021-21972</strong> brak uwierzytelnienia przy wgraniu tar, potem „..”.
+        <strong>CVE-2006-7079</strong> extract() i register_globals.
+      </p>
+    </article>
+  </body>
+</html>

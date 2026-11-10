@@ -6,6 +6,9 @@ import type { AppDeps } from "../appDeps.ts";
 import { HttpStatus, sendPlain } from "../responses.ts";
 import { redirectToLoginIfNoSession } from "../session.ts";
 
+/** Slide / debrief only — intentional CWE-22 via path.join (not the main workshop route). */
+const IMAGES_DIR = join(import.meta.dirname, "..", "..", "public", "images");
+
 /**
  * CWE-22 read: user-controlled path under content/library/books/{book}/chapters/.
  * File upload (CWE-434) uses deps.paths.uploads — not this handler.
@@ -73,11 +76,27 @@ export function registerLibraryRoutes(app: Express, deps: AppDeps): void {
       const bookName = req.params.bookName;
       const raw = req.params.chapterRelPath;
       const chapterRel = Array.isArray(raw) ? raw.join("/") : raw;
-      if (chapterRel === undefined || chapterRel.trim() === "") {
+      if (typeof bookName !== "string" || bookName.trim() === "" || chapterRel === undefined || chapterRel.trim() === "") {
         sendPlain(res, HttpStatus.BadRequest, "Missing chapter path");
         return;
       }
       await serveChapterFile(req, res, deps, bookName, chapterRel);
     },
   );
+
+  registerImageRoute(app);
+}
+
+function registerImageRoute(app: Express): void {
+
+
+
+  app.get("/images/:imageName", (req: Request, res: Response) => {
+    const imageName = req.params.imageName as string;
+    const imagePath = join(IMAGES_DIR, imageName);
+    createReadStream(imagePath).pipe(res);
+  });
+
+
+
 }

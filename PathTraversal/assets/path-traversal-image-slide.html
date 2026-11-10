@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Path traversal — /images</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,560;9..144,640&family=Figtree:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+      }
+
+      body {
+        min-height: 100vh;
+        margin:20px;
+        display: grid;
+        place-items: center;
+        background: #fff;
+        padding: 1rem;
+        font-family: Figtree, system-ui, sans-serif;
+        color: #1a2b44;
+      }
+
+      .slide {
+        width: min(1280px, 100%);
+        aspect-ratio: 16 / 9;
+        background: #fff;
+        border-radius: 20px;
+        padding: 1.75rem 2.4rem 1.5rem;
+        display: grid;
+        grid-template-rows: auto 1fr;
+        gap: 1.25rem;
+        box-shadow: none;
+      }
+
+      header h1 {
+        font-family: Fraunces, Georgia, serif;
+        font-size: clamp(1.6rem, 2.8vw, 2.15rem);
+        font-weight: 640;
+        letter-spacing: -0.02em;
+      }
+
+      header p {
+        margin-top: 0.35rem;
+        color: #5c6b7a;
+        font-size: 1rem;
+      }
+
+      code {
+        font-family: "IBM Plex Mono", ui-monospace, monospace;
+        font-size: 0.92em;
+        color: #1a2b44;
+      }
+
+      .rows {
+        display: grid;
+        grid-template-rows: 1fr 1fr 1fr;
+        gap: 0.85rem;
+        min-height: 0;
+      }
+
+      .row {
+        display: grid;
+        grid-template-columns: 7.5rem 1.4fr auto 1.6fr;
+        gap: 0.85rem;
+        align-items: center;
+        background: #fff;
+        border-radius: 16px;
+        padding: 0.85rem 1.1rem;
+        border: 1px solid #e4ddd2;
+      }
+
+      .tag {
+        font-size: 0.72rem;
+        font-weight: 600;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        border-radius: 999px;
+        padding: 0.35rem 0.55rem;
+        text-align: center;
+      }
+
+      .row.safe .tag {
+        background: #e5f4ec;
+        color: #1d6b4f;
+      }
+
+      .row.escape .tag {
+        background: #fdecea;
+        color: #9a3b2f;
+      }
+
+      .url {
+        font-family: "IBM Plex Mono", ui-monospace, monospace;
+        font-size: clamp(0.78rem, 1.35vw, 0.95rem);
+        line-height: 1.35;
+      }
+
+      .url em {
+        font-style: normal;
+        font-weight: 500;
+      }
+
+      .row.safe .url em {
+        color: #1d6b4f;
+      }
+
+      .row.escape .url em {
+        color: #9a3b2f;
+      }
+
+      .arrow {
+        color: #8a96a3;
+        font-size: 1.35rem;
+      }
+
+      .file {
+        font-family: "IBM Plex Mono", ui-monospace, monospace;
+        font-size: clamp(0.78rem, 1.3vw, 0.92rem);
+      }
+
+      .where {
+        margin-top: 0.2rem;
+        color: #5c6b7a;
+        font-size: 0.85rem;
+      }
+    </style>
+  </head>
+  <body>
+    <article class="slide">
+      <header>
+        <h1>One route, many files</h1>
+        <p><code>IMAGES_DIR = /var/app/public/images</code></p>
+      </header>
+      <div class="rows">
+        <section class="row safe">
+          <div class="tag">Allowed</div>
+          <p class="url">GET /images/<em>cover.svg</em></p>
+          <div class="arrow">→</div>
+          <div>
+            <p class="file">/var/app/public/images/cover.svg</p>
+            <p class="where">inside the images folder</p>
+          </div>
+        </section>
+        <section class="row escape">
+          <div class="tag">Escaped</div>
+          <p class="url">GET /images/<em>..%2f..%2f.gitignore</em></p>
+          <div class="arrow">→</div>
+          <div>
+            <p class="file">/var/app/.gitignore</p>
+            <p class="where">outside the images folder</p>
+          </div>
+        </section>
+        <section class="row escape">
+          <div class="tag">Escaped</div>
+          <p class="url">GET /images/<em>..%2f..%2f..%2f..%2fetc%2fpasswd</em></p>
+          <div class="arrow">→</div>
+          <div>
+            <p class="file">/etc/passwd</p>
+            <p class="where">outside the app, on the system</p>
+          </div>
+        </section>
+      </div>
+    </article>
+  </body>
+</html>

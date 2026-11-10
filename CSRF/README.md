@@ -122,3 +122,7 @@ Open `fake-inbox.html` again — `tom` should **not** be created via `<img>` (at
 **Debrief:** `<img>` only performs GET, so mutating GET is especially dangerous. A synchronizer token in the query string blocks naive `<img>` CSRF but is **not** a substitute for a well-designed API (POST + token in body, no secrets in URLs). Stored HTML with the same URL is an **XSS/injection** topic, not cross-site POST CSRF.
 
 **Note:** Origin / Referer checks, login CSRF, and JSON `fetch` CSRF are out of scope for this lab; a CSRF token on mutating POSTs is the primary defense taught here.
+
+## Next module
+
+Continue the member shop in **[Path traversal](../PathTraversal/)** on port **3004** (`GET /library/sample?doc=`). The same codebase reserves `public/uploads/` for the later **File upload** lab — read (CWE-22) vs write (CWE-434) stay separate.

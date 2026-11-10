@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Path traversal — trzy sposoby</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,560;9..144,640&family=Figtree:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+      }
+
+      body {
+        min-height: 100vh;
+        margin: 20px;
+        display: grid;
+        place-items: center;
+        background: #fff;
+        padding: 1rem;
+        font-family: Figtree, system-ui, sans-serif;
+        color: #1a2b44;
+      }
+
+      .slide {
+        width: min(1280px, 100%);
+        aspect-ratio: 16 / 9;
+        background: #fff;
+        border-radius: 20px;
+        padding: 1.75rem 2.4rem 1.5rem;
+        display: grid;
+        grid-template-rows: auto auto 1fr;
+        gap: 1rem;
+        box-shadow: none;
+      }
+
+      header h1 {
+        font-family: Fraunces, Georgia, serif;
+        font-size: clamp(1.6rem, 2.8vw, 2.15rem);
+        font-weight: 640;
+        letter-spacing: -0.02em;
+      }
+
+      header p {
+        margin-top: 0.35rem;
+        color: #5c6b7a;
+        font-size: 1rem;
+      }
+
+      code,
+      .mono {
+        font-family: "IBM Plex Mono", ui-monospace, monospace;
+      }
+
+      .base {
+        display: flex;
+        align-items: center;
+        gap: 0.85rem;
+        border: 1px solid #e4ddd2;
+        border-radius: 16px;
+        padding: 0.7rem 1.1rem;
+      }
+
+      .tag {
+        font-size: 0.72rem;
+        font-weight: 600;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        border-radius: 999px;
+        padding: 0.35rem 0.55rem;
+        text-align: center;
+        white-space: nowrap;
+      }
+
+      .tag.safe {
+        background: #e5f4ec;
+        color: #1d6b4f;
+      }
+
+      .tag.escape {
+        background: #fdecea;
+        color: #9a3b2f;
+      }
+
+      .base code {
+        font-size: 1rem;
+      }
+
+      .base .hint {
+        margin-left: auto;
+        color: #5c6b7a;
+        font-size: 0.9rem;
+      }
+
+      .cols {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 0.85rem;
+        min-height: 0;
+      }
+
+      .col {
+        display: grid;
+        grid-template-rows: auto auto 1fr auto auto;
+        gap: 0.45rem;
+        border: 1px solid #e4ddd2;
+        border-radius: 16px;
+        padding: 0.95rem 1rem 0.85rem;
+        min-height: 0;
+      }
+
+      .col h2 {
+        font-family: Fraunces, Georgia, serif;
+        font-size: 1.25rem;
+        font-weight: 640;
+        letter-spacing: -0.02em;
+      }
+
+      .cwe {
+        color: #5c6b7a;
+        font-size: 0.82rem;
+        font-weight: 600;
+        letter-spacing: 0.04em;
+      }
+
+      .flow {
+        display: grid;
+        align-content: center;
+        gap: 0.35rem;
+        min-height: 0;
+      }
+
+      .path,
+      .file {
+        font-family: "IBM Plex Mono", ui-monospace, monospace;
+        font-size: clamp(0.78rem, 1.2vw, 0.92rem);
+        line-height: 1.4;
+        word-break: break-word;
+      }
+
+      .path em,
+      .file em {
+        font-style: normal;
+        font-weight: 500;
+        color: #9a3b2f;
+      }
+
+      .sep {
+        font-style: normal;
+        font-weight: 500;
+        color: #9a3b2f;
+        background: #fdecea;
+        border-radius: 4px;
+        padding: 0 0.22em;
+      }
+
+      .arrow {
+        color: #8a96a3;
+        font-size: 1.15rem;
+        line-height: 1;
+      }
+
+      .where {
+        color: #5c6b7a;
+        font-size: 0.85rem;
+      }
+
+      .cite {
+        border-top: 1px solid #e4ddd2;
+        padding-top: 0.55rem;
+        display: grid;
+        gap: 0.15rem;
+      }
+
+      .cite strong {
+        font-family: "IBM Plex Mono", ui-monospace, monospace;
+        font-size: 0.82rem;
+        font-weight: 500;
+      }
+
+      .cite span {
+        color: #5c6b7a;
+        font-size: 0.82rem;
+        line-height: 1.35;
+      }
+    </style>
+  </head>
+  <body>
+    <article class="slide">
+      <header>
+        <h1>Trzy sposoby wyjścia z katalogu</h1>
+        <p>Jeden katalog bazowy. Trzy payloady, które tabela rozróżnia.</p>
+      </header>
+      <div class="base">
+        <div class="tag safe">Katalog</div>
+        <code>/var/app/data</code>
+        <p class="hint">tu aplikacja chce zostać</p>
+      </div>
+      <div class="cols">
+        <section class="col">
+          <h2>Względna</h2>
+          <p class="cwe">CWE-22 · CWE-23 · CWE-24</p>
+          <div class="flow">
+            <p class="path"><em>../../../etc/passwd</em></p>
+            <div class="arrow" aria-hidden="true">↓</div>
+            <p class="file">/etc/passwd</p>
+            <p class="where">„../” wychodzi ponad katalog bazowy</p>
+          </div>
+          <div class="cite">
+            <strong>CVE-2019-20916</strong>
+            <span>nazwa pliku w Content-Disposition, odczyt dowolnego pliku</span>
+          </div>
+        </section>
+        <section class="col">
+          <h2>Absolutna</h2>
+          <p class="cwe">CWE-36</p>
+          <div class="flow">
+            <p class="path">os.path.join(base, <em>"/etc/passwd"</em>)</p>
+            <div class="arrow" aria-hidden="true">↓</div>
+            <p class="file">/etc/passwd</p>
+            <p class="where">argument absolutny zeruje bazę</p>
+          </div>
+          <div class="cite">
+            <strong>CVE-2022-31503</strong>
+            <span>ten sam skutek przy zapisie: CVE-2024-0520</span>
+          </div>
+        </section>
+        <section class="col">
+          <h2>Dziura w denylist</h2>
+          <p class="cwe">CWE-184</p>
+          <div class="flow">
+            <p class="path">blokuje ukośnik <span class="sep">/</span></p>
+            <div class="arrow" aria-hidden="true">↓</div>
+            <p class="file">pomija ukośnik wsteczny <span class="sep">\</span></p>
+            <p class="where">na Windows znika plik poza katalogiem</p>
+          </div>
+          <div class="cite">
+            <strong>CVE-2024-4315</strong>
+            <span>API tekstowe, usunięcie dowolnego pliku</span>
+          </div>
+        </section>
+      </div>
+    </article>
+  </body>
+</html>

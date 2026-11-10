@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Path traversal — skutki</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+      }
+
+      body {
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        background: #fff;
+        font-family: Nunito, system-ui, sans-serif;
+        color: #1e293b;
+      }
+
+      .slide {
+        width: min(1280px, 100%);
+        aspect-ratio: 16 / 9;
+        position: relative;
+        overflow: hidden;
+        background: #fffdf8;
+        padding: 1.15rem 1.5rem 1rem;
+        display: grid;
+        grid-template-rows: auto 1fr auto;
+        gap: 0.7rem;
+      }
+
+      .blob {
+        position: absolute;
+        border-radius: 50%;
+        z-index: 0;
+        pointer-events: none;
+      }
+
+      .blob.a {
+        width: 220px;
+        height: 220px;
+        background: #d7f3e4;
+        top: -70px;
+        left: -50px;
+      }
+
+      .blob.b {
+        width: 180px;
+        height: 180px;
+        background: #fde7c2;
+        top: -40px;
+        right: -30px;
+      }
+
+      .blob.c {
+        width: 200px;
+        height: 160px;
+        background: #f8d5e6;
+        bottom: -50px;
+        right: 8%;
+        border-radius: 40% 60% 50% 50%;
+      }
+
+      .star {
+        position: absolute;
+        z-index: 0;
+        color: #7ec8e3;
+        font-size: 1.1rem;
+        pointer-events: none;
+      }
+
+      header,
+      .grid,
+      footer {
+        position: relative;
+        z-index: 1;
+      }
+
+      header {
+        text-align: center;
+      }
+
+      h1 {
+        font-size: clamp(1.8rem, 3.2vw, 2.45rem);
+        font-weight: 800;
+        color: #1e3a8a;
+        letter-spacing: -0.03em;
+      }
+
+      header p {
+        margin-top: 0.15rem;
+        font-size: clamp(1rem, 1.6vw, 1.2rem);
+        font-weight: 800;
+        color: #0f172a;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: 1fr 1fr;
+        gap: 0.65rem;
+        min-height: 0;
+      }
+
+      .card {
+        display: grid;
+        grid-template-columns: 3.4rem 1fr;
+        gap: 0.65rem;
+        align-items: center;
+        border-radius: 18px;
+        padding: 0.7rem 0.85rem;
+        box-shadow: 0 1px 0 rgba(255, 255, 255, 0.8) inset;
+      }
+
+      .card h2 {
+        font-size: 0.95rem;
+        font-weight: 800;
+        line-height: 1.2;
+      }
+
+      .card p {
+        margin-top: 0.12rem;
+        font-size: 0.82rem;
+        font-weight: 700;
+        line-height: 1.3;
+      }
+
+      .ids {
+        margin-top: 0.28rem;
+        font-size: 0.68rem;
+        font-weight: 700;
+        color: #334155;
+      }
+
+      .icon {
+        width: 3.1rem;
+        height: 3.1rem;
+        border-radius: 12px;
+        background: #fff;
+        display: grid;
+        place-items: center;
+        font-size: 1.45rem;
+        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.06);
+      }
+
+      .y {
+        background: #fff4c2;
+      }
+      .b {
+        background: #e3f2fd;
+      }
+      .g {
+        background: #e8f6ea;
+      }
+      .p {
+        background: #fde8ef;
+      }
+
+      footer {
+        justify-self: center;
+        background: #ffe56a;
+        border-radius: 999px;
+        font-weight: 800;
+        font-size: 0.92rem;
+        padding: 0.5rem 1.1rem;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <article class="slide">
+      <div class="blob a"></div>
+      <div class="blob b"></div>
+      <div class="blob c"></div>
+      <span class="star" style="top: 18px; left: 22%">✦</span>
+      <span class="star" style="top: 36px; right: 18%; color: #f0b429">★</span>
+      <span class="star" style="top: 70px; left: 8%; color: #f472b6">★</span>
+
+      <header>
+        <h1>Path traversal — skutki</h1>
+        <p>Common Weakness: Path Traversal (CWE-22)</p>
+      </header>
+
+      <div class="grid">
+        <section class="card y">
+          <div class="icon" aria-hidden="true">📄</div>
+          <div>
+            <h2>Odczyt</h2>
+            <p>Nazwa z „../” wskazuje plik poza katalogiem.</p>
+            <p class="ids">CVE-2019-20916 · CVE-2010-0467</p>
+          </div>
+        </section>
+        <section class="card b">
+          <div class="icon" aria-hidden="true">✏️</div>
+          <div>
+            <h2>Nadpisanie</h2>
+            <p>Content-Disposition, paczka, torrent, emotikona.</p>
+            <p class="ids">CVE-2024-0520 · CVE-2009-4013 · CVE-2010-0012 · CVE-2010-0013</p>
+          </div>
+        </section>
+        <section class="card g">
+          <div class="icon" aria-hidden="true">🗑️</div>
+          <div>
+            <h2>Usunięcie</h2>
+            <p>Windows po pominięciu „\”, oraz „..” w DELE.</p>
+            <p class="ids">CVE-2024-4315 · CVE-2009-4194</p>
+          </div>
+        </section>
+        <section class="card p">
+          <div class="icon" aria-hidden="true">📦</div>
+          <div>
+            <h2>Archiwum</h2>
+            <p>Zip Slip kopiuje plik poza folder docelowy.</p>
+            <p class="ids">CVE-2019-10743 · CVE-2020-4053</p>
+          </div>
+        </section>
+        <section class="card y">
+          <div class="icon" aria-hidden="true">⚙️</div>
+          <div>
+            <h2>Wykonanie</h2>
+            <p>„..” w nazwie pliku podanej do include().</p>
+            <p class="ids">CVE-2009-4581</p>
+          </div>
+        </section>
+        <section class="card b">
+          <div class="icon" aria-hidden="true">👁️</div>
+          <div>
+            <h2>Istnienie</h2>
+            <p>Odpowiedź zdradza samo istnienie ścieżki.</p>
+            <p class="ids">CVE-2009-4449</p>
+          </div>
+        </section>
+      </div>
+
+      <footer>Footer tip: tylko te skutki, które opis w tabeli nazywa wprost.</footer>
+    </article>
+  </body>
+</html>

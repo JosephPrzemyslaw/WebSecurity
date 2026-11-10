@@ -34,6 +34,6 @@ export async function sendShopPage(res: Response, filePath: string, replacements
 export function buildAvatarPlaceholder(): string {
   return `<section class="avatar-section">
             <h2 class="close-account__title">Profile photo</h2>
-            <p class="blurb">Coming in the <strong>File upload</strong> lab: members upload an avatar into <code>public/uploads/</code>. That is a <em>write</em> risk (CWE-434), not the same as downloading a sample chapter (CWE-22 read) on this server.</p>
+            <p class="blurb">Coming in the <strong>File upload</strong> lab: avatar files under <code>public/uploads/</code> (see <code>server/.gitignore</code>). CWE-434 <em>write</em>, not chapter download CWE-22 <em>read</em>.</p>
           </section>`;
 }

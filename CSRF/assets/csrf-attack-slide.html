@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>CSRF — atak (slajd)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,560;9..144,640&family=Figtree:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+      }
+
+      body {
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        background: #0c1018;
+        padding: 1.25rem;
+        font-family: Figtree, system-ui, sans-serif;
+        color: #1a2b44;
+      }
+
+      .slide {
+        width: min(1200px, 100%);
+        aspect-ratio: 16 / 9;
+        background: linear-gradient(160deg, #faf8f3 0%, #f0ebe3 100%);
+        border-radius: 20px;
+        padding: 2.5rem 2.75rem 2rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        box-shadow:
+          0 0 0 1px rgba(26, 43, 68, 0.06),
+          0 28px 72px rgba(0, 0, 0, 0.5);
+        overflow: hidden;
+        position: relative;
+      }
+
+      .slide::before {
+        content: "";
+        position: absolute;
+        width: 280px;
+        height: 280px;
+        border-radius: 50%;
+        background: #d4a574;
+        opacity: 0.11;
+        top: -80px;
+        right: -60px;
+        pointer-events: none;
+      }
+
+      header {
+        text-align: center;
+        position: relative;
+        z-index: 1;
+      }
+
+      header h1 {
+        font-family: Fraunces, Georgia, serif;
+        font-size: clamp(1.75rem, 3.2vw, 2.35rem);
+        font-weight: 640;
+        letter-spacing: -0.02em;
+      }
+
+      header p {
+        margin-top: 0.35rem;
+        color: #5c6b7a;
+        font-size: clamp(0.85rem, 1.4vw, 1rem);
+        max-width: 42rem;
+        margin-inline: auto;
+        line-height: 1.45;
+      }
+
+      /* Actors row */
+      .actors {
+        display: grid;
+        grid-template-columns: 1fr minmax(200px, 280px) 1fr;
+        gap: 1rem;
+        align-items: end;
+        flex: 1;
+        min-height: 0;
+        position: relative;
+        z-index: 1;
+      }
+
+      .actor {
+        background: #fff;
+        border-radius: 16px;
+        padding: 1.1rem 1rem 1rem;
+        border: 1.5px solid rgba(26, 43, 68, 0.12);
+        box-shadow: 0 8px 24px rgba(26, 43, 68, 0.06);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.65rem;
+      }
+
+      .actor--danger {
+        border-color: rgba(192, 57, 43, 0.35);
+        background: linear-gradient(180deg, #fff 0%, #fff8f8 100%);
+      }
+
+      .actor__label {
+        font-weight: 700;
+        font-size: 1.05rem;
+      }
+
+      .actor--danger .actor__label {
+        color: #c0392b;
+      }
+
+      .actor__sub {
+        font-size: 0.8rem;
+        color: #5c6b7a;
+        margin-top: -0.35rem;
+      }
+
+      .figure {
+        display: flex;
+        align-items: flex-end;
+        gap: 0.5rem;
+        margin-top: 0.25rem;
+      }
+
+      .figure__person {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .figure__head {
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        background: #f0c9a8;
+        border: 2px solid #1a2b44;
+      }
+
+      .actor--danger .figure__head {
+        border-color: #c0392b;
+      }
+
+      .figure__body {
+        width: 52px;
+        height: 56px;
+        margin-top: -6px;
+        border-radius: 12px 12px 8px 8px;
+        background: #4a7c9e;
+        border: 2px solid #1a2b44;
+      }
+
+      .actor--danger .figure__body {
+        background: #4a3d5c;
+      }
+
+      .figure__hood {
+        width: 50px;
+        height: 22px;
+        margin-top: -38px;
+        border-radius: 24px 24px 0 0;
+        background: #2d2d2d;
+        border: 2px solid #1a2b44;
+      }
+
+      .figure__screen {
+        width: 64px;
+        height: 48px;
+        border-radius: 6px;
+        border: 2px solid #1a2b44;
+        background: linear-gradient(180deg, #e8f2fc, #c5dff5);
+        display: grid;
+        place-items: center;
+        font-size: 0.65rem;
+        font-weight: 700;
+        color: #1a2b44;
+      }
+
+      .actor--danger .figure__screen {
+        background: linear-gradient(180deg, #ffeaea, #ffd4d4);
+        border-color: #c0392b;
+        color: #c0392b;
+      }
+
+      .browser {
+        background: #fffdf8;
+        border: 2px solid #d4a574;
+        border-radius: 16px;
+        padding: 1rem 1.1rem;
+        text-align: center;
+        box-shadow: 0 10px 28px rgba(212, 165, 116, 0.2);
+        align-self: center;
+      }
+
+      .browser h2 {
+        font-size: 0.95rem;
+        font-weight: 700;
+        margin-bottom: 0.6rem;
+      }
+
+      .browser__cookie {
+        background: #fff8e6;
+        border: 1px solid #d4a574;
+        border-radius: 10px;
+        padding: 0.55rem 0.75rem;
+        font-size: 0.82rem;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        justify-content: center;
+      }
+
+      .browser__cookie::before {
+        content: "";
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: #d4a574;
+      }
+
+      .browser__hint {
+        margin-top: 0.45rem;
+        font-size: 0.72rem;
+        color: #5c6b7a;
+      }
+
+      /* Flow steps */
+      .flow {
+        display: flex;
+        align-items: stretch;
+        gap: 0;
+        position: relative;
+        z-index: 1;
+      }
+
+      .step {
+        flex: 1;
+        background: #fff;
+        border-radius: 12px;
+        padding: 0.75rem 0.6rem;
+        text-align: center;
+        border: 1.5px solid rgba(26, 43, 68, 0.1);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        min-height: 4.5rem;
+      }
+
+      .step--attack {
+        border-color: rgba(192, 57, 43, 0.35);
+        background: #fffafa;
+      }
+
+      .step--effect {
+        border-color: #c0392b;
+        background: linear-gradient(180deg, #fff 0%, #ffecec 100%);
+        flex: 1.15;
+      }
+
+      .step__num {
+        display: inline-block;
+        width: 1.35rem;
+        height: 1.35rem;
+        line-height: 1.35rem;
+        border-radius: 50%;
+        background: #1a2b44;
+        color: #fff;
+        font-size: 0.72rem;
+        font-weight: 700;
+        margin-bottom: 0.35rem;
+      }
+
+      .step--attack .step__num,
+      .step--effect .step__num {
+        background: #c0392b;
+      }
+
+      .step__title {
+        font-size: 0.78rem;
+        font-weight: 700;
+        line-height: 1.25;
+      }
+
+      .step__desc {
+        font-size: 0.68rem;
+        color: #5c6b7a;
+        margin-top: 0.2rem;
+        line-height: 1.3;
+      }
+
+      .arrow {
+        flex: 0 0 1.25rem;
+        align-self: center;
+        color: #1a2b44;
+        opacity: 0.45;
+        font-size: 1.1rem;
+        font-weight: 700;
+      }
+
+      .arrow--red {
+        color: #c0392b;
+        opacity: 0.75;
+      }
+
+      /* Connector hints above flow */
+      .hints {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 0.5rem;
+        font-size: 0.72rem;
+        color: #5c6b7a;
+        text-align: center;
+        position: relative;
+        z-index: 1;
+        margin-top: -0.25rem;
+      }
+
+      .hints span:nth-child(2) {
+        grid-column: 2;
+      }
+
+      .hint-line {
+        color: #c0392b;
+        font-weight: 600;
+      }
+
+      footer.effect-banner {
+        background: #c0392b;
+        color: #fff;
+        text-align: center;
+        padding: 0.65rem 1rem;
+        border-radius: 12px;
+        font-weight: 600;
+        font-size: clamp(0.8rem, 1.2vw, 0.95rem);
+        position: relative;
+        z-index: 1;
+      }
+
+      footer.effect-banner strong {
+        font-weight: 700;
+      }
+    </style>
+  </head>
+  <body>
+    <article class="slide" aria-labelledby="slide-title">
+      <header>
+        <h1 id="slide-title">Atak CSRF</h1>
+        <p>
+          Obca strona wysyła request w imieniu zalogowanego użytkownika. Przeglądarka dołącza cookie sesji — sklep
+          wykonuje akcję bez jego świadomej zgody.
+        </p>
+      </header>
+
+      <section class="actors" aria-label="Ofiara, przeglądarka, atakujący">
+        <div class="actor">
+          <div class="actor__label">Ofiara</div>
+          <div class="actor__sub">zalogowana · marc</div>
+          <div class="figure">
+            <div class="figure__person">
+              <div class="figure__head"></div>
+              <div class="figure__body"></div>
+            </div>
+            <div class="figure__screen">sklep</div>
+          </div>
+        </div>
+
+        <div class="browser">
+          <h2>Przeglądarka</h2>
+          <div class="browser__cookie">session=…</div>
+          <p class="browser__hint">Cookie wysyłane cross-site (lab: SameSite=None)</p>
+        </div>
+
+        <div class="actor actor--danger">
+          <div class="actor__label">Atakujący</div>
+          <div class="actor__sub">127.0.0.1:8000</div>
+          <div class="figure">
+            <div class="figure__person">
+              <div class="figure__hood"></div>
+              <div class="figure__head"></div>
+              <div class="figure__body"></div>
+            </div>
+            <div class="figure__screen">POST</div>
+          </div>
+        </div>
+      </section>
+
+      <p class="hints">
+        <span>Ofiara loguje się na localhost:3003</span>
+        <span class="hint-line">Pułapka: ukryty formularz → POST /buy</span>
+        <span>Request trafia do sklepu z cookie ofiary</span>
+      </p>
+
+      <section class="flow" aria-label="Kroki ataku">
+        <div class="step">
+          <span class="step__num">1</span>
+          <div class="step__title">Logowanie</div>
+          <div class="step__desc">Sklep ustawia cookie sesji</div>
+        </div>
+        <span class="arrow" aria-hidden="true">→</span>
+        <div class="step">
+          <span class="step__num">2</span>
+          <div class="step__title">Sesja w przeglądarce</div>
+          <div class="step__desc">Ofiara nadal zalogowana</div>
+        </div>
+        <span class="arrow" aria-hidden="true">→</span>
+        <div class="step step--attack">
+          <span class="step__num">3</span>
+          <div class="step__title">Wejście na pułapkę</div>
+          <div class="step__desc">Inna strona niż sklep</div>
+        </div>
+        <span class="arrow arrow--red" aria-hidden="true">→</span>
+        <div class="step step--attack">
+          <span class="step__num">4</span>
+          <div class="step__title">Auto-submit</div>
+          <div class="step__desc">POST /buy w tle</div>
+        </div>
+        <span class="arrow arrow--red" aria-hidden="true">→</span>
+        <div class="step step--effect">
+          <span class="step__num">5</span>
+          <div class="step__title">Skutek</div>
+          <div class="step__desc">Kupno bez kliknięcia „Buy now”</div>
+        </div>
+      </section>
+
+      <footer class="effect-banner">
+        <strong>Efekt:</strong> akcja wykonana jako zalogowany użytkownik — ofiara nie widziała formularza sklepu
+      </footer>
+    </article>
+  </body>
+</html>
