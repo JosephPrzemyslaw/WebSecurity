@@ -73,13 +73,17 @@ Full path:
 GET /library/books/gone-with-the-wind/chapters/..%2f..%2f..%2f..%2f..%2fdata%2finternal%2fpublisher-rebates.csv
 ```
 
-### 4. (Optional) Bad `replace("../")` bypass
+### 4. Enable Fix A (uncomment)
 
-Enable **Exercise 4** block in [`routes/library.ts`](server/src/routes/library.ts), then try `....//....//....//....//....//data/internal/publisher-rebates.csv`.
+At the top of [`server/src/routes/library.ts`](server/src/routes/library.ts), find `USE_SAFE_CHAPTER_PATH`:
 
-### Fix
+1. Comment out: `const USE_SAFE_CHAPTER_PATH = false;`
+2. Uncomment: `// const USE_SAFE_CHAPTER_PATH = true;`
+3. Restart `npm run dev`.
 
-Uncomment **fix A** (jail under `…/chapters/`) or **fix B** (allowlist `bookSlug` + `chapterFile`) in [`routes/library.ts`](server/src/routes/library.ts). Repeat exercises 2–3 → blocked.
+Repeat exercise **2** (or **3**) — expected: **403 Forbidden** / “Not allowed”, not `publisher-rebates.csv`.
+
+Exercise **1** (legal chapter download) should still work.
 
 ## Next module
 
