@@ -1,6 +1,6 @@
 import { access } from "node:fs/promises";
 import { createReadStream } from "node:fs";
-import { join, resolve, sep } from "node:path";
+import { resolve, sep } from "node:path";
 import type { Express, Request, Response } from "express";
 import type { AppDeps } from "../appDeps.ts";
 import { HttpStatus, sendPlain } from "../responses.ts";
@@ -21,15 +21,20 @@ function resolveChapterPath(deps: AppDeps, bookName: string, rawChapterRel: stri
   const libraryRoot = deps.paths.contentLibrary;
 
   if (USE_SAFE_CHAPTER_PATH) {
+    // Allowed root (exercise 1), e.g. …/server/content/library/books/gone-with-the-wind/chapters
     const chaptersDir = resolve(libraryRoot, "books", bookName, "chapters");
+    // Where we would read if chapterRel were honest, e.g. …/chapters/chapter-01.txt
     const candidate = resolve(chaptersDir, chapterRel);
-    const root = resolve(chaptersDir);
-    if (candidate !== root && !candidate.startsWith(root + sep)) {
+    // Exercise 2 blocks when chapterRel is ../../../../../data/internal/publisher-rebates.csv
+    // → candidate becomes …/server/data/internal/publisher-rebates.csv (outside chaptersDir)
+    if (!candidate.startsWith(chaptersDir + sep)) {
       throw new Error("outside chapters dir");
     }
     return candidate;
   }
 
+  // Exercises 1–3 (vulnerable): user input in chapterRel can escape via resolve("..")
+  // e.g. chapterRel ../../../../../data/internal/publisher-rebates.csv
   return resolve(libraryRoot, "books", bookName, "chapters", chapterRel);
 }
 
