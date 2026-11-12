@@ -87,4 +87,4 @@ Exercise **1** (legal chapter download) should still work.
 
 ## Next module
 
-**File upload** → `POST /account/avatar` into `public/uploads/` (CWE-434). Read vs write: different URL, different fixes.
+File upload is not the next step. If you skipped stored XSS, open **[XSS](../XSS/)** (port **3002**, CWE-79): the same member shop, with an opinion on `/members` saved and written into the page without escaping.
