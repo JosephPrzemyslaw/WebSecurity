@@ -1,8 +1,8 @@
 # Stored XSS
 
-Member shop copied from **[Path Traversal](../PathTraversal/)** (port **3004**). On port **3002** the vulnerable feature is an opinion under *Gone with the Wind* on `/members`. The note is saved and written into the page for the next signed-in reader (CWE-79).
+Member shop on port **3002**. The vulnerable feature is an opinion under *Gone with the Wind* on `/members`. The note is saved and written into the page for the next signed-in reader (CWE-79).
 
-Chapter download uses the Path Traversal fix already turned on: the path is resolved and rejected unless it stays under that book's `chapters/` directory. `../` returns **403 Not allowed**. That route is not an exercise here. Buy is shop continuity only.
+**Pobierz rozdział 1 (TXT)** serves that chapter to a signed-in member. Buy is shop continuity only. Neither one is an exercise here.
 
 - **Port:** `3002`
 - **Accounts:** `marc` / `marc123`, `ewa` / `ewa123` (admin)
@@ -25,7 +25,7 @@ XSS/
   README.md
   server/
     src/comments.ts           # USE_SAFE_HTML; stored opinions inserted into the page
-    src/routes/library.ts     # chapter download, path jail already on
+    src/routes/library.ts     # chapter download after sign-in
     src/routes/members.ts     # GET /members, POST /comments, POST /buy
     pages/members.html        # opinion form, <!-- COMMENTS -->
     content/library/books/gone-with-the-wind/chapters/chapter-01.txt
@@ -35,7 +35,7 @@ XSS/
 |---------|---------|
 | `POST /comments` | Save the signed-in login and `body`, then redirect to `/members` |
 | `GET /members` | Library page; opinions are inserted into the HTML |
-| `GET /library/books/gone-with-the-wind/chapters/chapter-01.txt` | Legal chapter (path jail from Path Traversal, already on) |
+| `GET /library/books/gone-with-the-wind/chapters/chapter-01.txt` | Chapter 1 after sign-in |
 
 `USE_SAFE_HTML` in [`server/src/comments.ts`](server/src/comments.ts) controls whether that text is escaped.
 
