@@ -28,7 +28,7 @@ Open **`http://localhost:3004/login`**.
 ```text
 server/
   content/library/books/{book}/chapters/   # intended chapter files
-  data/internal/                             # traversal target (not static)
+  .gitignore                                 # traversal target (not a chapter)
   public/uploads/                            # placeholder for File upload lab
 ```
 
@@ -37,7 +37,7 @@ server/
 | Request | Meaning |
 |---------|---------|
 | `GET /library/books/gone-with-the-wind/chapters/chapter-01.txt` | Legal chapter (after login) |
-| `…/chapters/../../../../../data/internal/publisher-rebates.csv` | Traversal (exercise 2) |
+| `…/chapters/../../../../../.gitignore` | Traversal (exercise 2) |
 
 Handler joins `content/library/books/{book}/chapters/` + user-controlled path segment(s) — see [`routes/library.ts`](server/src/routes/library.ts).
 
@@ -51,10 +51,10 @@ Login as `marc` → `/members` → **Pobierz rozdział 1 (TXT)**.
 
 ### 2. `../` in the path
 
-From the legal URL, append traversal after `…/chapters/` (five `../` to reach `server/`, then `data/internal/…`):
+From the legal URL, append traversal after `…/chapters/` (five `../` to reach `server/`, then `.gitignore`):
 
 ```http
-GET /library/books/gone-with-the-wind/chapters/../../../../../data/internal/publisher-rebates.csv
+GET /library/books/gone-with-the-wind/chapters/../../../../../.gitignore
 ```
 
 Some browsers **normalize** `../` in the path before the request leaves the client; if the URL “snaps back”, use exercise 3 or send the request with **`curl --path-as-is`** (instructor demo).
@@ -64,13 +64,13 @@ Some browsers **normalize** `../` in the path before the request leaves the clie
 Single path segment with encoded slashes (same target file), e.g. last segment:
 
 ```text
-..%2f..%2f..%2f..%2f..%2fdata%2finternal%2fpublisher-rebates.csv
+..%2f..%2f..%2f..%2f..%2f.gitignore
 ```
 
 Full path:
 
 ```http
-GET /library/books/gone-with-the-wind/chapters/..%2f..%2f..%2f..%2f..%2fdata%2finternal%2fpublisher-rebates.csv
+GET /library/books/gone-with-the-wind/chapters/..%2f..%2f..%2f..%2f..%2f.gitignore
 ```
 
 ### 4. Enable Fix A (uncomment)
@@ -81,7 +81,7 @@ At the top of [`server/src/routes/library.ts`](server/src/routes/library.ts), fi
 2. Uncomment: `// const USE_SAFE_CHAPTER_PATH = true;`
 3. Restart `npm run dev`.
 
-Repeat exercise **2** (or **3**) — expected: **403 Forbidden** / “Not allowed”, not `publisher-rebates.csv`.
+Repeat exercise **2** (or **3**) — expected: **403 Forbidden** / “Not allowed”, not the contents of `.gitignore`.
 
 Exercise **1** (legal chapter download) should still work.
 

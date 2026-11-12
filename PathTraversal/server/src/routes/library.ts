@@ -25,8 +25,8 @@ function resolveChapterPath(deps: AppDeps, bookName: string, rawChapterRel: stri
     const chaptersDir = resolve(libraryRoot, "books", bookName, "chapters");
     // Where we would read if chapterRel were honest, e.g. …/chapters/chapter-01.txt
     const candidate = resolve(chaptersDir, chapterRel);
-    // Exercise 2 blocks when chapterRel is ../../../../../data/internal/publisher-rebates.csv
-    // → candidate becomes …/server/data/internal/publisher-rebates.csv (outside chaptersDir)
+    // Exercise 2 blocks when chapterRel is ../../../../../.gitignore
+    // → candidate becomes …/server/.gitignore (outside chaptersDir)
     if (!candidate.startsWith(chaptersDir + sep)) {
       throw new Error("outside chapters dir");
     }
@@ -34,7 +34,7 @@ function resolveChapterPath(deps: AppDeps, bookName: string, rawChapterRel: stri
   }
 
   // Exercises 1–3 (vulnerable): user input in chapterRel can escape via resolve("..")
-  // e.g. chapterRel ../../../../../data/internal/publisher-rebates.csv
+  // e.g. chapterRel ../../../../../.gitignore
   return resolve(libraryRoot, "books", bookName, "chapters", chapterRel);
 }
 
