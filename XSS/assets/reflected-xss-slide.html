@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Reflected XSS</title>
+    <style>
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        background: #f7f4ef;
+        font-family: "Nunito", "Segoe UI", sans-serif;
+        color: #1b2744;
+      }
+      .slide {
+        width: 1280px;
+        min-height: 720px;
+        margin: 0 auto;
+        padding: 36px 48px 28px;
+        background: #fff;
+      }
+      header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 24px;
+      }
+      h1 {
+        margin: 0;
+        font-size: 54px;
+        line-height: 1;
+        letter-spacing: -0.03em;
+      }
+      h2 {
+        margin: 10px 0 0;
+        font-size: 28px;
+        line-height: 1.25;
+      }
+      .ebay {
+        width: 112px;
+        height: 112px;
+        border-radius: 50%;
+        background: #f8d5dc;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 34px;
+        font-weight: 800;
+        letter-spacing: -0.04em;
+      }
+      .ebay span:nth-child(1) { color: #e53238; }
+      .ebay span:nth-child(2) { color: #0064d2; }
+      .ebay span:nth-child(3) { color: #f5af02; }
+      .ebay span:nth-child(4) { color: #86b817; }
+      .urls {
+        margin-top: 22px;
+        border: 3px solid #e23b3b;
+        border-radius: 8px;
+        background: #fdecec;
+        padding: 14px 16px;
+        font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+        font-size: 18px;
+        line-height: 1.45;
+        word-break: break-all;
+      }
+      .page {
+        margin-top: 18px;
+        background: #f3f3f3;
+        border-radius: 8px;
+        padding: 18px 22px 22px;
+        font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+        font-size: 26px;
+        line-height: 1.35;
+        color: #222;
+      }
+      .hit {
+        display: inline-block;
+        margin-left: 28px;
+        background: #e10600;
+        color: #fff;
+        font-weight: 700;
+        padding: 2px 8px;
+      }
+      .caption {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin-top: 22px;
+        font-size: 24px;
+        font-weight: 700;
+      }
+      .globe {
+        width: 54px;
+        height: 54px;
+        border-radius: 50%;
+        background: #2f6fed;
+        color: #fff;
+        display: grid;
+        place-items: center;
+        font-size: 28px;
+      }
+      .note {
+        margin: -8px 0 0 68px;
+        text-align: right;
+        font-size: 13px;
+        color: #666;
+      }
+      footer {
+        margin-top: 16px;
+        background: #ffe8a3;
+        border-radius: 8px;
+        padding: 16px 18px;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        font-size: 26px;
+        font-weight: 800;
+      }
+      .warn {
+        width: 42px;
+        height: 42px;
+        background: #f5b400;
+        clip-path: polygon(50% 0, 100% 100%, 0 100%);
+        display: grid;
+        place-items: center;
+        color: #fff;
+        font-size: 22px;
+        line-height: 42px;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <article class="slide">
+      <header>
+        <div>
+          <h1>Slide 2 of 2</h1>
+          <h2>Title Attacker sends malicious search same URL shape.</h2>
+        </div>
+        <div class="ebay" aria-label="ebay"><span>e</span><span>b</span><span>a</span><span>y</span></div>
+      </header>
+      <div class="urls">
+        https://www.377union.com/search?search=&lt;script&gt;alert(document.domain)&lt;/script&gt;<br />
+        https://www.377union.com/search?search=%3Cscript%3Ealert%28document.domain%29%3C%2Fscript%3E
+      </div>
+      <pre class="page">&lt;html&gt;&lt;body&gt;
+&lt;h1&gt;Search&lt;/h1&gt;
+&lt;p&gt;Showing results for:
+  <span class="hit">&lt;script&gt;alert(document.domain)&lt;/script&gt;</span>
+&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+      <div class="caption"><span class="globe">🌐</span> Browser icon caption Victim opens trusted domain script runs once Reflected</div>
+      <p class="note">Tiny fix note theme patched Aug 2020 responsible disclosure</p>
+      <footer><span class="warn">!</span> Yellow footer Lesson reflect user input in HTML encode on output. No mystery parameters.</footer>
+    </article>
+  </body>
+</html>

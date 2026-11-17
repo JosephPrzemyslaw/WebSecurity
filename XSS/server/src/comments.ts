@@ -1,8 +1,8 @@
 /**
  * CWE-79 stored XSS: the signed-in member's opinion is written into /members.
  *
- * Exercises 1–3: leave the next line as-is (`false`).
- * Exercise 4: uncomment the line below and comment out `false` (escape before insert into HTML).
+ * Exercises 1–4: leave the next line as-is (`false`).
+ * Exercise 5: uncomment the line below and comment out `false` (escape before insert into HTML).
  */
 const USE_SAFE_HTML = false;
 // const USE_SAFE_HTML = true;
@@ -32,7 +32,7 @@ function textForPage(value: string): string {
   if (USE_SAFE_HTML) {
     return escapeHtml(value);
   }
-  // Exercises 1–3 (vulnerable): stored text is concatenated into HTML.
+  // Exercises 1–4 (vulnerable): stored text is concatenated into HTML.
   return value;
 }
 
