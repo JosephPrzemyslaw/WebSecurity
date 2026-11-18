@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" role="img">
+  <rect width="1200" height="675" fill="#eef2f6"/>
+  <text x="60" y="52" font-family="Figtree, sans-serif" font-size="26" font-weight="700" fill="#1a2834">05 — When uploads become server-side execution (contrast slide)</text>
+  <text x="60" y="82" font-family="Figtree, sans-serif" font-size="15" fill="#5a6b7a">For your talk · not simulated in the Node member shop</text>
+
+  <rect x="60" y="110" width="530" height="520" rx="14" fill="#fff" stroke="#c5d0db" stroke-width="2"/>
+  <text x="325" y="148" text-anchor="middle" font-family="Figtree, sans-serif" font-size="18" font-weight="600" fill="#2d6a3a">This course lab (static)</text>
+  <text x="90" y="195" font-family="Figtree, sans-serif" font-size="15" fill="#1a2834">POST → disk → GET returns bytes</text>
+  <text x="90" y="235" font-family="Figtree, sans-serif" font-size="15" fill="#1a2834">Impact mostly in the victim browser</text>
+  <text x="90" y="275" font-family="Figtree, sans-serif" font-size="15" fill="#1a2834">+ untrusted files on trusted host</text>
+  <rect x="90" y="310" width="470" height="80" rx="8" fill="#e8f4ec"/>
+  <text x="110" y="358" font-family="Figtree, sans-serif" font-size="14" fill="#2d6a3a">Port 3005 · evil.html · CWE-434 client path</text>
+
+  <rect x="610" y="110" width="530" height="520" rx="14" fill="#fff" stroke="#b83232" stroke-width="2"/>
+  <text x="875" y="148" text-anchor="middle" font-family="Figtree, sans-serif" font-size="18" font-weight="600" fill="#b83232">Classic PHP / CGI host</text>
+  <text x="640" y="195" font-family="Figtree, sans-serif" font-size="15" fill="#1a2834">POST shell.php → stored in web root</text>
+  <text x="640" y="235" font-family="Figtree, sans-serif" font-size="15" fill="#1a2834">GET runs interpreter → stdout in response</text>
+  <text x="640" y="275" font-family="Figtree, sans-serif" font-size="15" fill="#1a2834">Read secrets · RCE · full takeover</text>
+  <rect x="640" y="310" width="470" height="120" rx="8" fill="#fdeaea"/>
+  <text x="660" y="355" font-family="ui-monospace, monospace" font-size="13" fill="#b83232">GET /uploads/shell.php</text>
+  <text x="660" y="385" font-family="ui-monospace, monospace" font-size="13" fill="#1a2834">uid=33(www-data) …</text>
+  <text x="660" y="415" font-family="Figtree, sans-serif" font-size="13" fill="#5a6b7a">Teach via Academy / live PHP demo</text>
+
+  <path d="M 590 370 L 610 370" stroke="#5a6b7a" stroke-width="2"/>
+  <text x="555" y="355" font-family="Figtree, sans-serif" font-size="12" fill="#5a6b7a">same</text>
+  <text x="555" y="390" font-family="Figtree, sans-serif" font-size="12" fill="#5a6b7a">POST…GET</text>
+  <text x="535" y="420" font-family="Figtree, sans-serif" font-size="12" fill="#5a6b7a">pattern</text>
+</svg>

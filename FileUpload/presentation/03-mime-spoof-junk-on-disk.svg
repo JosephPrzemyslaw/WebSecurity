@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" role="img">
+  <rect width="1200" height="675" fill="#f6f1e8"/>
+  <text x="60" y="56" font-family="Figtree, sans-serif" font-size="28" font-weight="700" fill="#1a1612">03 — MIME whitelist bypass (junk on disk)</text>
+  <text x="60" y="88" font-family="Figtree, sans-serif" font-size="16" fill="#8a8175">Exercise 4 · client declares image/jpeg · server trusts multipart header</text>
+
+  <!-- Block 1 fail -->
+  <rect x="60" y="120" width="520" height="200" rx="12" fill="#fff" stroke="#e4d9c8" stroke-width="2"/>
+  <text x="80" y="155" font-family="Figtree, sans-serif" font-size="16" font-weight="600" fill="#1a1612">Normal form</text>
+  <text x="80" y="188" font-family="ui-monospace, monospace" font-size="14" fill="#1a1612">Content-Type: text/html</text>
+  <text x="80" y="225" font-family="ui-monospace, monospace" font-size="14" fill="#9d2433">→ USE_SAFE_UPLOAD rejects</text>
+  <text x="80" y="275" font-family="Figtree, sans-serif" font-size="14" fill="#8a8175">Student thinks the fix is enough.</text>
+
+  <!-- Block 2 burp -->
+  <rect x="620" y="120" width="520" height="200" rx="12" fill="#fff" stroke="#e07a3d" stroke-width="2"/>
+  <text x="640" y="155" font-family="Figtree, sans-serif" font-size="16" font-weight="600" fill="#e07a3d">Burp: forged part header</text>
+  <text x="640" y="188" font-family="ui-monospace, monospace" font-size="14" fill="#1a1612">Content-Type: image/jpeg</text>
+  <text x="640" y="218" font-family="ui-monospace, monospace" font-size="13" fill="#8a8175">body still &lt;script&gt; … evil.html</text>
+  <text x="640" y="255" font-family="ui-monospace, monospace" font-size="14" fill="#2d6a3a">→ save as marc-uuid.jpg</text>
+  <text x="640" y="295" font-family="Figtree, sans-serif" font-size="14" fill="#1a1612">UI: broken &lt;img&gt; · no HTML render</text>
+
+  <rect x="60" y="360" width="1080" height="260" rx="14" fill="#14110e"/>
+  <text x="90" y="400" font-family="ui-monospace, monospace" font-size="15" fill="#e07a3d">$ cat public/uploads/marc-a1b2c3.jpg</text>
+  <text x="90" y="440" font-family="ui-monospace, monospace" font-size="14" fill="#f6f1e8">&lt;!DOCTYPE html&gt; … shop-notice--urgent …</text>
+  <text x="90" y="500" font-family="Figtree, sans-serif" font-size="16" fill="#f6f1e8">Lesson: whitelist MIME ≠ validate bytes · need magic numbers / re-encode</text>
+  <text x="90" y="540" font-family="Figtree, sans-serif" font-size="14" fill="#8a8175">On PHP hosts, similar bytes might become executable — cover on a separate slide</text>
+</svg>
