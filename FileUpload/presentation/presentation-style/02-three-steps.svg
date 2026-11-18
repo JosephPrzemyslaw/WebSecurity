@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080">
+  <rect width="1920" height="1080" fill="#fafbfd"/>
+  <ellipse cx="1850" cy="900" rx="160" ry="110" fill="#b8f0dd" opacity="0.45"/>
+
+  <text x="960" y="108" text-anchor="middle" font-family="Figtree, sans-serif" font-size="50" font-weight="700" fill="#1e2a3a">How attackers think — 3 steps</text>
+  <text x="960" y="158" text-anchor="middle" font-family="Figtree, sans-serif" font-size="26" fill="#5a6a7a">Upload → store → open the URL (same pattern everywhere)</text>
+
+  <rect x="360" y="188" width="1200" height="56" rx="28" fill="#ffe8ee" stroke="#e8a0b0" stroke-width="2"/>
+  <text x="960" y="224" text-anchor="middle" font-family="Figtree, sans-serif" font-size="23" font-weight="600" fill="#1e2a3a">Victims do not need to upload — clicking a link to /uploads/… is enough</text>
+
+  <!-- Step 1 -->
+  <rect x="80" y="280" width="540" height="430" rx="28" fill="#fff" stroke="#7eb8e8" stroke-width="3"/>
+  <circle cx="145" cy="335" r="32" fill="#7eb8e8"/><text x="145" y="344" text-anchor="middle" fill="#fff" font-size="26" font-weight="700">1</text>
+  <text x="340" y="340" text-anchor="middle" font-family="Figtree, sans-serif" font-size="26" font-weight="700" fill="#1e2a3a">Pick a file</text>
+  <rect x="130" y="370" width="320" height="200" rx="12" fill="#f4f9ff" stroke="#7eb8e8" stroke-width="1"/>
+  <rect x="155" y="395" width="270" height="140" rx="8" fill="#fff" stroke="#e4d9c8"/>
+  <circle cx="175" cy="415" r="5" fill="#e8a0b0"/><circle cx="195" cy="415" r="5" fill="#e8c85a"/><circle cx="215" cy="415" r="5" fill="#6bc9a0"/>
+  <rect x="155" y="435" width="200" height="14" rx="3" fill="#e4d9c8"/>
+  <text x="190" y="485" font-family="Figtree, sans-serif" font-size="18" fill="#9d2433">shell.php · evil.html</text>
+  <text x="190" y="515" font-family="Figtree, sans-serif" font-size="18" fill="#5a6a7a">fake .jpg</text>
+  <text x="120" y="620" font-family="Figtree, sans-serif" font-size="20" font-weight="600" fill="#7eb8e8">STEP 1 · Blue</text>
+  <text x="120" y="655" font-family="Figtree, sans-serif" font-size="19" fill="#1e2a3a">Avatar, invoice, attachment form</text>
+
+  <text x="638" y="490" font-family="Figtree, sans-serif" font-size="56" fill="#1e2a3a">→</text>
+
+  <!-- Step 2 -->
+  <rect x="690" y="280" width="540" height="430" rx="28" fill="#fff" stroke="#6bc9a0" stroke-width="3"/>
+  <circle cx="755" cy="335" r="32" fill="#6bc9a0"/><text x="755" y="344" text-anchor="middle" fill="#fff" font-size="26" font-weight="700">2</text>
+  <text x="960" y="340" text-anchor="middle" font-family="Figtree, sans-serif" font-size="26" font-weight="700" fill="#1e2a3a">Server saves it</text>
+  <rect x="740" y="370" width="440" height="200" rx="12" fill="#f0faf5" stroke="#6bc9a0"/>
+  <rect x="800" y="410" width="320" height="120" rx="8" fill="#fff" stroke="#6bc9a0" stroke-dasharray="6 4"/>
+  <ellipse cx="960" cy="465" rx="80" ry="55" fill="#6bc9a0" opacity="0.2"/>
+  <rect x="900" y="430" width="120" height="70" rx="4" fill="#1e2a3a" opacity="0.15"/>
+  <text x="960" y="475" text-anchor="middle" font-family="Figtree, sans-serif" font-size="16" fill="#2d6a3a" font-weight="600">SERVER</text>
+  <text x="730" y="620" font-family="Figtree, sans-serif" font-size="20" font-weight="600" fill="#6bc9a0">STEP 2 · Green</text>
+  <text x="730" y="655" font-family="Figtree, sans-serif" font-size="19" fill="#1e2a3a">Often same domain as login → looks trusted</text>
+
+  <text x="1248" y="490" font-family="Figtree, sans-serif" font-size="56" fill="#1e2a3a">→</text>
+
+  <!-- Step 3 -->
+  <rect x="1300" y="280" width="540" height="430" rx="28" fill="#fff" stroke="#b89ae0" stroke-width="3"/>
+  <circle cx="1365" cy="335" r="32" fill="#b89ae0"/><text x="1365" y="344" text-anchor="middle" fill="#fff" font-size="26" font-weight="700">3</text>
+  <text x="1570" y="340" text-anchor="middle" font-family="Figtree, sans-serif" font-size="26" font-weight="700" fill="#1e2a3a">Someone opens URL</text>
+  <rect x="1350" y="370" width="320" height="200" rx="12" fill="#f8f4fc" stroke="#b89ae0"/>
+  <rect x="1380" y="400" width="260" height="150" rx="8" fill="#fff" stroke="#1e2a3a"/>
+  <circle cx="1398" cy="418" r="4" fill="#c44"/><circle cx="1416" cy="418" r="4" fill="#e8c85a"/><circle cx="1434" cy="418" r="4" fill="#6bc9a0"/>
+  <rect x="1400" y="450" width="220" height="12" fill="#fdeaea"/>
+  <text x="1340" y="620" font-family="Figtree, sans-serif" font-size="20" font-weight="600" fill="#b89ae0">STEP 3 · Purple</text>
+  <text x="1340" y="655" font-family="Figtree, sans-serif" font-size="19" fill="#1e2a3a">Email link · preview · Burp GET</text>
+
+  <rect x="120" y="740" width="1680" height="96" rx="22" fill="#fff8dc" stroke="#e8c85a" stroke-width="2"/>
+  <text x="170" y="798" font-family="Figtree, sans-serif" font-size="26" font-weight="700" fill="#1e2a3a">Lesson: deleting the form is not enough if old hostile files still live at a public URL</text>
+</svg>

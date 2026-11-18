@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080">
+  <rect width="1920" height="1080" fill="#fafbfd"/>
+  <ellipse cx="100" cy="900" rx="140" ry="100" fill="#fff0b3" opacity="0.5"/>
+
+  <text x="120" y="98" font-family="Figtree, sans-serif" font-size="50" font-weight="700" fill="#1e2a3a">File upload prevention in practice</text>
+  <text x="120" y="148" font-family="Figtree, sans-serif" font-size="28" font-weight="700" fill="#5a6a7a">allow-list · verify bytes · isolate · never execute</text>
+
+  <rect x="120" y="178" width="1050" height="50" rx="25" fill="#ffe8ee" stroke="#e8a0b0" stroke-width="2"/>
+  <text x="140" y="210" font-family="Figtree, sans-serif" font-size="21" font-weight="600" fill="#1e2a3a">MIME whitelist alone is not content validation</text>
+
+  <rect x="120" y="260" width="1680" height="175" rx="24" fill="#fff" stroke="#7eb8e8" stroke-width="3"/>
+  <circle cx="175" cy="330" r="38" fill="#e8f4fc" stroke="#7eb8e8" stroke-width="2"/>
+  <path d="M160 330 L175 315 L190 330 L175 345 Z M165 338 L185 338" stroke="#7eb8e8" fill="none" stroke-width="2"/>
+  <text x="230" y="315" font-family="Figtree, sans-serif" font-size="28" font-weight="700" fill="#1e2a3a">At the gate</text>
+  <text x="230" y="360" font-family="Figtree, sans-serif" font-size="24" fill="#1e2a3a">Allow-list types · size cap · random server filename · strip ../</text>
+  <text x="230" y="400" font-family="Figtree, sans-serif" font-size="20" fill="#5a6a7a">Only what the feature really needs (e.g. jpeg/png avatars)</text>
+
+  <path d="M 960 445 L 960 485" stroke="#1e2a3a" stroke-width="6" marker-end="url(#ar)"/>
+  <defs><marker id="ar" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0,0 L12,6 L0,12 Z" fill="#1e2a3a"/></marker></defs>
+
+  <rect x="120" y="495" width="1680" height="175" rx="24" fill="#fffef5" stroke="#e8c85a" stroke-width="3"/>
+  <circle cx="175" cy="565" r="38" fill="#fff8dc" stroke="#e8c85a" stroke-width="2"/>
+  <path d="M158 575 L175 555 L192 575 L175 585 Z" fill="#e8c85a" opacity="0.6"/>
+  <rect x="165" y="578" width="20" height="14" rx="2" fill="#e8c85a"/>
+  <text x="230" y="550" font-family="Figtree, sans-serif" font-size="28" font-weight="700" fill="#1e2a3a">On the bytes</text>
+  <text x="230" y="595" font-family="Figtree, sans-serif" font-size="24" fill="#1e2a3a">Magic-byte / file-type library · re-encode image · strip EXIF</text>
+  <text x="230" y="635" font-family="Figtree, sans-serif" font-size="20" fill="#5a6a7a">Microsoft / OWASP: treat upload as untrusted input</text>
+
+  <path d="M 960 680 L 960 720" stroke="#1e2a3a" stroke-width="6" marker-end="url(#ar)"/>
+
+  <rect x="120" y="730" width="1680" height="175" rx="24" fill="#f0faf5" stroke="#6bc9a0" stroke-width="3"/>
+  <circle cx="175" cy="800" r="38" fill="#e8f4ec" stroke="#6bc9a0" stroke-width="2"/>
+  <path d="M175 772 Q155 792 175 812 Q195 792 175 772 M175 812 L175 828" stroke="#2d6a3a" fill="none" stroke-width="2"/>
+  <text x="230" y="785" font-family="Figtree, sans-serif" font-size="28" font-weight="700" fill="#1e2a3a">At delivery</text>
+  <text x="230" y="830" font-family="Figtree, sans-serif" font-size="24" fill="#1e2a3a">Separate domain for user content · no script engine in upload folder</text>
+  <text x="230" y="870" font-family="Figtree, sans-serif" font-size="20" fill="#5a6a7a">Avatars: &lt;img&gt; only — avoid iframe “preview” of attachments</text>
+
+  <rect x="120" y="930" width="1680" height="88" rx="20" fill="#fff8dc" stroke="#e8c85a" stroke-width="2"/>
+  <text x="170" y="982" font-family="Figtree, sans-serif" font-size="26" font-weight="700" fill="#1e2a3a">Lesson: validate on the way in; verify content; isolate what users uploaded</text>
+</svg>

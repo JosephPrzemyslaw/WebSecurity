@@ -1,30 +1,34 @@
-# File upload — slajdy do prezentacji (PL)
+# File upload — presentation slides
 
-**1920×1080 SVG** w stylu slajdów XSS (biało, pastelowe rogi, navy `#1e2a3a`, żółty pasek **Lekcja**).  
-**Język polski, prosto —** materiał edukacyjny ogólny (CWE-434, OWASP, Portswigger, Intigriti), **nie musi** = kroki labu FileUpload na porcie 3005.
+**1920×1080 SVG** matching the workshop deck style (white canvas, pastel corner blobs, navy `#1e2a3a`, pink callouts, yellow **Lesson** bar).  
+**English**, plain language, **general CWE-434** content (OWASP, Portswigger, Intigriti, Microsoft) — not a step-by-step of the port **3005** lab.
 
-## `presentation-style/` — zestaw główny (kolejność 01→08)
+Icons are simple vector art (browser chrome, server zones, Burp block, shields) — open in Figma/Inkscape to tweak.
 
-| Plik | O czym |
+## `presentation-style/` (slides 01–08)
+
+| File | Topic |
 |------|--------|
-| `01-co-to-jest.svg` | Definicja + 4 możliwe skutki |
-| `02-trzy-kroki-ataku.svg` | Wrzuć → zapis → otwórz URL |
-| `03-skutki-kafelki.svg` | RCE · XSS · DoS · phishing |
-| `04-bledy-aplikacji.svg` | Typowe pomyłki devów |
-| `05-popularne-obejscia.svg` | Rozszerzenia, MIME, ścieżka, polyglot |
-| `06-obrona-warstwami.svg` | 3 warstwy obrony (jak slajd verification/sanitize) |
-| `07-php-vs-static.svg` | Różnica stacku — kiedy jest RCE |
-| `08-checklista.svg` | 6 pytań na koniec |
+| `01-what-is-it.svg` | Definition + 4 impact types |
+| `02-three-steps.svg` | Upload → store → open URL |
+| `03-impact-tiles.svg` | RCE · XSS · DoS · phishing |
+| `04-dev-mistakes.svg` | Four common mistakes |
+| `05-bypasses.svg` | Extensions, MIME, path, polyglot |
+| `06-defense-layers.svg` | Defense in depth (3 layers) |
+| `07-php-vs-static.svg` | When uploads become server RCE |
+| `08-checklist.svg` | Six yes/no questions |
 
-Spis: `presentation-style/00-spis-slajdow.txt`
+Order: `presentation-style/00-slide-order.txt`
 
-## Pobieranie
+## Download
 
-- **ZIP:** [`file-upload-presentation-slides.zip`](file-upload-presentation-slides.zip) — `presentation-style/` + ten README  
-- GitHub: branch `cursor/fileupload-presentation-dfcc` lub `main` po merge [PR #3](https://github.com/JosephPrzemyslaw/WebSecurity/pull/3)
+- **ZIP:** [`file-upload-presentation-slides.zip`](file-upload-presentation-slides.zip) — `presentation-style/` + this README  
+- GitHub: branch `cursor/fileupload-presentation-dfcc` or `main` after merge — [PR #3](https://github.com/JosephPrzemyslaw/WebSecurity/pull/3)
 
-Import: PowerPoint / Keynote → wstaw SVG. Eksport PNG: Inkscape, Figma, lub przeglądarka.
+Raw ZIP link (branch):
 
-## Starsze diagramy (ang., pod lab)
+`https://github.com/JosephPrzemyslaw/WebSecurity/raw/cursor/fileupload-presentation-dfcc/FileUpload/presentation/file-upload-presentation-slides.zip`
 
-W katalogu nadrzędnym `presentation/` (01–05, styl member shop) — opcjonalnie, można pominąć.
+## Older diagrams
+
+English “member shop” SVGs in parent `presentation/` folder — optional, lab-oriented.
