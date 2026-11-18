@@ -28,6 +28,8 @@ Each case has a **dual PNG** in [`illustrations/`](illustrations/): **PLAIN LANG
 
 **Technical:** `POST` upload (`shell.php` or `.php5`, sometimes GIF magic bytes) → saved under a web-served path → `GET /uploads/evil.php?cmd=…` → `mod_php` executes → `system($_GET['cmd'])` → RCE as the web-server user → exfiltration + persistent backdoor.
 
+**Real history (important):** This is **not** a single newspaper headline like TimThumb 2011 — it is the **default failure mode** of **PHP + Apache shared hosting** from the **2000s–2010s** until today on misconfigured sites. Pentesters and criminals repeatedly found: avatar/CV/gallery upload → file saved under the web root → **mod_php runs `.php`**. [PortSwigger Web Security Academy](https://portswigger.net/web-security/file-upload) built its **RCE upload labs** on this exact chain (e.g. reading `/home/carlos/secret`). Classified under **CWE-434** / OWASP “Unrestricted File Upload”. Your **Node shop lab** intentionally does **not** execute uploads — this case explains **server-side** impact when the stack **does** run PHP.
+
 ---
 
 ## 2. Uploading `.htaccess` → a new “executable” extension
