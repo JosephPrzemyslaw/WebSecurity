@@ -58,7 +58,7 @@ Each case has a PNG in [`illustrations/`](illustrations/). Case **#1** uses **tw
 
 | | |
 |---|---|
-| **Illustration** | [`illustrations/hist-02-htaccess-story-720p.png`](illustrations/hist-02-htaccess-story-720p.png) — **.htaccess upload → new PHP extension** |
+| **Illustration** | [`illustrations/hist-02-htaccess-story-720p.png`](illustrations/hist-02-htaccess-story-720p.png) — **.htaccess upload → new PHP extension (CWE-434)** |
 | **PortSwigger lab (step-by-step)** | https://portswigger.net/web-security/file-upload/lab-file-upload-web-shell-upload-via-extension-blacklist-bypass |
 | **OWASP Cheat Sheet — `.htaccess` in uploads** | https://cheatsheetseries.owasp.org/cheatsheets/File_Upload_Cheat_Sheet.html |
 | **Cyber Library — `.htaccess` override abuse** | https://www.cyberlibrary.com/en/docs/offensive/software/applications/server/web/platform/apache/handler-and-type-mapping |
