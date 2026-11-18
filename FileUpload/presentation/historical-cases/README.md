@@ -15,9 +15,18 @@ Each case has a **dual PNG** in [`illustrations/`](illustrations/): **PLAIN LANG
 | **OWASP — Unrestricted File Upload** | https://owasp.org/www-community/vulnerabilities/Unrestricted_File_Upload |
 | **ZeroExp — disable execution in upload dirs** | https://zeroexp.dev/library/prevent-upload-execution |
 
-**Plain language:** Someone uploads what looks like a picture; the server runs it as code and the attacker owns the machine.
+**Plain language (story):**
 
-**Technical:** Upload `shell.php` (sometimes with a GIF header) → stored under a web root that executes PHP → `GET` = RCE.
+1. Attacker uploads a file that **looks like a normal photo** — the site accepts it.
+2. They keep a **private URL** (like a hidden door) to that file on your server.
+3. Opening that URL is **not** “viewing a picture” — the server **runs** the file and lets them **type commands**.
+4. **What hackers do next (impact):**
+   - Read secrets from disk (config, keys, `secret` files)
+   - Dump or copy the **database** (customers, passwords hashes, orders)
+   - **Change the shop** (defacement, scam page, malware for visitors)
+   - **Pivot** — use your server to attack others (spam, bots, mining)
+
+**Technical:** `POST` upload (`shell.php` or `.php5`, sometimes GIF magic bytes) → saved under a web-served path → `GET /uploads/evil.php?cmd=…` → `mod_php` executes → `system($_GET['cmd'])` → RCE as the web-server user → exfiltration + persistent backdoor.
 
 ---
 
