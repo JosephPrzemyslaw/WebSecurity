@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080">
+  <rect width="1920" height="1080" fill="#fafbfd"/>
+  <ellipse cx="80" cy="200" rx="120" ry="90" fill="#b8f0dd" opacity="0.45"/>
+
+  <text x="120" y="105" font-family="Figtree, sans-serif" font-size="50" font-weight="700" fill="#1e2a3a">Częste błędy programistów</text>
+  <text x="120" y="158" font-family="Figtree, sans-serif" font-size="28" font-weight="700" fill="#5a6a7a">„Akceptujemy wszystko” albo „sprawdzamy tylko jedną rzecz”</text>
+
+  <rect x="120" y="190" width="900" height="52" rx="26" fill="#ffe8ee" stroke="#e8a0b0" stroke-width="2"/>
+  <text x="140" y="225" font-family="Figtree, sans-serif" font-size="22" font-weight="600" fill="#1e2a3a">Deny-lista (.php zabronione) przegrywa z obejściami — potrzebna allow-lista</text>
+
+  <rect x="120" y="280" width="1680" height="110" rx="20" fill="#fff" stroke="#e8a0b0" stroke-width="2"/>
+  <circle cx="175" cy="335" r="28" fill="#fdeaea"/><text x="175" y="343" text-anchor="middle" fill="#9d2433" font-size="28" font-weight="700">✕</text>
+  <text x="230" y="330" font-family="Figtree, sans-serif" font-size="28" font-weight="700" fill="#1e2a3a">Brak listy dozwolonych typów</text>
+  <text x="230" y="370" font-family="Figtree, sans-serif" font-size="24" fill="#5a6a7a">„Wgrywamy co użytkownik pośle”</text>
+
+  <rect x="120" y="410" width="1680" height="110" rx="20" fill="#fff" stroke="#e8a0b0" stroke-width="2"/>
+  <circle cx="175" cy="465" r="28" fill="#fdeaea"/><text x="175" y="473" text-anchor="middle" fill="#9d2433" font-size="28" font-weight="700">✕</text>
+  <text x="230" y="460" font-family="Figtree, sans-serif" font-size="28" font-weight="700" fill="#1e2a3a">Wiary w Content-Type z przeglądarki</text>
+  <text x="230" y="500" font-family="Figtree, sans-serif" font-size="24" fill="#5a6a7a">Burp zmienia nagłówek multipart — serwer i tak zapisuje plik</text>
+
+  <rect x="120" y="540" width="1680" height="110" rx="20" fill="#fff" stroke="#e8a0b0" stroke-width="2"/>
+  <circle cx="175" cy="595" r="28" fill="#fdeaea"/><text x="175" y="603" text-anchor="middle" fill="#9d2433" font-size="28" font-weight="700">✕</text>
+  <text x="230" y="590" font-family="Figtree, sans-serif" font-size="28" font-weight="700" fill="#1e2a3a">Oryginalna nazwa pliku (../../../)</text>
+  <text x="230" y="630" font-family="Figtree, sans-serif" font-size="24" fill="#5a6a7a">Path traversal przy zapisie + przewidywalne URL</text>
+
+  <rect x="120" y="670" width="1680" height="110" rx="20" fill="#fff" stroke="#e8a0b0" stroke-width="2"/>
+  <circle cx="175" cy="725" r="28" fill="#fdeaea"/><text x="175" y="733" text-anchor="middle" fill="#9d2433" font-size="28" font-weight="700">✕</text>
+  <text x="230" y="720" font-family="Figtree, sans-serif" font-size="28" font-weight="700" fill="#1e2a3a">Ten sam host co sesja użytkownika</text>
+  <text x="230" y="760" font-family="Figtree, sans-serif" font-size="24" fill="#5a6a7a">Cookies + zaufany adres = łatwiejszy phishing i XSS</text>
+
+  <rect x="120" y="820" width="1680" height="88" rx="20" fill="#fff8dc" stroke="#e8c85a" stroke-width="2"/>
+  <text x="170" y="875" font-family="Figtree, sans-serif" font-size="26" font-weight="700" fill="#1e2a3a">Lekcja: potrzebujesz kilku niezależnych kontrol — jedna brama nie wystarczy</text>
+</svg>

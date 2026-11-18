@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080">
+  <rect width="1920" height="1080" fill="#fafbfd"/>
+  <ellipse cx="1850" cy="900" rx="150" ry="110" fill="#ffc9d9" opacity="0.4"/>
+
+  <text x="120" y="100" font-family="Figtree, sans-serif" font-size="50" font-weight="700" fill="#1e2a3a">Obrona uploadu — warstwami</text>
+  <text x="120" y="152" font-family="Figtree, sans-serif" font-size="28" font-weight="700" fill="#5a6a7a">Microsoft · OWASP · Intigriti — defense in depth</text>
+
+  <rect x="120" y="180" width="1100" height="52" rx="26" fill="#ffe8ee" stroke="#e8a0b0" stroke-width="2"/>
+  <text x="140" y="215" font-family="Figtree, sans-serif" font-size="22" font-weight="600" fill="#1e2a3a">Jedna kontrolka (np. sama „sprawdzam .jpg”) nie kończy tematu</text>
+
+  <rect x="120" y="270" width="1680" height="175" rx="24" fill="#fff" stroke="#7eb8e8" stroke-width="3"/>
+  <text x="200" y="330" font-family="Figtree, sans-serif" font-size="20" fill="#7eb8e8" font-weight="700">WARSTWA 1</text>
+  <text x="200" y="375" font-family="Figtree, sans-serif" font-size="28" font-weight="700" fill="#1e2a3a">Przy wejściu: allow-lista + limit rozmiaru + losowa nazwa na serwerze</text>
+  <text x="200" y="415" font-family="Figtree, sans-serif" font-size="24" fill="#5a6a7a">Tylko typy, których naprawdę potrzebujesz (np. jpeg/png). Bez ../ w nazwie.</text>
+
+  <path d="M 960 455 L 960 495" stroke="#1e2a3a" stroke-width="6" marker-end="url(#ar)"/>
+  <defs><marker id="ar" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0,0 L12,6 L0,12 Z" fill="#1e2a3a"/></marker></defs>
+
+  <rect x="120" y="505" width="1680" height="175" rx="24" fill="#fffef5" stroke="#e8c85a" stroke-width="3"/>
+  <text x="200" y="565" font-family="Figtree, sans-serif" font-size="20" fill="#c47a00" font-weight="700">WARSTWA 2</text>
+  <text x="200" y="610" font-family="Figtree, sans-serif" font-size="28" font-weight="700" fill="#1e2a3a">Treść pliku: magic bytes + przepisz obraz od zera (sharp, ImageMagick)</text>
+  <text x="200" y="650" font-family="Figtree, sans-serif" font-size="24" fill="#5a6a7a">Nie ufaj nagłówkowi multipart. Usuń EXIF.</text>
+
+  <path d="M 960 690 L 960 730" stroke="#1e2a3a" stroke-width="6" marker-end="url(#ar)"/>
+
+  <rect x="120" y="740" width="1680" height="175" rx="24" fill="#f0faf5" stroke="#6bc9a0" stroke-width="3"/>
+  <text x="200" y="800" font-family="Figtree, sans-serif" font-size="20" fill="#2d6a3a" font-weight="700">WARSTWA 3</text>
+  <text x="200" y="845" font-family="Figtree, sans-serif" font-size="28" font-weight="700" fill="#1e2a3a">Serwowanie: osobna domena · brak wykonywania skryptów w katalogu uploadu</text>
+  <text x="200" y="885" font-family="Figtree, sans-serif" font-size="24" fill="#5a6a7a">Avatar tylko &lt;img&gt;. Załączniki: pobierz / sandbox, nie „podgląd iframe” na żywca.</text>
+
+  <rect x="120" y="940" width="1680" height="88" rx="20" fill="#fff8dc" stroke="#e8c85a" stroke-width="2"/>
+  <text x="170" y="995" font-family="Figtree, sans-serif" font-size="26" font-weight="700" fill="#1e2a3a">Lekcja: waliduj na wejściu; weryfikuj bajty; izoluj to, co user wrzucił</text>
+</svg>

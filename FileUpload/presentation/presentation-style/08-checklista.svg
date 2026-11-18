@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080">
+  <rect width="1920" height="1080" fill="#fafbfd"/>
+  <ellipse cx="100" cy="150" rx="130" ry="100" fill="#fff0b3" opacity="0.5"/>
+
+  <text x="960" y="110" text-anchor="middle" font-family="Figtree, sans-serif" font-size="50" font-weight="700" fill="#1e2a3a">Checklista przed wdrożeniem uploadu</text>
+  <text x="960" y="158" text-anchor="middle" font-family="Figtree, sans-serif" font-size="24" fill="#5a6a7a">6 pytań „tak / nie” dla devów i pentesterów</text>
+
+  <g font-family="Figtree, sans-serif" font-size="28" fill="#1e2a3a">
+    <rect x="200" y="220" width="1520" height="85" rx="16" fill="#fff" stroke="#6bc9a0" stroke-width="2"/>
+    <text x="240" y="272" font-weight="700">☑</text>
+    <text x="290" y="272">Czy używamy allow-listy typów, nie blacklisty?</text>
+
+    <rect x="200" y="320" width="1520" height="85" rx="16" fill="#fff" stroke="#6bc9a0" stroke-width="2"/>
+    <text x="240" y="372" font-weight="700">☑</text>
+    <text x="290" y="372">Czy sprawdzamy magic bytes / przepisujemy obraz?</text>
+
+    <rect x="200" y="420" width="1520" height="85" rx="16" fill="#fff" stroke="#6bc9a0" stroke-width="2"/>
+    <text x="240" y="472" font-weight="700">☑</text>
+    <text x="290" y="472">Czy nazwa pliku na dysku jest losowa (bez ścieżki usera)?</text>
+
+    <rect x="200" y="520" width="1520" height="85" rx="16" fill="#fff" stroke="#6bc9a0" stroke-width="2"/>
+    <text x="240" y="572" font-weight="700">☑</text>
+    <text x="290" y="572">Czy uploady są poza katalogiem wykonywanym przez WWW?</text>
+
+    <rect x="200" y="620" width="1520" height="85" rx="16" fill="#fff" stroke="#6bc9a0" stroke-width="2"/>
+    <text x="240" y="672" font-weight="700">☑</text>
+    <text x="290" y="672">Czy sesja nie idzie na domenę, która serwuje user content?</text>
+
+    <rect x="200" y="720" width="1520" height="85" rx="16" fill="#fff" stroke="#6bc9a0" stroke-width="2"/>
+    <text x="240" y="772" font-weight="700">☑</text>
+    <text x="290" y="772">Czy wiemy, co zrobić ze starymi plikami po podmianie fixa?</text>
+  </g>
+
+  <rect x="120" y="850" width="1680" height="100" rx="22" fill="#fff8dc" stroke="#e8c85a" stroke-width="2"/>
+  <text x="170" y="915" font-family="Figtree, sans-serif" font-size="28" font-weight="700" fill="#1e2a3a">Jedno „nie” = wróć do threat modelu uploadu (CWE-434)</text>
+</svg>

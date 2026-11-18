@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080">
+  <rect width="1920" height="1080" fill="#fafbfd"/>
+  <ellipse cx="100" cy="100" rx="160" ry="120" fill="#ffc9d9" opacity="0.5"/>
+  <ellipse cx="1800" cy="150" rx="170" ry="120" fill="#b8f0dd" opacity="0.45"/>
+
+  <text x="960" y="115" text-anchor="middle" font-family="Figtree, sans-serif" font-size="50" font-weight="700" fill="#1e2a3a">Jak myśli atakujący — 3 kroki</text>
+  <text x="960" y="168" text-anchor="middle" font-family="Figtree, sans-serif" font-size="26" fill="#5a6a7a">Ten sam schemat: wrzuć → zapisz → wejdź na adres</text>
+
+  <rect x="380" y="200" width="1160" height="58" rx="29" fill="#ffe8ee" stroke="#e8a0b0" stroke-width="2"/>
+  <text x="960" y="238" text-anchor="middle" font-family="Figtree, sans-serif" font-size="24" font-weight="600" fill="#1e2a3a">Ofiara NIE musi klikać „upload” — wystarczy otworzyć link do pliku</text>
+
+  <!-- 3 big steps -->
+  <rect x="80" y="300" width="520" height="400" rx="28" fill="#fff" stroke="#7eb8e8" stroke-width="3"/>
+  <circle cx="150" cy="360" r="34" fill="#7eb8e8"/>
+  <text x="150" y="372" text-anchor="middle" font-family="Figtree, sans-serif" font-size="28" font-weight="700" fill="#fff">1</text>
+  <text x="340" y="365" text-anchor="middle" font-family="Figtree, sans-serif" font-size="28" font-weight="700" fill="#1e2a3a">Wybiera plik</text>
+  <text x="120" y="440" font-family="Figtree, sans-serif" font-size="24" fill="#1e2a3a">Formularz: avatar, załącznik,</text>
+  <text x="120" y="478" font-family="Figtree, sans-serif" font-size="24" fill="#1e2a3a">zdjęcie profilowe…</text>
+  <text x="120" y="540" font-family="Figtree, sans-serif" font-size="22" fill="#5a6a7a">Może to być:</text>
+  <text x="120" y="580" font-family="Figtree, sans-serif" font-size="22" fill="#9d2433">.php · .html · .svg · „udawane”.jpg</text>
+
+  <text x="620" y="500" font-family="Figtree, sans-serif" font-size="48" fill="#1e2a3a">→</text>
+
+  <rect x="700" y="300" width="520" height="400" rx="28" fill="#fff" stroke="#6bc9a0" stroke-width="3"/>
+  <circle cx="770" cy="360" r="34" fill="#6bc9a0"/>
+  <text x="770" y="372" text-anchor="middle" font-family="Figtree, sans-serif" font-size="28" font-weight="700" fill="#fff">2</text>
+  <text x="960" y="365" text-anchor="middle" font-family="Figtree, sans-serif" font-size="28" font-weight="700" fill="#1e2a3a">Serwer zapisuje</text>
+  <text x="740" y="440" font-family="Figtree, sans-serif" font-size="24" fill="#1e2a3a">Plik trafia na dysk:</text>
+  <text x="740" y="490" font-family="ui-monospace, monospace" font-size="22" fill="#1e2a3a">/uploads/…</text>
+  <text x="740" y="540" font-family="Figtree, sans-serif" font-size="22" fill="#5a6a7a">Często pod tą samą domeną</text>
+  <text x="740" y="580" font-family="Figtree, sans-serif" font-size="22" fill="#5a6a7a">co logowanie — wygląda „bezpiecznie”</text>
+
+  <text x="1240" y="500" font-family="Figtree, sans-serif" font-size="48" fill="#1e2a3a">→</text>
+
+  <rect x="1320" y="300" width="520" height="400" rx="28" fill="#fff" stroke="#b89ae0" stroke-width="3"/>
+  <circle cx="1390" cy="360" r="34" fill="#b89ae0"/>
+  <text x="1390" y="372" text-anchor="middle" font-family="Figtree, sans-serif" font-size="28" font-weight="700" fill="#fff">3</text>
+  <text x="1580" y="365" text-anchor="middle" font-family="Figtree, sans-serif" font-size="28" font-weight="700" fill="#1e2a3a">Ktoś otwiera URL</text>
+  <text x="1360" y="440" font-family="Figtree, sans-serif" font-size="24" fill="#1e2a3a">Link w mailu, podgląd,</text>
+  <text x="1360" y="478" font-family="Figtree, sans-serif" font-size="24" fill="#1e2a3a">nowa karta, GET w Burp</text>
+  <text x="1360" y="540" font-family="Figtree, sans-serif" font-size="22" fill="#5a6a7a">Wtedy:</text>
+  <text x="1360" y="580" font-family="Figtree, sans-serif" font-size="22" fill="#9d2433">interpreter PHP · albo HTML w przeglądarce</text>
+
+  <rect x="120" y="740" width="1680" height="100" rx="22" fill="#fff8dc" stroke="#e8c85a" stroke-width="2"/>
+  <text x="170" y="805" font-family="Figtree, sans-serif" font-size="27" font-weight="700" fill="#1e2a3a">Lekcja: zablokować upload to za mało, jeśli stary zły plik nadal leży pod publicznym URL</text>
+</svg>

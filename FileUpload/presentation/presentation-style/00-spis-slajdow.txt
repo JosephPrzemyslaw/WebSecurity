@@ -1,0 +1,13 @@
+Slajdy informacyjne — file upload (CWE-434)
+Kolejność sugerowana na prezentację:
+
+01-co-to-jest.svg          — definicja w 1 zdaniu + 4 możliwe skutki
+02-trzy-kroki-ataku.svg    — upload → zapis → otwarcie (jak myśli atakujący)
+03-skutki-kafelki.svg        — RCE · XSS · DoS · phishing (kafelki)
+04-bledy-po-stronie-aplikacji.svg — 4 typowe pomyłki (bez żargonu)
+05-popularne-obejscia.svg  — rozszerzenie · MIME · ścieżka · podwójne rozszerzenie
+06-obrona-warstwami.svg    — pionowy flow jak slajd XSS
+07-php-vs-static.svg       — ten sam błąd, inna technologia
+08-checklista-koniec.svg   — 6 złotych zasad
+
+Nie muszą 1:1 odpowiadać labowi FileUpload na porcie 3005.

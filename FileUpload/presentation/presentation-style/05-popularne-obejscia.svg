@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080">
+  <rect width="1920" height="1080" fill="#fafbfd"/>
+  <text x="960" y="110" text-anchor="middle" font-family="Figtree, sans-serif" font-size="48" font-weight="700" fill="#1e2a3a">Jak atakujący omijają „zabezpieczenia”</text>
+  <text x="960" y="158" text-anchor="middle" font-family="Figtree, sans-serif" font-size="24" fill="#5a6a7a">Praktyczna metodologia testów · Portswigger · Medium</text>
+
+  <rect x="120" y="190" width="400" height="300" rx="22" fill="#fff" stroke="#7eb8e8" stroke-width="3"/>
+  <circle cx="180" cy="240" r="28" fill="#7eb8e8"/><text x="180" y="248" text-anchor="middle" fill="#fff" font-weight="700">1</text>
+  <text x="320" y="248" text-anchor="middle" font-family="Figtree, sans-serif" font-size="24" font-weight="700" fill="#1e2a3a">Inne rozszerzenie</text>
+  <text x="150" y="310" font-family="ui-monospace, monospace" font-size="20" fill="#1e2a3a">.php5 · .phtml</text>
+  <text x="150" y="360" font-family="Figtree, sans-serif" font-size="22" fill="#5a6a7a">Stara deny-lista</text>
+  <text x="150" y="400" font-family="Figtree, sans-serif" font-size="22" fill="#5a6a7a">nie widzi wariantu</text>
+
+  <rect x="550" y="190" width="400" height="300" rx="22" fill="#fff" stroke="#6bc9a0" stroke-width="3"/>
+  <circle cx="610" cy="240" r="28" fill="#6bc9a0"/><text x="610" y="248" text-anchor="middle" fill="#fff" font-weight="700">2</text>
+  <text x="750" y="248" text-anchor="middle" font-family="Figtree, sans-serif" font-size="24" font-weight="700" fill="#1e2a3a">Podwójne rozszerzenie</text>
+  <text x="580" y="310" font-family="ui-monospace, monospace" font-size="18" fill="#1e2a3a">foto.jpg.php</text>
+  <text x="580" y="360" font-family="Figtree, sans-serif" font-size="22" fill="#5a6a7a">Walidacja patrzy</text>
+  <text x="580" y="400" font-family="Figtree, sans-serif" font-size="22" fill="#5a6a7a">tylko na koniec nazwy</text>
+
+  <rect x="980" y="190" width="400" height="300" rx="22" fill="#fff" stroke="#e8c85a" stroke-width="3"/>
+  <circle cx="1040" cy="240" r="28" fill="#e8c85a"/><text x="1040" y="248" text-anchor="middle" fill="#fff" font-weight="700">3</text>
+  <text x="1180" y="248" text-anchor="middle" font-family="Figtree, sans-serif" font-size="24" font-weight="700" fill="#1e2a3a">Fałszywy MIME</text>
+  <text x="1010" y="310" font-family="Figtree, sans-serif" font-size="22" fill="#1e2a3a">Treść: HTML</text>
+  <text x="1010" y="355" font-family="Figtree, sans-serif" font-size="22" fill="#1e2a3a">Nagłówek: image/jpeg</text>
+  <text x="1010" y="400" font-family="Figtree, sans-serif" font-size="20" fill="#5a6a7a">(Burp / curl)</text>
+
+  <rect x="1410" y="190" width="400" height="300" rx="22" fill="#fff" stroke="#b89ae0" stroke-width="3"/>
+  <circle cx="1470" cy="240" r="28" fill="#b89ae0"/><text x="1470" y="248" text-anchor="middle" fill="#fff" font-weight="700">4</text>
+  <text x="1610" y="248" text-anchor="middle" font-family="Figtree, sans-serif" font-size="24" font-weight="700" fill="#1e2a3a">Ścieżka w nazwie</text>
+  <text x="1440" y="310" font-family="ui-monospace, monospace" font-size="17" fill="#1e2a3a">../../web.config</text>
+  <text x="1440" y="360" font-family="Figtree, sans-serif" font-size="22" fill="#5a6a7a">Zapis poza</text>
+  <text x="1440" y="400" font-family="Figtree, sans-serif" font-size="22" fill="#5a6a7a">katalogiem uploadu</text>
+
+  <rect x="200" y="530" width="1520" height="200" rx="24" fill="#fff" stroke="#7eb8e8" stroke-width="2"/>
+  <text x="960" y="590" text-anchor="middle" font-family="Figtree, sans-serif" font-size="28" font-weight="700" fill="#1e2a3a">Polyglot (zaawansowane)</text>
+  <text x="960" y="640" text-anchor="middle" font-family="Figtree, sans-serif" font-size="24" fill="#1e2a3a">Jeden plik wygląda jak obrazek ORAZ zawiera HTML / skrypt</text>
+  <text x="960" y="685" text-anchor="middle" font-family="Figtree, sans-serif" font-size="22" fill="#5a6a7a">Przechodzi magic bytes → nadal złośliwy przy otwarciu jako dokument</text>
+
+  <rect x="120" y="780" width="1680" height="88" rx="20" fill="#fff8dc" stroke="#e8c85a" stroke-width="2"/>
+  <text x="170" y="835" font-family="Figtree, sans-serif" font-size="26" font-weight="700" fill="#1e2a3a">Lekcja: testuj jak atakujący — nie tylko „wybierz plik w formularzu”</text>
+</svg>
