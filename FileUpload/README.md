@@ -101,7 +101,7 @@ Leave **`USE_SAFE_UPLOAD = true`**.
 
 **Expected (proof):** In `server/public/uploads/`, a new `marc-*.jpg` whose **contents** are still the HTML document (e.g. `cat server/public/uploads/marc-*.jpg` shows `<script>` / `shop-notice--urgent`, not JPEG bytes). Whitelist MIME was bypassed; **garbage landed in a public web directory**.
 
-**Debrief:** Production needs **magic-byte** checks or re-encoding (e.g. sharp), not MIME from the browser alone. On other stacks the same mistake can mean webshells or polyglots; here the lesson is **disk + origin**, even when the shop UI looks fine.
+**Debrief:** Production needs **magic-byte** checks or re-encoding (e.g. sharp), not MIME from the browser alone. Here the lesson is **disk + origin**, even when the shop UI looks fine.
 
 ## Next steps
 
