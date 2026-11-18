@@ -1,6 +1,6 @@
 # WebSecurity
 
-Work through the labs in **chapter order** (1–5). **Ports** are fixed so you can run different apps in parallel; chapter number is not the same as the port digit (e.g. chapter 5 is port **3002**).
+Work through the labs in **chapter order** (1–6). **Ports** are fixed so you can run different apps in parallel; chapter number is not the same as the port digit (e.g. chapter 5 is port **3002**, chapter 6 is **3005**).
 
 **SQL injection** is a separate login app. The **member shop** story starts in **Cookies** and gains new features each chapter.
 
@@ -11,6 +11,7 @@ Work through the labs in **chapter order** (1–5). **Ports** are fixed so you c
 | 3 | [CSRF/](CSRF/) | CSRF token, forged POST/GET | **3003** |
 | 4 | [PathTraversal/](PathTraversal/) | Path traversal (chapter read); uploads placeholder | **3004** |
 | 5 | [XSS/](XSS/) | Stored + reflected XSS; optional `key-receiver/` on **4000** (exercise 4) | **3002** |
+| 6 | [FileUpload/](FileUpload/) | Unrestricted file upload (avatar → `public/uploads/`) | **3005** |
 
 ### What each chapter adds (shop line)
 
@@ -19,6 +20,7 @@ Work through the labs in **chapter order** (1–5). **Ports** are fixed so you c
 3. **CSRF** — shop nav, **/account**, **/team**, synchronizer token, partner HTML.
 4. **Path traversal** — **chapter download** (`GET …/chapters/…`), traversal target file.
 5. **XSS** — catalog + **search**, **opinions**, key receiver helper.
+6. **File upload** — **avatar** on `/account`, files under **`/uploads`**.
 
 Clone this repository, then open the README in the lab folder you are working on. Install dependencies under each lab’s `server/` and run `npm run dev`.
 

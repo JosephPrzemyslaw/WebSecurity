@@ -143,4 +143,4 @@ The escape replaces `&`, `<`, `>`, and `"` in opinions and in the search line.
 
 **Previous:** PathTraversal — chapter download and CWE-22.
 
-The **WebSecurity** shop track ends here. A future **file upload** lab would extend PathTraversal (`server/public/uploads/` placeholder); it is not required for XSS.
+**Next module — [FileUpload](../FileUpload/)** (chapter 6, port **3005**): same shop plus **profile photo upload** on `/account` (CWE-434).

@@ -87,6 +87,6 @@ Exercise **1** (legal chapter download) should still work.
 
 ## Next module
 
-**Chapter 5 — [XSS](../XSS/)** (port **3002**, CWE-79): same member shop plus **opinions** (stored), library **search** (reflected), and optional **`key-receiver/`** on port **4000**. File upload remains a future step (`public/uploads/` placeholder).
+**Chapter 5 — [XSS](../XSS/)** (port **3002**, CWE-79): same member shop plus **opinions** (stored), library **search** (reflected), and optional **`key-receiver/`** on port **4000**. **File upload** is **[FileUpload](../FileUpload/)** (chapter 6, port **3005**); this folder’s `public/uploads/` placeholder describes that follow-on lab.
 
 **Previous:** CSRF — shop nav, account/team, CSRF token, partner pages.

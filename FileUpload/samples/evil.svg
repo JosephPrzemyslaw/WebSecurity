@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg">
+  <script type="text/javascript"><![CDATA[
+    alert(document.domain);
+  ]]></script>
+  <text x="20" y="40" font-size="20">Uploaded SVG</text>
+</svg>
