@@ -17,10 +17,11 @@ Each case has a **dual PNG** in [`illustrations/`](illustrations/): **PLAIN LANG
 
 **Plain language (story):**
 
-1. Attacker uploads a file that **looks like a normal photo** — the site accepts it.
-2. They keep a **private URL** (like a hidden door) to that file on your server.
-3. Opening that URL is **not** “viewing a picture” — the server **runs** the file and lets them **type commands**.
-4. **What hackers do next (impact):**
+1. Attacker uploads something that **looks like a photo in the UI** — the site accepts it.
+2. On disk the name is usually **not** innocent: `shell.php`, `evil.php.jpg`, or a folder rule (`.htaccess`) makes a non-`.php` name run as PHP — see [`hist-01-why-jpg-vs-php.png`](illustrations/hist-01-why-jpg-vs-php.png).
+3. They keep a **URL** to that stored file (often ending in `.php` or a bypass extension).
+4. Opening that URL is **not** “viewing a picture” — the server **runs** the file and lets them **type commands**.
+5. **What hackers do next (impact):**
    - Read secrets from disk (config, keys, `secret` files)
    - Dump or copy the **database** (customers, passwords hashes, orders)
    - **Change the shop** (defacement, scam page, malware for visitors)
