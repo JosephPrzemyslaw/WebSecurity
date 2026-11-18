@@ -9,7 +9,7 @@ Each case has a PNG in [`illustrations/`](illustrations/). Case **#1** uses **tw
 | | |
 |---|---|
 | **Lekko technicznie** | [`illustrations/hist-01-php-shell-light.png`](illustrations/hist-01-php-shell-light.png) |
-| **Skrajnie technicznie** | [`illustrations/hist-01-php-shell-technical.png`](illustrations/hist-01-php-shell-technical.png) |
+| **Skrajnie technicznie** | [`illustrations/hist-01-php-shell-technical.png`](illustrations/hist-01-php-shell-technical.png) (1920×1080) · [**720p**](illustrations/hist-01-php-shell-technical-720p.png) (1280×720) |
 | **Obejścia rozszerzeń (opcjonalnie)** | [`hist-01-why-jpg-vs-php.png`](illustrations/hist-01-why-jpg-vs-php.png) |
 | **PortSwigger — File uploads (theory + web shell)** | https://portswigger.net/web-security/file-upload |
 | **Lab: RCE via web shell** | https://portswigger.net/web-security/file-upload/lab-file-upload-remote-code-execution-via-web-shell-upload |
@@ -29,7 +29,7 @@ Each case has a PNG in [`illustrations/`](illustrations/). Case **#1** uses **tw
    - **Change the shop** (defacement, scam page, malware for visitors)
    - **Pivot** — use your server to attack others (spam, bots, mining)
 
-**Technical slide:** [`hist-01-php-shell-technical.png`](illustrations/hist-01-php-shell-technical.png) — English, full POST multipart + saved path + GET.
+**Technical slide:** [`hist-01-php-shell-technical.png`](illustrations/hist-01-php-shell-technical.png) (deck) or [`hist-01-php-shell-technical-720p.png`](illustrations/hist-01-php-shell-technical-720p.png) — English, watercolor layout like the deck “Extremely technical” slide; full POST multipart + saved path + GET.
 
 **Two Content-Types (both appear “valid” syntactically):**
 
