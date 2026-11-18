@@ -29,7 +29,7 @@ Each case has a PNG in [`illustrations/`](illustrations/). Case **#1** uses **tw
    - **Change the shop** (defacement, scam page, malware for visitors)
    - **Pivot** — use your server to attack others (spam, bots, mining)
 
-**Technical slide (story):** [`hist-01-php-shell-technical-720p.png`](illustrations/hist-01-php-shell-technical-720p.png) — **3 kroki wizualnie:** (1) user + formularz upload i **body** POST (`image/jpeg`, `GIF89a`, PHP), (2) serwer / **zapis na dysku** `uploads/image.php`, (3) user **GET** → `mod_php`. Ludziki, chmurki, kolory jak deck XSS; dokładny HTTP w terminalikach po wygenerowaniu obrazu.
+**Technical slide (story, English):** [`hist-01-php-shell-technical-720p.png`](illustrations/hist-01-php-shell-technical-720p.png) — title **Unrestricted file upload → web shell (CWE-434)**. Three separate cards: (1) user uploads `image.php` as `image/jpeg` with `GIF89a;` + PHP body, (2) server stores `/uploads/image.php`, (3) user GETs `?cmd=whoami` and `mod_php` runs it.
 
 **HTTP (what the slide shows):**
 
