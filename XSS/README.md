@@ -26,6 +26,7 @@ XSS/
     src/routes/members.ts     # GET /members?q=, POST /comments
     pages/members.html        # search form, <!-- CATALOG -->
     src/catalog.ts            # static titles; filter by q
+  key-receiver/               # exercise 4 — POST /key on port 4000
 ```
 
 | Request | Meaning |
@@ -88,19 +89,12 @@ Sign out. Sign in as `ewa`. Opening `/members` leaves the shop. The address bar 
 
 Restart the shop (`npm run dev`) so the redirect from exercise 3 is gone.
 
-In a second terminal, start a receiver on port **4000** (not the shop). It needs Express and `"type": "module"`:
+In a second terminal, start the key receiver on port **4000** (not the shop):
 
-```js
-import express from "express";
-
-const app = express();
-
-app.post("/key", express.text(), (req, res) => {
-  if (typeof req.body === "string" && req.body !== "") console.log(req.body);
-  res.end();
-});
-
-app.listen(4000);
+```bash
+cd key-receiver
+npm install
+npm start
 ```
 
 Sign in as `marc`. In **Opinion**, submit:
