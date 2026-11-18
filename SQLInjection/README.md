@@ -1,4 +1,4 @@
-# SQL Injection
+# SQL Injection (chapter 1)
 
 This folder is the SQL injection lab: a login form whose query is built from user input.
 
@@ -173,3 +173,7 @@ const user = db.prepare(query).get(login, password) as { login: string; password
 ```
 
 Hint: [Binding parameters](https://nodejs.org/api/sqlite.html#binding-parameters) in the Node.js `node:sqlite` documentation.
+
+## Next module
+
+**Chapter 2 — [Cookies](../Cookies/)** (port **3001**): the **member shop** begins — session cookies, **Buy**, chatbot, and SameSite on port **3001**.

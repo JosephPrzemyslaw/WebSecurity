@@ -1,6 +1,6 @@
-# Path traversal
+# Path traversal (chapter 4)
 
-Member shop continuation from **[CSRF](../CSRF/)** (port **3003**). On port **3004** the vulnerable feature is chapter download:
+Member shop continuation from **[CSRF](../CSRF/)** (chapter 3, port **3003**). On port **3004** the new feature is chapter download:
 
 ```http
 GET /library/books/{book}/chapters/{file}
@@ -47,7 +47,7 @@ Handler joins `content/library/books/{book}/chapters/` + user-controlled path se
 
 ### 1. Legal download
 
-Login as `marc` → `/members` → **Pobierz rozdział 1 (TXT)**.
+Login as `marc` → `/members` → **Download chapter 1 (TXT)**.
 
 ### 2. `../` in the path
 
@@ -87,4 +87,6 @@ Exercise **1** (legal chapter download) should still work.
 
 ## Next module
 
-File upload is not the next step. If you skipped stored XSS, open **[XSS](../XSS/)** (port **3002**, CWE-79): the same member shop, with an opinion on `/members` saved and written into the page without escaping.
+**Chapter 5 — [XSS](../XSS/)** (port **3002**, CWE-79): same member shop plus **opinions** (stored), library **search** (reflected), and optional **`key-receiver/`** on port **4000**. File upload remains a future step (`public/uploads/` placeholder).
+
+**Previous:** CSRF — shop nav, account/team, CSRF token, partner pages.

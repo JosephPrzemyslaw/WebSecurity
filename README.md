@@ -1,12 +1,24 @@
 # WebSecurity
 
-| Folder | Topic | Port |
-|--------|--------|------|
-| [SQLInjection/](SQLInjection/) | SQL injection | (see README) |
-| [Cookies/](Cookies/) | Cookie flags, SameSite | **3001** |
-| [CSRF/](CSRF/) | CSRF token, forged POST/GET | **3003** |
-| [PathTraversal/](PathTraversal/) | Path traversal (read); uploads placeholder | **3004** |
-| [XSS/](XSS/) | Stored + reflected XSS (shop); optional `key-receiver/` on **4000** for exercise 4 | **3002** |
+Work through the labs in **chapter order** (1–5). **Ports** are fixed so you can run different apps in parallel; chapter number is not the same as the port digit (e.g. chapter 5 is port **3002**).
+
+**SQL injection** is a separate login app. The **member shop** story starts in **Cookies** and gains new features each chapter.
+
+| Ch. | Folder | Topic | Port |
+|-----|--------|--------|------|
+| 1 | [SQLInjection/](SQLInjection/) | SQL injection (login) | **3000** |
+| 2 | [Cookies/](Cookies/) | Cookie flags, SameSite, buy | **3001** |
+| 3 | [CSRF/](CSRF/) | CSRF token, forged POST/GET | **3003** |
+| 4 | [PathTraversal/](PathTraversal/) | Path traversal (chapter read); uploads placeholder | **3004** |
+| 5 | [XSS/](XSS/) | Stored + reflected XSS; optional `key-receiver/` on **4000** (exercise 4) | **3002** |
+
+### What each chapter adds (shop line)
+
+1. **SQL** — vulnerable login query (not the full shop yet).
+2. **Cookies** — member shop: login, **Buy**, support chatbot, cross-site partner page.
+3. **CSRF** — shop nav, **/account**, **/team**, synchronizer token, partner HTML.
+4. **Path traversal** — **chapter download** (`GET …/chapters/…`), traversal target file.
+5. **XSS** — catalog + **search**, **opinions**, key receiver helper.
 
 Clone this repository, then open the README in the lab folder you are working on. Install dependencies under each lab’s `server/` and run `npm run dev`.
 

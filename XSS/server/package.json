@@ -4,7 +4,7 @@
   "description": "",
   "private": true,
   "scripts": {
-    "dev": "node --watch src/index.ts"
+    "dev": "node --watch-path=src --watch src/index.ts"
   },
   "engines": {
     "node": ">=22"

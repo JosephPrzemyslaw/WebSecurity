@@ -1,6 +1,6 @@
-# CSRF
+# CSRF (chapter 3)
 
-Member shop lab for cross-site request forgery defenses. Complete **[Cookies](../Cookies/) exercise 5** first (SameSite and the partner `POST /buy` demo on port **3001**).
+Member shop continuation from **[Cookies](../Cookies/)** (chapter 2, port **3001**). Complete **Cookies exercise 5** first (SameSite and the partner `POST /buy` demo on port **3001**).
 
 This app reuses the same story on port **3003** with a hardened session cookie (`HttpOnly`, `Secure`, `SameSite=None` for partner demos). Fixes use a **synchronizer token** — not cookie flag changes.
 
@@ -122,3 +122,7 @@ Open `fake-inbox.html` again — `tom` should **not** be created via `<img>` (at
 **Debrief:** `<img>` only performs GET, so mutating GET is especially dangerous. A synchronizer token in the query string blocks naive `<img>` CSRF but is **not** a substitute for a well-designed API (POST + token in body, no secrets in URLs). Stored HTML with the same URL is an **XSS/injection** topic, not cross-site POST CSRF.
 
 **Note:** Origin / Referer checks, login CSRF, and JSON `fetch` CSRF are out of scope for this lab; a CSRF token on mutating POSTs is the primary defense taught here.
+
+## Next module
+
+**Chapter 4 — [PathTraversal](../PathTraversal/)** (port **3004**): same shop, new **chapter download** endpoint (`GET /library/books/…/chapters/…`, CWE-22).

@@ -1,6 +1,6 @@
-# XSS
+# XSS (chapter 5)
 
-Member shop on port **3002**. **Stored XSS** is an opinion on `/members` (saved in SQLite). **Reflected XSS** is the library **Search** on `/members` (`GET ?q=…`, CWE-79).
+Member shop continuation from **[PathTraversal](../PathTraversal/)** (chapter 4, port **3004**). Chapter download still works (safe path); this lab adds **Stored XSS** on opinions and **Reflected XSS** on library **Search** (`GET /members?q=…`, CWE-79). App port **3002**.
 
 - **Port:** `3002`
 - **Accounts:** `marc` / `marc123`, `ewa` / `ewa123` (admin)
@@ -138,3 +138,9 @@ At the top of [`server/src/comments.ts`](server/src/comments.ts), find `USE_SAFE
 Repeat exercise **2**, **3**, or **4**, and **5**. Expected: payloads are visible as text. There is no fake banner, `/members` stays on port **3002**, and the receiver prints no keys. The prerequisite sentence still shows as plain text.
 
 The escape replaces `&`, `<`, `>`, and `"` in opinions and in the search line.
+
+## Next steps
+
+**Previous:** PathTraversal — chapter download and CWE-22.
+
+The **WebSecurity** shop track ends here. A future **file upload** lab would extend PathTraversal (`server/public/uploads/` placeholder); it is not required for XSS.
