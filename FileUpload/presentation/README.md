@@ -34,7 +34,7 @@ Import PNGs into Keynote / PowerPoint (Insert → Picture). Text is baked into t
 
 ## Historical cases (reading list + dual illustrations)
 
-See [`historical-cases/README.md`](historical-cases/README.md): links to TimThumb, ImageTragick, `.htaccess`, SVG XSS, IIS semicolon, etc. Each case has **WERSJA PROSTA | WERSJA TECHNICZNA** PNG in `historical-cases/illustrations/`.
+See [`historical-cases/README.md`](historical-cases/README.md): reading list (TimThumb, ImageTragick, `.htaccess`, SVG XSS, IIS semicolon, etc.). Each case has a dual PNG (**PLAIN LANGUAGE | TECHNICAL**) in `historical-cases/illustrations/`.
 
 ## Note
 
