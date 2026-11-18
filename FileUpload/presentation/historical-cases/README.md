@@ -1,6 +1,6 @@
 # File upload — famous cases (links + illustrations)
 
-Each case has a **dual PNG** in [`illustrations/`](illustrations/): **PLAIN LANGUAGE** (non-technical) | **TECHNICAL** (developers).
+Each case has a PNG in [`illustrations/`](illustrations/). Case **#1** is a **single** slide (multipart `body` + Burp changes), not a plain/technical split.
 
 ---
 
@@ -8,7 +8,8 @@ Each case has a **dual PNG** in [`illustrations/`](illustrations/): **PLAIN LANG
 
 | | |
 |---|---|
-| **Illustration** | [`illustrations/hist-01-php-shell-dual.png`](illustrations/hist-01-php-shell-dual.png) |
+| **Illustration (unified, PL)** | [`illustrations/hist-01-php-shell-dual.png`](illustrations/hist-01-php-shell-dual.png) — editable source: [`hist-01-php-shell-unified.svg`](illustrations/hist-01-php-shell-unified.svg) |
+| **jpg vs php variants** | [`hist-01-why-jpg-vs-php.png`](illustrations/hist-01-why-jpg-vs-php.png) |
 | **PortSwigger — File uploads (theory + web shell)** | https://portswigger.net/web-security/file-upload |
 | **Lab: RCE via web shell** | https://portswigger.net/web-security/file-upload/lab-file-upload-remote-code-execution-via-web-shell-upload |
 | **Lab: blocklist + `.htaccess`** | https://portswigger.net/web-security/file-upload/lab-file-upload-web-shell-upload-via-extension-blacklist-bypass |
