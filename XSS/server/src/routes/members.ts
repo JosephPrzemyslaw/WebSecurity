@@ -1,11 +1,12 @@
 import type { Express, Request, Response } from "express";
 import type { AppDeps } from "../appDeps.ts";
-import { buildCommentList, type CommentRow } from "../comments.ts";
+import { buildCommentList, buildLibraryCatalog, type CommentRow } from "../comments.ts";
 import { buildBuyForm, buildChapterDownloadLink, ownedBlock } from "../forms.ts";
 import { buildNav, sendShopPage } from "../shopPages.ts";
 import { hasPurchase, loginForSession, recordPurchase, redirectToLoginIfNoSession } from "../session.ts";
 
 const MAX_OPINION_LENGTH = 2000;
+const MAX_SEARCH_LENGTH = 200;
 
 export function registerMembersRoutes(app: Express, deps: AppDeps): void {
   const insertComment = deps.db.prepare("INSERT INTO comments (author, body) VALUES (?, ?)");
@@ -17,10 +18,12 @@ export function registerMembersRoutes(app: Express, deps: AppDeps): void {
     const owned = hasPurchase(sessionId);
     const buySection = owned ? ownedBlock : buildBuyForm(deps.bookId);
     const rows = listComments.all() as CommentRow[];
+    const searchQuery = readSearchQuery(req.query.q);
+    const downloadSection = buildChapterDownloadLink(deps);
     await sendShopPage(res, deps.pages.members, {
       "<!-- NAV -->": buildNav(deps, login, "members"),
-      "<!-- DOWNLOAD -->": buildChapterDownloadLink(deps),
-      "<!-- BUY -->": buySection,
+      "__SEARCH_VALUE__": searchQuery === undefined ? "" : escapeHtmlAttribute(searchQuery),
+      "<!-- CATALOG -->": buildLibraryCatalog(searchQuery, buySection, downloadSection),
       "<!-- OPINION_ERROR -->": req.query.error === "invalid" ? "" : "hidden",
       "<!-- COMMENTS -->": buildCommentList(rows),
     });
@@ -43,6 +46,25 @@ export function registerMembersRoutes(app: Express, deps: AppDeps): void {
     }
     res.redirect("/members");
   });
+}
+
+function readSearchQuery(value: unknown): string | undefined {
+  const raw = Array.isArray(value) ? value[0] : value;
+  if (typeof raw !== "string") {
+    return undefined;
+  }
+  const trimmed = raw.trim();
+  if (trimmed.length === 0 || trimmed.length > MAX_SEARCH_LENGTH) {
+    return undefined;
+  }
+  return trimmed;
+}
+
+function escapeHtmlAttribute(value: string): string {
+  return value
+    .replaceAll("&", "&amp;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("<", "&lt;");
 }
 
 function readOpinion(value: unknown): string | undefined {

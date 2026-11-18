@@ -1,6 +1,6 @@
-# Stored XSS
+# XSS
 
-Member shop on port **3002**. The vulnerable feature is an opinion under *Gone with the Wind* on `/members`. The note is saved and written into the page for the next signed-in reader (CWE-79).
+Member shop on port **3002**. **Stored XSS** is an opinion on `/members` (saved in SQLite). **Reflected XSS** is the library **Search** on `/members` (`GET ?q=…`, CWE-79).
 
 - **Port:** `3002`
 - **Accounts:** `marc` / `marc123`, `ewa` / `ewa123` (admin)
@@ -22,17 +22,21 @@ Open **`http://localhost:3002/login`**.
 XSS/
   README.md
   server/
-    src/comments.ts           # USE_SAFE_HTML; stored opinions inserted into the page
-    src/routes/members.ts     # GET /members, POST /comments, POST /buy
-    pages/members.html        # opinion form, <!-- COMMENTS -->
+    src/comments.ts           # USE_SAFE_HTML; opinions + search line
+    src/routes/members.ts     # GET /members?q=, POST /comments
+    pages/members.html        # search form, <!-- CATALOG -->
+    src/catalog.ts            # static titles; filter by q
 ```
 
 | Request | Meaning |
 |---------|---------|
 | `POST /comments` | Save the signed-in login and `body`, then redirect to `/members` |
 | `GET /members` | Library page; opinions are inserted into the HTML |
+| `GET /members?q=…` | Filters the catalog; line `Showing results for: …` is reflected (not stored) |
 
-`USE_SAFE_HTML` in [`server/src/comments.ts`](server/src/comments.ts) controls whether that text is escaped.
+The catalog is shown as cards with cover art (or initials). Only **Gone with the Wind** includes purchase and chapter download.
+
+`USE_SAFE_HTML` in [`server/src/comments.ts`](server/src/comments.ts) controls escaping for opinions and the search line.
 
 ## Prerequisite
 
@@ -61,12 +65,12 @@ Sign in as `ewa`. The words are bold. The server pasted `body` into the HTML ins
 Sign in as `marc`. In **Opinion**, submit:
 
 ```html
-<img src=x onerror=alert(document.domain)>
+<img src=x onerror="document.body.insertAdjacentHTML('afterbegin','<p class=shop-notice--urgent role=alert>Urgent: confirm your account at https://support.member-shop.invalid</p>')">
 ```
 
-Sign in as `ewa`. The alert runs when `/members` loads. The script runs as this origin (`localhost:3002`).
+Sign in as `ewa`. A red **urgent** banner appears at the top of `/members` when the page loads. The script runs as this origin (`localhost:3002`) and changes what the next reader sees.
 
-**Debrief:** `alert(document.cookie)` does not show `session`. This shop's cookie is `HttpOnly`, as in the [Cookies](../Cookies/) lab, so page script cannot read it. The script on this page still runs. HttpOnly limits what the script can see. It does not stop the script.
+**Debrief:** Try `document.cookie` in the console (or a one-line script) — the `session` cookie is not visible. It is `HttpOnly`, as in the [Cookies](../Cookies/) lab. The fake banner still runs; HttpOnly limits what script can read, not whether script can run.
 
 ### 3. Redirect the next reader
 
@@ -113,7 +117,23 @@ Sign out. Sign in as `ewa`. Click **Opinion** and type `ewa`.
 
 The receiver prints `e`, then `w`, then `a`. The shop does not receive those letters. The stored opinion sends them with `POST /key`.
 
-### 5. Enable the escape (uncomment)
+### 5. Reflected HTML in the search box (same payload as exercise 1)
+
+Search uses `GET /members?q=…`. The server filters titles in the catalog, prints `Showing results for: …`, and does **not** save `q`. The search box keeps `q` in its `value` attribute with attribute escaping; this exercise targets the results line in the HTML body, not the input.
+
+Sign in as `ewa`. Search for `Austen` — you should see **Pride and Prejudice** (one hit) and `Showing results for: Austen`. Restart `npm run dev`, sign in again: that search is gone (not in the database).
+
+While signed in, set **Search the library** to the same payload as exercise **1**:
+
+```html
+<b>tu jest HTML</b>
+```
+
+Click **Search**. The words in `Showing results for: …` are **bold** — the server pasted `q` into the HTML instead of showing the angle brackets. Copy the URL from the address bar and open it while signed in; without `q` in the URL, the formatting does not appear.
+
+**Debrief:** Stored XSS on `/members` affects every later visitor. Reflected XSS needs `q` in the link or in one search submit. DOM XSS from the slides is not implemented in this lab.
+
+### 6. Enable the escape (uncomment)
 
 At the top of [`server/src/comments.ts`](server/src/comments.ts), find `USE_SAFE_HTML`:
 
@@ -121,6 +141,6 @@ At the top of [`server/src/comments.ts`](server/src/comments.ts), find `USE_SAFE
 2. Uncomment: `// const USE_SAFE_HTML = true;`
 3. Restart `npm run dev` (in-memory opinions are cleared).
 
-Repeat exercise **2**, **3**, or **4**. Expected: the payload is visible as text. There is no alert, `/members` stays on port **3002**, and the receiver prints no keys. The prerequisite sentence still shows as plain text.
+Repeat exercise **2**, **3**, or **4**, and **5**. Expected: payloads are visible as text. There is no fake banner, `/members` stays on port **3002**, and the receiver prints no keys. The prerequisite sentence still shows as plain text.
 
-The escape replaces `&`, `<`, `>`, and `"` in the login and the opinion.
+The escape replaces `&`, `<`, `>`, and `"` in opinions and in the search line.

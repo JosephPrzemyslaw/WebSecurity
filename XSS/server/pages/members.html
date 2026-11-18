@@ -19,15 +19,16 @@
         <!-- NAV -->
         <h1>Your library</h1>
         <p>Signed-in members can buy books here. One account, one purchase per title.</p>
-        <article class="article">
-          <p class="article-tag">Featured title</p>
-          <h2>Gone with the Wind</h2>
-          <p class="byline">Margaret Mitchell</p>
-          <img src="/gone-with-the-wind.svg" alt="Cover of Gone with the Wind" />
-          <p class="blurb">Scarlett O'Hara wants her life at Tara back. Buy the ebook for your personal library.</p>
-          <!-- DOWNLOAD -->
-          <!-- BUY -->
-        </article>
+        <form class="library-search" method="get" action="/members">
+          <div class="library-search__row">
+            <div class="field library-search__field">
+              <label for="q">Search the library</label>
+              <input id="q" name="q" maxlength="200" value="__SEARCH_VALUE__" />
+            </div>
+            <button class="submit search" type="submit">Search</button>
+          </div>
+        </form>
+        <!-- CATALOG -->
         <section class="opinions">
           <h2>Opinions</h2>
           <p>Your note is stored and shown to the next signed-in reader.</p>

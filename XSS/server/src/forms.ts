@@ -13,7 +13,7 @@ export const ownedBlock = `<p class="status status--owned">You own this book. It
 export function buildChapterDownloadLink(deps: AppDeps): string {
   const href = `/library/books/${encodeURIComponent(deps.bookSlug)}/chapters/${encodeURIComponent(deps.chapterFile)}`;
   return `<p class="library-download">
-            <a href="${href}" class="download-link">Pobierz rozdział 1 (TXT)</a>
+            <a href="${href}" class="download-link">Download chapter 1 (TXT)</a>
           </p>`;
 }
 
