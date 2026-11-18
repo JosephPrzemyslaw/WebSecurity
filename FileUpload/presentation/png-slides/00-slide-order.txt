@@ -8,3 +8,4 @@ Order for deck (English, AI PNG — watercolor + flat characters):
 06-defense-layers.png
 07-php-vs-static.png
 08-checklist.png
+09-rce-what-hackers-do.png

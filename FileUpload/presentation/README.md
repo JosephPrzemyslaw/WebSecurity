@@ -1,6 +1,6 @@
 # File upload — presentation slides (PNG)
 
-Eight **English** slides in **1920×1080 PNG**, generated to match your XSS deck: **watercolor corners**, **navy type**, **pink callouts**, **yellow Lesson bar**, simple **flat characters**.
+Nine **English** slides in **1920×1080 PNG**, generated to match your XSS deck: **watercolor corners**, **navy type**, **pink callouts**, **yellow Lesson bar**, simple **flat characters**.
 
 General **CWE-434** teaching (OWASP, Portswigger, Intigriti) — not tied step-for-step to the port **3005** lab.
 
@@ -18,6 +18,7 @@ Folder: [`png-slides/`](png-slides/)
 | 6 | `06-defense-layers.png` |
 | 7 | `07-php-vs-static.png` |
 | 8 | `08-checklist.png` |
+| 9 | `09-rce-what-hackers-do.png` — **after RCE: what attackers do** (use after slide 7 or case study) |
 
 Order: `png-slides/00-slide-order.txt`
 
