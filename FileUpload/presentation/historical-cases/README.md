@@ -58,7 +58,7 @@ Each case has a PNG in [`illustrations/`](illustrations/). Case **#1** uses **tw
 
 | | |
 |---|---|
-| **Illustration** | [`illustrations/hist-02-htaccess-dual.png`](illustrations/hist-02-htaccess-dual.png) |
+| **Illustration** | [`illustrations/hist-02-htaccess-story-720p.png`](illustrations/hist-02-htaccess-story-720p.png) — **.htaccess upload → new PHP extension** |
 | **PortSwigger lab (step-by-step)** | https://portswigger.net/web-security/file-upload/lab-file-upload-web-shell-upload-via-extension-blacklist-bypass |
 | **OWASP Cheat Sheet — `.htaccess` in uploads** | https://cheatsheetseries.owasp.org/cheatsheets/File_Upload_Cheat_Sheet.html |
 | **Cyber Library — `.htaccess` override abuse** | https://www.cyberlibrary.com/en/docs/offensive/software/applications/server/web/platform/apache/handler-and-type-mapping |
@@ -74,7 +74,7 @@ Each case has a PNG in [`illustrations/`](illustrations/). Case **#1** uses **tw
 
 | | |
 |---|---|
-| **Illustration** | [`illustrations/hist-03-timthumb-dual.png`](illustrations/hist-03-timthumb-dual.png) |
+| **Illustration** | [`illustrations/hist-03-timthumb-story-720p.png`](illustrations/hist-03-timthumb-story-720p.png) — **TimThumb cache fetch → remote code execution** |
 | **CVE-2011-4106 (NVD)** | https://nvd.nist.gov/vuln/detail/CVE-2011-4106 |
 | **Mark Maunder — technical write-up** | https://markmaunder.com/2011/technical-details-and-scripts-of-the-wordpress-timthumb-php-hack/ |
 | **TimThumb 2.0 announcement** | https://www.binarymoon.co.uk/2011/08/timthumb-2/ |
@@ -90,7 +90,7 @@ Each case has a PNG in [`illustrations/`](illustrations/). Case **#1** uses **tw
 
 | | |
 |---|---|
-| **Illustration** | [`illustrations/hist-04-svg-xss-dual.png`](illustrations/hist-04-svg-xss-dual.png) |
+| **Illustration** | [`illustrations/hist-04-svg-xss-story-720p.png`](illustrations/hist-04-svg-xss-story-720p.png) — **SVG upload → stored XSS** |
 | **PortSwigger — client-side scripts (SVG/HTML uploads)** | https://portswigger.net/web-security/file-upload |
 | **PacketWanderer — Stored XSS via SVG** | https://packetwanderer.com/posts/svg-xss/ |
 | **TypiCMS advisory** | https://github.com/TypiCMS/Core/security/advisories/GHSA-xfvg-8v67-j7wp |
@@ -109,7 +109,7 @@ Each case has a PNG in [`illustrations/`](illustrations/). Case **#1** uses **tw
 
 | | |
 |---|---|
-| **Illustration** | [`illustrations/hist-05-fake-resume-dual.png`](illustrations/hist-05-fake-resume-dual.png) |
+| **Illustration** | [`illustrations/hist-05-fake-resume-story-720p.png`](illustrations/hist-05-fake-resume-story-720p.png) — **Fake résumé ZIP → workstation malware** |
 | **Arctic Wolf — Venom Spider / More_eggs** | https://arcticwolf.com/resources/blog/venom-spider-uses-server-side-polymorphism-to-weave-a-web-around-victims/ |
 | **CSO Online** | https://www.csoonline.com/article/3977803/fake-resumes-targeting-hr-managers-now-come-with-updated-backdoor.html |
 | **The Hacker News (2024)** | https://thehackernews.com/2024/10/fake-job-applications-deliver-dangerous.html |
@@ -125,7 +125,7 @@ Each case has a PNG in [`illustrations/`](illustrations/). Case **#1** uses **tw
 
 | | |
 |---|---|
-| **Illustration** | [`illustrations/hist-06-imagetragick-dual.png`](illustrations/hist-06-imagetragick-dual.png) |
+| **Illustration** | [`illustrations/hist-06-imagetragick-story-720p.png`](illustrations/hist-06-imagetragick-story-720p.png) — **ImageTragick → command injection (CVE-2016-3714)** |
 | **imagetragick.com** | https://imagetragick.com/ |
 | **CVE-2016-3714 (NVD)** | https://nvd.nist.gov/vuln/detail/CVE-2016-3714 |
 | **CERT VU#250519** | https://kb.cert.org/vuls/id/250519 |
@@ -142,7 +142,7 @@ Each case has a PNG in [`illustrations/`](illustrations/). Case **#1** uses **tw
 
 | | |
 |---|---|
-| **Illustration** | [`illustrations/hist-07-iis-semicolon-dual.png`](illustrations/hist-07-iis-semicolon-dual.png) |
+| **Illustration** | [`illustrations/hist-07-iis-semicolon-story-720p.png`](illustrations/hist-07-iis-semicolon-story-720p.png) — **IIS semicolon → script hidden as .jpg** |
 | **CVE-2009-4444 (NVD)** | https://nvd.nist.gov/vuln/detail/CVE-2009-4444 |
 | **Rapid7 — Metasploit + JPG header** | https://old.rapid7.com/blog/post/2009/12/28/exploiting-microsoft-iis-with-metasploit/ |
 | **OWASP — bypass list (IIS semicolon, double ext.)** | https://owasp.org/www-community/vulnerabilities/Unrestricted_File_Upload |
@@ -157,13 +157,15 @@ Each case has a PNG in [`illustrations/`](illustrations/). Case **#1** uses **tw
 ## File order
 
 ```
-illustrations/hist-01-php-shell-dual.png
-illustrations/hist-02-htaccess-dual.png
-illustrations/hist-03-timthumb-dual.png
-illustrations/hist-04-svg-xss-dual.png
-illustrations/hist-05-fake-resume-dual.png
-illustrations/hist-06-imagetragick-dual.png
-illustrations/hist-07-iis-semicolon-dual.png
+illustrations/hist-01-php-shell-technical-720p.png
+illustrations/hist-02-htaccess-story-720p.png
+illustrations/hist-03-timthumb-story-720p.png
+illustrations/hist-04-svg-xss-story-720p.png
+illustrations/hist-05-fake-resume-story-720p.png
+illustrations/hist-06-imagetragick-story-720p.png
+illustrations/hist-07-iis-semicolon-story-720p.png
 ```
+
+Each story slide is **1280×720**, English, three cards (upload → what the server does → what happens next), same watercolor deck as case 1. A 1920×1080 copy sits beside each file without the `-720p` suffix.
 
 On-image text is AI-generated — proofread before printing or projecting.
