@@ -1,34 +1,45 @@
 # File upload — famous cases (links + illustrations)
 
-Each case has a PNG in [`illustrations/`](illustrations/). Case **#1** is a **single** slide (multipart `body` + Burp changes), not a plain/technical split.
+Each case has a PNG in [`illustrations/`](illustrations/). Case **#1** uses **two** slides (no MITM — only the attacker).
 
 ---
 
-## 1. A “photo” that was a PHP script (web shell)
+## 1. Upload `image.php` + spoofed headers → RCE (web shell)
 
 | | |
 |---|---|
-| **Illustration (unified, PL)** | **`illustrations/hist-01-php-shell-dual.png`** (1920×1080 — use this in PowerPoint/Keynote) |
-| **jpg vs php variants** | [`hist-01-why-jpg-vs-php.png`](illustrations/hist-01-why-jpg-vs-php.png) |
+| **Lekko technicznie** | [`illustrations/hist-01-php-shell-light.png`](illustrations/hist-01-php-shell-light.png) |
+| **Skrajnie technicznie** | [`illustrations/hist-01-php-shell-technical.png`](illustrations/hist-01-php-shell-technical.png) |
+| **Obejścia rozszerzeń (opcjonalnie)** | [`hist-01-why-jpg-vs-php.png`](illustrations/hist-01-why-jpg-vs-php.png) |
 | **PortSwigger — File uploads (theory + web shell)** | https://portswigger.net/web-security/file-upload |
 | **Lab: RCE via web shell** | https://portswigger.net/web-security/file-upload/lab-file-upload-remote-code-execution-via-web-shell-upload |
 | **Lab: blocklist + `.htaccess`** | https://portswigger.net/web-security/file-upload/lab-file-upload-web-shell-upload-via-extension-blacklist-bypass |
 | **OWASP — Unrestricted File Upload** | https://owasp.org/www-community/vulnerabilities/Unrestricted_File_Upload |
 | **ZeroExp — disable execution in upload dirs** | https://zeroexp.dev/library/prevent-upload-execution |
 
-**Plain language (story):**
+**Story (correct model — no Burp, no victim):**
 
-1. Attacker uploads something that **looks like a photo in the UI** — the site accepts it.
-2. On disk the name is usually **not** innocent: `shell.php`, `evil.php.jpg`, or a folder rule (`.htaccess`) makes a non-`.php` name run as PHP — see [`hist-01-why-jpg-vs-php.png`](illustrations/hist-01-why-jpg-vs-php.png).
-3. They keep a **URL** to that stored file (often ending in `.php` or a bypass extension).
-4. Opening that URL is **not** “viewing a picture” — the server **runs** the file and lets them **type commands**.
-5. **What hackers do next (impact):**
+1. **Attacker** uploads **`image.php`** (web shell inside), sets **`Content-Type: image/jpeg`** in the multipart part.
+2. **Weak backend** checks only the header (or extension allow-list is missing) → saves **`/uploads/image.php`**.
+3. Attacker calls **`GET /uploads/image.php?cmd=…`** → **mod_php** runs the file → **RCE**.
+
+**Impact:**
    - Read secrets from disk (config, keys, `secret` files)
    - Dump or copy the **database** (customers, passwords hashes, orders)
    - **Change the shop** (defacement, scam page, malware for visitors)
    - **Pivot** — use your server to attack others (spam, bots, mining)
 
-**Technical:** `POST` upload (`shell.php` or `.php5`, sometimes GIF magic bytes) → saved under a web-served path → `GET /uploads/evil.php?cmd=…` → `mod_php` executes → `system($_GET['cmd'])` → RCE as the web-server user → exfiltration + persistent backdoor.
+**Technical body (example):**
+
+```
+Content-Disposition: form-data; name="file"; filename="image.php"
+Content-Type: image/jpeg
+
+GIF89a;
+<?php system($_GET['cmd']); ?>
+```
+
+Then `GET /uploads/image.php?cmd=cat%20secret` → `system()` → exfiltration / backdoor.
 
 **Real history (important):** This is **not** a single newspaper headline like TimThumb 2011 — it is the **default failure mode** of **PHP + Apache shared hosting** from the **2000s–2010s** until today on misconfigured sites. Pentesters and criminals repeatedly found: avatar/CV/gallery upload → file saved under the web root → **mod_php runs `.php`**. [PortSwigger Web Security Academy](https://portswigger.net/web-security/file-upload) built its **RCE upload labs** on this exact chain (e.g. reading `/home/carlos/secret`). Classified under **CWE-434** / OWASP “Unrestricted File Upload”. Your **Node shop lab** intentionally does **not** execute uploads — this case explains **server-side** impact when the stack **does** run PHP.
 

