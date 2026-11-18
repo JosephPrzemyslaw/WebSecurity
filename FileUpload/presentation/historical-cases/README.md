@@ -19,9 +19,9 @@ Each case has a PNG in [`illustrations/`](illustrations/). Case **#1** uses **tw
 
 **Story (correct model — no Burp, no victim):**
 
-1. **Attacker** uploads **`image.php`** (web shell inside), sets **`Content-Type: image/jpeg`** in the multipart part.
-2. **Weak backend** checks only the header (or extension allow-list is missing) → saves **`/uploads/image.php`**.
-3. Attacker calls **`GET /uploads/image.php?cmd=…`** → **mod_php** runs the file → **RCE**.
+1. **Attacker** uploads a file whose body is **`GIF89a;` + PHP shell**, multipart part labeled **`Content-Type: image/jpeg`**, **`filename="image.php"`**.
+2. **Weak backend** accepts the upload (header and/or weak magic-byte check) and writes **`/uploads/image.php`** unchanged.
+3. Attacker calls **`GET /uploads/image.php?cmd=…`** → web server runs **`.php`** via **`mod_php`** → interpreter hits **`<?php … ?>`** in the file → **RCE** (leading `GIF89a` is irrelevant to that step).
 
 **Impact:**
    - Read secrets from disk (config, keys, `secret` files)
@@ -31,18 +31,24 @@ Each case has a PNG in [`illustrations/`](illustrations/). Case **#1** uses **tw
 
 **Technical slide:** [`hist-01-php-shell-technical.png`](illustrations/hist-01-php-shell-technical.png) (deck) or [`hist-01-php-shell-technical-720p.png`](illustrations/hist-01-php-shell-technical-720p.png) — English, watercolor layout like the deck “Extremely technical” slide; full POST multipart + saved path + GET.
 
-**Two Content-Types (both appear “valid” syntactically):**
+**HTTP (what the slide shows):**
 
-| Header | Value | Role |
-|--------|--------|------|
-| Request | `multipart/form-data; boundary=…` | Correct for file upload |
-| Part | `image/jpeg` | **Spoofed** — attacker lies; backend must not trust it |
+| Layer | Header / line | Meaning |
+|--------|----------------|---------|
+| Request | `Content-Type: multipart/form-data; boundary=…` | Normal browser upload |
+| Part | `Content-Disposition: … filename="image.php"` | **Real** name on disk if the app is naive |
+| Part | `Content-Type: image/jpeg` | Declares “this part is JPEG” — a dumb app may **only** look here |
+| Part body | `GIF89a;` then `<?php … ?>` | Bytes saved **as-is** into `uploads/image.php` |
 
-**Body of the file part:** optional `GIF89a;` + `<?php system($_GET['cmd']); ?>`
+**Why execution does not care about `GIF89a` at the start**
+
+1. **On upload**, `GIF89a` is optional. It exists to fool checks that read **only the first few bytes** (“magic number”) or trust the part’s `Content-Type: image/jpeg`. It is **not** what makes PHP run later.
+2. **On `GET`**, Apache (typical lab stack) maps **`*.php`** to the PHP engine (**`mod_php`**). That decision uses the **URL path / file extension**, not “does this look like JPEG?”.
+3. **Inside the file**, PHP does **not** require `<?php` at byte 0. The interpreter scans the file and **executes any `<?php … ?>` block**. Bytes before that (`GIF89a;`) are outside PHP tags — they may be echoed as output, but the shell still runs.
 
 **Saved as (weak backend):** `uploads/image.php` from `filename="image.php"` in Content-Disposition.
 
-**Trigger:** `GET /uploads/image.php?cmd=whoami` → `mod_php` → RCE.
+**Trigger:** `GET /uploads/image.php?cmd=whoami` → handler for `.php` → `system('whoami')` → RCE.
 
 **Real history (important):** This is **not** a single newspaper headline like TimThumb 2011 — it is the **default failure mode** of **PHP + Apache shared hosting** from the **2000s–2010s** until today on misconfigured sites. Pentesters and criminals repeatedly found: avatar/CV/gallery upload → file saved under the web root → **mod_php runs `.php`**. [PortSwigger Web Security Academy](https://portswigger.net/web-security/file-upload) built its **RCE upload labs** on this exact chain (e.g. reading `/home/carlos/secret`). Classified under **CWE-434** / OWASP “Unrestricted File Upload”. Your **Node shop lab** intentionally does **not** execute uploads — this case explains **server-side** impact when the stack **does** run PHP.
 
