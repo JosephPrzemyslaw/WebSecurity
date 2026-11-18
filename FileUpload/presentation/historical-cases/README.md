@@ -8,7 +8,7 @@ Each case has a PNG in [`illustrations/`](illustrations/). Case **#1** is a **si
 
 | | |
 |---|---|
-| **Illustration (unified, PL)** | [`illustrations/hist-01-php-shell-dual.png`](illustrations/hist-01-php-shell-dual.png) — editable source: [`hist-01-php-shell-unified.svg`](illustrations/hist-01-php-shell-unified.svg) |
+| **Illustration (unified, PL)** | **`illustrations/hist-01-php-shell-dual.png`** (1920×1080 — use this in PowerPoint/Keynote) |
 | **jpg vs php variants** | [`hist-01-why-jpg-vs-php.png`](illustrations/hist-01-why-jpg-vs-php.png) |
 | **PortSwigger — File uploads (theory + web shell)** | https://portswigger.net/web-security/file-upload |
 | **Lab: RCE via web shell** | https://portswigger.net/web-security/file-upload/lab-file-upload-remote-code-execution-via-web-shell-upload |
