@@ -21,7 +21,7 @@ Open **`http://localhost:3005/login`**.
 ```text
 FileUpload/
   README.md
-  samples/evil.html, evil.svg   # ready files for exercise 2
+  samples/evil.html, evil.svg   # exercise 2; exercise 4 reuses evil.html
   server/
     pages/account.html
     src/upload.ts                 # USE_SAFE_UPLOAD
@@ -38,34 +38,70 @@ FileUpload/
 
 ## Exercises
 
-**CWE-434** · debrief: [PathTraversal](../PathTraversal/) = **read** a chapter; this lab = **write** into web-served `uploads/`.
+**CWE-434** · [PathTraversal](../PathTraversal/) = **read** a chapter from disk; this lab = **write** into web-served `uploads/`.
+
+Keep **`USE_SAFE_UPLOAD = false`** for exercises **1–2**.
 
 ### 1. Legal image
 
-Sign in as `marc` → **Your account** → upload a small **PNG** or **JPEG**. The preview appears on `/account`.
+Sign in as `marc` → **Your account** → upload a small **PNG** or **JPEG**.
+
+On `/account` you get a normal **profile photo** in `<img>` plus **Open uploaded file**. There is **no** anti-pattern iframe block for JPEG/PNG (only real image previews use `<img>`).
 
 ### 2. HTML or SVG (not an image)
 
-Still signed in as `marc`. Upload one sample from [`samples/`](samples/) (or your own copy):
+Still signed in as `marc`. Upload **one** sample from [`samples/`](samples/) (or your own copy). After each step, stay on `/account` unless noted.
 
-| File | What to check |
-|------|----------------|
-| [`evil.html`](samples/evil.html) | Click **Open uploaded file** (or open the same path in the address bar). **Bold text** is pasted as HTML, not escaped. |
-| [`evil.svg`](samples/evil.svg) | On `/account`, the **profile photo uses `<img>`** — SVG script does **not** run there (safe). Scroll to **Anti-pattern (do not ship)**: the lab’s intentional **`<iframe>`** can run script in that frame. Also **Open uploaded file**. |
+**Shared steps (every non-JPEG/PNG upload):**
 
-**Debrief (SVG):** The normal UI is **`&lt;img&gt;`** (realistic and safe for script). The dashed **anti-pattern** block shows what **not** to do when previewing uploads. The core CWE-434 issue is still **hosting** the file on your origin — **Open uploaded file** / shared `/uploads/…` links matter even when the avatar stays an image. **Chrome** may restrict some SVG script in iframe; use [`evil.html`](samples/evil.html) if you need a loud demo.
+1. **Profile photo** — the shop shows the file in `<img>` only (production-style). For [`evil.html`](samples/evil.html) you usually get a broken image icon. For [`evil.svg`](samples/evil.svg) you may see the picture, but **no** `alert` — scripts do not run inside `<img>` (by design).
+2. **Anti-pattern (do not ship)** — dashed box with an `<iframe src="/uploads/…">` on purpose. Some products preview attachments in a frame; that can run SVG/HTML as a **document** on this origin. This is **not** how you should build an avatar UI.
+3. **Open uploaded file** — opens the same URL in a new tab (realistic attack path: hostile file **hosted** on the shop origin).
 
-**Debrief (HTML):** Same pattern as XSS on opinions, but the payload arrived via **upload**, not a comment.
+**Variant A — HTML**
+
+Upload [`evil.html`](samples/evil.html). Click **Open uploaded file** (or paste the `/uploads/evil.html` URL). The file runs as a **full page** on this origin: a red **urgent** banner appears (same class as the stored-XSS demo in the [XSS](../XSS/) lab), powered by `<script>` in the uploaded file. The anti-pattern **iframe** on `/account` shows the same effect without leaving the account page. Payload arrived via **upload**, not an opinion field.
+
+Optional: sign in as `ewa`, open a link `http://localhost:3005/uploads/evil.html` that `marc` shared — same trusted domain, same effect.
+
+**Variant B — SVG**
+
+Upload [`evil.svg`](samples/evil.svg). In the **anti-pattern** iframe, script may run (e.g. `alert(document.domain)`). In `<img>` it does not. **Chrome** sometimes blocks script in external SVG even in an iframe; if it stays quiet, rely on **variant A** for a loud demo.
+
+**Debrief**
+
+- The vulnerability class is **accepting and serving** unexpected files under `/uploads/…`, not only “what the avatar `<img>` does”.
+- `<img>` is safe for script; **documents** (new tab, iframe, attachment preview) are not.
+- In production, avatars should use `<img>` only; the iframe block exists in the lab to show what **not** to ship.
 
 ### 3. Enable safe upload (uncomment)
+
+`USE_SAFE_UPLOAD` must stay **off** for exercises **1–2**. Leave it **on** for exercises **3** and **4**.
 
 At the top of [`server/src/upload.ts`](server/src/upload.ts):
 
 1. Comment out: `const USE_SAFE_UPLOAD = false;`
 2. Uncomment: `// const USE_SAFE_UPLOAD = true;`
-3. Restart `npm run dev`. Delete old files in `server/public/uploads/` if needed.
+3. Restart `npm run dev`. Delete old files in `server/public/uploads/` if needed so stale `evil.html` URLs do not confuse the demo.
 
-Repeat exercise **2**. Expected: upload rejected or saved only as a random **.jpg** / **.png** name; HTML/SVG payloads should not be accepted.
+The server then accepts only multipart parts whose `Content-Type` is **`image/jpeg`** or **`image/png`**. It **ignores** the original filename and saves as `{login}-{uuid}.jpg` or `.png` (extension comes from that MIME, not from file bytes).
+
+Repeat exercise **2** (upload [`evil.html`](samples/evil.html) or [`evil.svg`](samples/evil.svg) normally). Expected: **Upload failed** on `/account`; **no** new HTML/SVG file in `server/public/uploads/`. Old files from exercise 2 may still be reachable until you delete them.
+
+This fix is a **first step** only; exercise **4** shows that trusting **client-supplied MIME** is not content validation.
+
+### 4. MIME spoof — junk on disk (after exercise 3)
+
+Leave **`USE_SAFE_UPLOAD = true`**.
+
+1. Upload [`evil.html`](samples/evil.html) through the normal form → **failed** (same as exercise 3).
+2. Repeat the upload through **Burp** (intercept `POST /account/avatar`) and change the file part’s header to **`Content-Type: image/jpeg`**. Body stays the HTML from `evil.html`.
+
+**Expected (UI):** Upload succeeds. Profile photo is a broken `<img>` — **no** urgent banner on `/account` itself (only the broken image). No anti-pattern iframe (`.jpg` is treated like a real image extension). **Open uploaded file** usually does **not** run the HTML demo (response is served as an image type) — contrast with exercise 2.
+
+**Expected (proof):** In `server/public/uploads/`, a new `marc-*.jpg` whose **contents** are still the HTML document (e.g. `cat server/public/uploads/marc-*.jpg` shows `<script>` / `shop-notice--urgent`, not JPEG bytes). Whitelist MIME was bypassed; **garbage landed in a public web directory**.
+
+**Debrief:** Production needs **magic-byte** checks or re-encoding (e.g. sharp), not MIME from the browser alone. On other stacks the same mistake can mean webshells or polyglots; here the lesson is **disk + origin**, even when the shop UI looks fine.
 
 ## Next steps
 

@@ -1,1 +1,20 @@
-<b>uploaded HTML</b>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Member shop — notice</title>
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <script>
+      document.body.insertAdjacentHTML(
+        "afterbegin",
+        '<p class="shop-notice--urgent" role="alert">Urgent: confirm your account at https://support.member-shop.invalid</p><p class="blurb">This document was served from <code>' +
+          location.origin +
+          location.pathname +
+          "</code> — same origin as the member shop.</p>",
+      );
+    </script>
+  </body>
+</html>
