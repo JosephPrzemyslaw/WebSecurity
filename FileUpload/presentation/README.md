@@ -32,6 +32,10 @@ Raw ZIP:
 
 Import PNGs into Keynote / PowerPoint (Insert → Picture). Text is baked into the image — tweak wording in an image editor if needed.
 
+## Historical cases (reading list + dual illustrations)
+
+See [`historical-cases/README.md`](historical-cases/README.md): links to TimThumb, ImageTragick, `.htaccess`, SVG XSS, IIS semicolon, etc. Each case has **WERSJA PROSTA | WERSJA TECHNICZNA** PNG in `historical-cases/illustrations/`.
+
 ## Note
 
 Earlier **SVG** sets were removed from this folder; use **`png-slides/`** only.
