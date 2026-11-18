@@ -1,6 +1,6 @@
 # File upload — presentation slides (PNG)
 
-Nine **English** slides in **1920×1080 PNG**, generated to match your XSS deck: **watercolor corners**, **navy type**, **pink callouts**, **yellow Lesson bar**, simple **flat characters**.
+Nine **English** slides in **1920×1080 PNG**, **generated as images** (same watercolor XSS deck style as your HTML-sanitization example): **watercolor corners**, **navy type**, **pink callouts**, **yellow Lesson bar**, simple **flat characters**. Case **hist-01** “Skrajnie technicznie” uses the same look at **1280×720** — see [`historical-cases/illustrations/hist-01-php-shell-technical-720p.png`](historical-cases/illustrations/hist-01-php-shell-technical-720p.png).
 
 General **CWE-434** teaching (OWASP, Portswigger, Intigriti) — not tied step-for-step to the port **3005** lab.
 

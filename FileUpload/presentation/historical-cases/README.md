@@ -29,7 +29,7 @@ Each case has a PNG in [`illustrations/`](illustrations/). Case **#1** uses **tw
    - **Change the shop** (defacement, scam page, malware for visitors)
    - **Pivot** — use your server to attack others (spam, bots, mining)
 
-**Technical slide:** [`hist-01-php-shell-technical.png`](illustrations/hist-01-php-shell-technical.png) (deck) or [`hist-01-php-shell-technical-720p.png`](illustrations/hist-01-php-shell-technical-720p.png) — tytuł **Skrajnie technicznie** (jak w decku); HTTP po angielsku; regeneracja: `_sources/render_hist01_technical_720p.py`.
+**Technical slide:** [`hist-01-php-shell-technical.png`](illustrations/hist-01-php-shell-technical.png) (deck) or [`hist-01-php-shell-technical-720p.png`](illustrations/hist-01-php-shell-technical-720p.png) — **ten sam pipeline co** [`png-slides/`](../png-slides/) (watercolor deck): **obraz z generatora** + referencja slajdu XSS; tytuł **Skrajnie technicznie**; HTTP w panelu po angielsku (dokładny monospace tylko na ciemnym „terminalu” — modele obrazu gubią długi HTTP).
 
 **HTTP (what the slide shows):**
 
