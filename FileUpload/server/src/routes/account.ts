@@ -9,7 +9,6 @@ import {
   UPLOAD_MAX_BYTES,
   avatarPreviewFor,
   buildAvatarPreview,
-  buildZipPreview,
   saveUploadedAvatar,
 } from "../upload.ts";
 
@@ -26,7 +25,6 @@ export function registerAccountRoutes(app: Express, deps: AppDeps): void {
       "<!-- LOGIN -->": login,
       "<!-- UPLOAD_ERROR -->": req.query.error === "invalid" ? "" : "hidden",
       "<!-- AVATAR_PREVIEW -->": buildAvatarPreview(avatarPreviewFor(login)),
-      "<!-- ZIP_PREVIEW -->": buildZipPreview(login),
       "<!-- DELETE -->": buildDeleteAccountForm(),
     });
   });
