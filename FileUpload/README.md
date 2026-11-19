@@ -103,6 +103,17 @@ Leave **`USE_SAFE_UPLOAD = true`**.
 
 **Debrief:** Production needs **magic-byte** checks or re-encoding (e.g. sharp), not MIME from the browser alone. Here the lesson is **disk + origin**, even when the shop UI looks fine.
 
+### Instructor: parallel uploads (no Burp Pro)
+
+Burp Community throttles Intruder. For a **local** demo of “many uploads at once” (disk quota / rate limits), use:
+
+```bash
+# lab must be running (npm run dev); USE_SAFE_UPLOAD = false
+node samples/demo-parallel-uploads.mjs --count 25 --concurrency 8
+```
+
+Then inspect `server/public/uploads/quota-demo-*.jpg`. Script refuses any host other than `127.0.0.1` / `localhost`.
+
 ## Next steps
 
 **Previous:** XSS — opinions and search (CWE-79).
