@@ -74,7 +74,7 @@ Each case has a PNG in [`illustrations/`](illustrations/). Case **#1** uses **tw
 
 | | |
 |---|---|
-| **Illustration** | [`illustrations/hist-03-timthumb-story-720p.png`](illustrations/hist-03-timthumb-story-720p.png) — **TimThumb cache fetch → remote code execution** |
+| **Illustration** | [`illustrations/hist-03-timthumb-story-720p.png`](illustrations/hist-03-timthumb-story-720p.png) — **TimThumb cache fetch → remote code execution** · `thumb.php` makes small photos; attacker URL `http://allowed.com.evil/x.php` |
 | **CVE-2011-4106 (NVD)** | https://nvd.nist.gov/vuln/detail/CVE-2011-4106 |
 | **Mark Maunder — technical write-up** | https://markmaunder.com/2011/technical-details-and-scripts-of-the-wordpress-timthumb-php-hack/ |
 | **TimThumb 2.0 announcement** | https://www.binarymoon.co.uk/2011/08/timthumb-2/ |
