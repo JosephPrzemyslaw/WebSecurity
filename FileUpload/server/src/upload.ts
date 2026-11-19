@@ -2,11 +2,12 @@ import { randomUUID } from "node:crypto";
 import { mkdir, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import type { AppDeps } from "./appDeps.ts";
+import { inflateFirstZipEntry, type ZipInflateResult } from "./zipBomb.ts";
 
 /**
  * CWE-434: avatar upload on /account (write under public/uploads).
  *
- * Exercises 1–2: leave the next line as-is (`false`).
+ * Exercises 1–2 and 5: leave the next line as-is (`false`).
  * Exercise 3: uncomment the line below and comment out `false`.
  */
 const USE_SAFE_UPLOAD = false;
@@ -15,6 +16,7 @@ const USE_SAFE_UPLOAD = false;
 export const UPLOAD_MAX_BYTES = 2_000_000;
 
 const previewByLogin = new Map<string, string>();
+const zipPreviewByLogin = new Map<string, ZipInflateResult>();
 
 export function avatarPreviewFor(login: string): string | undefined {
   return previewByLogin.get(login);
@@ -44,6 +46,26 @@ export function buildAvatarPreview(publicPath: string | undefined): string {
           ${openLink}`;
 }
 
+function escapeHtml(value: string): string {
+  return value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/"/g, "&quot;");
+}
+
+export function buildZipPreview(login: string): string {
+  const result = zipPreviewByLogin.get(login);
+  if (result === undefined) {
+    return "";
+  }
+  const capNote = result.capped
+    ? `Naive unzip started inflating <code>${escapeHtml(result.name)}</code> and this lab stopped at ${result.inflatedBytes.toLocaleString("en-US")} bytes so the machine survives.`
+    : `Unzip produced ${result.inflatedBytes.toLocaleString("en-US")} bytes for <code>${escapeHtml(result.name)}</code>.`;
+  return `<section class="zip-preview" aria-labelledby="zip-preview-title">
+            <h3 class="zip-preview__title" id="zip-preview-title">Zip preview (vulnerable lab)</h3>
+            <p>Archive was <strong>${result.archiveBytes.toLocaleString("en-US")} bytes</strong> — under the ${UPLOAD_MAX_BYTES.toLocaleString("en-US")} MAX.</p>
+            <p>ZIP header claims <strong>${result.claimedUncompressed.toLocaleString("en-US")} uncompressed bytes</strong>.</p>
+            <p>${capNote} Without a cap, the shop keeps allocating RAM until it stalls (application-layer DoS, CWE-409).</p>
+          </section>`;
+}
+
 export async function saveUploadedAvatar(
   deps: AppDeps,
   login: string,
@@ -68,5 +90,29 @@ export async function saveUploadedAvatar(
 
   await writeFile(join(deps.uploadsDir, filename), file.buffer);
   previewByLogin.set(login, `/uploads/${filename}`);
+
+  /**
+   * Exercise 5 (vulnerable): a shop that “previews” a zip by unpacking it.
+   * UPLOAD_MAX_BYTES already passed — that only measured the archive on the wire.
+   * Leave USE_SAFE_UPLOAD = false for this demo.
+   */
+  const looksLikeZip =
+    filename.toLowerCase().endsWith(".zip") ||
+    file.mimetype === "application/zip" ||
+    file.mimetype === "application/x-zip-compressed";
+  if (looksLikeZip) {
+    const result = inflateFirstZipEntry(file.buffer);
+    if (result !== undefined) {
+      zipPreviewByLogin.set(login, result);
+      console.log(
+        `[zip-preview] ${login} archive=${result.archiveBytes} claimed=${result.claimedUncompressed} inflated=${result.inflatedBytes} capped=${result.capped}`,
+      );
+    } else {
+      zipPreviewByLogin.delete(login);
+    }
+  } else {
+    zipPreviewByLogin.delete(login);
+  }
+
   return true;
 }

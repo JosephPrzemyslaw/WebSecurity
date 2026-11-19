@@ -154,6 +154,23 @@ Each case has a PNG in [`illustrations/`](illustrations/). Case **#1** uses **tw
 
 ---
 
+## 8. Zip bomb upload → application DoS (CWE-409)
+
+| | |
+|---|---|
+| **Illustration** | [`illustrations/hist-dos-zipbomb-story-720p.png`](illustrations/hist-dos-zipbomb-story-720p.png) — **Zip bomb upload → application DoS** |
+| **Lab exercise** | [`FileUpload/README.md`](../../README.md) — exercise 5 |
+| **CWE-409** | https://cwe.mitre.org/data/definitions/409.html |
+| **42.zip (classic demo)** | https://www.unforgettable.dk/ |
+
+**Plain language:** The file looks tiny. The shop already has a MAX-bytes check. Then the server unpacks the zip to “preview” it, RAM fills up, and other members cannot use the shop.
+
+**Technical:** Multipart body is `bomb.zip` (~40 KB). `UPLOAD_MAX_BYTES` (2 MB) passes. A naive `inflate` of the first entry follows the ZIP header’s uncompressed size (100 MiB in the lab; gigabytes in a real bomb). That is **application-layer DoS**, not a network flood. The lab caps inflate at 8 MiB so the VM survives.
+
+**Story (English):** [`hist-dos-zipbomb-story-720p.png`](illustrations/hist-dos-zipbomb-story-720p.png) — three cards: (1) user uploads `bomb.zip` · 42 KB, (2) server unpacks it because the limit was only MAX bytes, (3) the shop stalls.
+
+---
+
 ## Defense checklist — filter out malicious files
 
 | | |
@@ -179,6 +196,7 @@ illustrations/hist-04-svg-xss-story-720p.png
 illustrations/hist-05-fake-resume-story-720p.png
 illustrations/hist-06-imagetragick-story-720p.png
 illustrations/hist-07-iis-semicolon-story-720p.png
+illustrations/hist-dos-zipbomb-story-720p.png
 illustrations/hist-defense-filter-malicious-files-720p.png
 ```
 

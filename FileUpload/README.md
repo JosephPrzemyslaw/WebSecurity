@@ -22,6 +22,8 @@ Open **`http://localhost:3005/login`**.
 FileUpload/
   README.md
   samples/evil.html, evil.svg   # exercise 2; exercise 4 reuses evil.html
+  samples/make-zip-bomb.mjs     # exercise 5 — builds bomb.zip
+  samples/bomb.zip              # generated; tiny on disk, 100 MiB uncompressed
   server/
     pages/account.html
     src/upload.ts                 # USE_SAFE_UPLOAD
@@ -102,6 +104,34 @@ Leave **`USE_SAFE_UPLOAD = true`**.
 **Expected (proof):** In `server/public/uploads/`, a new `marc-*.jpg` whose **contents** are still the HTML document (e.g. `cat server/public/uploads/marc-*.jpg` shows `<script>` / `shop-notice--urgent`, not JPEG bytes). Whitelist MIME was bypassed; **garbage landed in a public web directory**.
 
 **Debrief:** Production needs **magic-byte** checks or re-encoding (e.g. sharp), not MIME from the browser alone. Here the lesson is **disk + origin**, even when the shop UI looks fine.
+
+### 5. Zip bomb — application-layer DoS (CWE-409)
+
+This is **not** a network flood (SYN, UDP, etc.). The shop already rejects uploads larger than **2 MB** (`UPLOAD_MAX_BYTES`). Exercise 5 shows why that limit is not enough if the app **unpacks** a zip after it was accepted.
+
+Keep **`USE_SAFE_UPLOAD = false`** (comment `true` back out if you left it on from exercises 3–4). Restart `npm run dev`.
+
+**Illustration:** [`presentation/historical-cases/illustrations/hist-dos-zipbomb-story-720p.png`](presentation/historical-cases/illustrations/hist-dos-zipbomb-story-720p.png) — **Zip bomb upload → application DoS**.
+
+1. From `FileUpload/` run:
+
+   ```bash
+   node samples/make-zip-bomb.mjs
+   ```
+
+   That writes [`samples/bomb.zip`](samples/bomb.zip): a few dozen KB on disk, **100 MiB** of zeros when inflated. A famous `42.zip` would expand to terabytes; this lab copy is bounded so the machine survives.
+
+2. Sign in as `marc` → **Your account** → upload `samples/bomb.zip`.
+
+**Expected (UI):** Upload **succeeds** (the archive is under 2 MB). `/account` shows a yellow **Zip preview (vulnerable lab)** box: wire size vs ZIP-header uncompressed size, and that naive unzip started inflating `zeros.bin`.
+
+**Expected (server):** The process logs `[zip-preview] marc archive=… claimed=104857600 inflated=8388608 capped=true`. The lab stops at **8 MiB** (`ZIP_BOMB_MAX_INFLATE_BYTES` in [`server/src/zipBomb.ts`](server/src/zipBomb.ts)). Without that cap the request would keep allocating RAM until the shop stalls — that is the DoS.
+
+**Debrief**
+
+- `UPLOAD_MAX_BYTES` measured the **compressed** file. Unpacking is a **second budget**.
+- Do **not** unzip untrusted archives to “preview” them. If you must, cap uncompressed size, ratio, entry count, and time.
+- Classification: **CWE-409** (highly compressed data) / **CWE-400** (resource consumption), reached through **CWE-434** (the zip was allowed in).
 
 ## Next steps
 

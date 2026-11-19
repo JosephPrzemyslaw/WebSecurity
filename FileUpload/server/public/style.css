@@ -287,6 +287,25 @@ input:focus {
   background: #fff8f0;
 }
 
+.zip-preview {
+  margin: 1rem 0 0;
+  padding: 0.75rem 0.85rem;
+  border: 1px solid #e0c36a;
+  border-radius: 0.5rem;
+  background: #fff6d8;
+}
+
+.zip-preview__title {
+  margin: 0 0 0.35rem;
+  font-family: Figtree, system-ui, sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.zip-preview p {
+  margin: 0.4rem 0 0;
+}
+
 .avatar-antipattern__title {
   margin: 0 0 0.35rem;
   font-family: Figtree, system-ui, sans-serif;
