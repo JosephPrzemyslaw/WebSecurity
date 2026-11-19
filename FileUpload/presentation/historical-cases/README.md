@@ -90,14 +90,14 @@ Each case has a PNG in [`illustrations/`](illustrations/). Case **#1** uses **tw
 
 | | |
 |---|---|
-| **Illustration** | [`illustrations/hist-04-svg-xss-story-720p.png`](illustrations/hist-04-svg-xss-story-720p.png) — **SVG upload → stored XSS (CWE-79)** · the SVG is a fragment of a profile bio |
+| **Illustration** | [`illustrations/hist-04-svg-xss-story-720p.png`](illustrations/hist-04-svg-xss-story-720p.png) — **SVG avatar upload → stored XSS (CWE-79)** · bio stays plain text; the user only attaches `avatar.svg` |
 | **PortSwigger — client-side scripts (SVG/HTML uploads)** | https://portswigger.net/web-security/file-upload |
 | **PacketWanderer — Stored XSS via SVG** | https://packetwanderer.com/posts/svg-xss/ |
 | **TypiCMS advisory** | https://github.com/TypiCMS/Core/security/advisories/GHSA-xfvg-8v67-j7wp |
 | **ComfyUI advisory (`/view` + inline SVG)** | https://github.com/Comfy-Org/ComfyUI/security/advisories/GHSA-rj8c-c4p8-3c5h |
 | **OopsSec — MIME vs bytes + CSP** | https://koadt.github.io/oss-oopssec-store/posts/malicious-file-upload-stored-xss/ |
 
-**Plain language:** Someone writes a profile bio and puts an SVG in that bio. Opening the profile runs a hidden script and can steal the login session.
+**Plain language:** On a profile, the bio stays ordinary text. The user only attaches an avatar. That file is an SVG. When someone opens the profile, the script inside the avatar runs and can steal the login session.
 
 **Technical:** Upload `image/svg+xml` with `onload` / `<script>` → served inline or at a direct URL on the same origin → stored XSS (`<img>` often does **not** run the script).
 
