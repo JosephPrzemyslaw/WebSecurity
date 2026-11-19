@@ -90,7 +90,7 @@ Each case has a PNG in [`illustrations/`](illustrations/). Case **#1** uses **tw
 
 | | |
 |---|---|
-| **Illustration** | [`illustrations/hist-04-svg-xss-story-720p.png`](illustrations/hist-04-svg-xss-story-720p.png) — **SVG upload → stored XSS** |
+| **Illustration** | [`illustrations/hist-04-svg-xss-story-720p.png`](illustrations/hist-04-svg-xss-story-720p.png) — **SVG upload → stored XSS (CWE-79)** |
 | **PortSwigger — client-side scripts (SVG/HTML uploads)** | https://portswigger.net/web-security/file-upload |
 | **PacketWanderer — Stored XSS via SVG** | https://packetwanderer.com/posts/svg-xss/ |
 | **TypiCMS advisory** | https://github.com/TypiCMS/Core/security/advisories/GHSA-xfvg-8v67-j7wp |
@@ -142,7 +142,7 @@ Each case has a PNG in [`illustrations/`](illustrations/). Case **#1** uses **tw
 
 | | |
 |---|---|
-| **Illustration** | [`illustrations/hist-07-iis-semicolon-story-720p.png`](illustrations/hist-07-iis-semicolon-story-720p.png) — **IIS semicolon → script hidden as .jpg** |
+| **Illustration** | [`illustrations/hist-07-iis-semicolon-story-720p.png`](illustrations/hist-07-iis-semicolon-story-720p.png) — **IIS semicolon → script hidden as .jpg (CVE-2009-4444)** |
 | **CVE-2009-4444 (NVD)** | https://nvd.nist.gov/vuln/detail/CVE-2009-4444 |
 | **Rapid7 — Metasploit + JPG header** | https://old.rapid7.com/blog/post/2009/12/28/exploiting-microsoft-iis-with-metasploit/ |
 | **OWASP — bypass list (IIS semicolon, double ext.)** | https://owasp.org/www-community/vulnerabilities/Unrestricted_File_Upload |
@@ -150,7 +150,7 @@ Each case has a PNG in [`illustrations/`](illustrations/). Case **#1** uses **tw
 
 **Plain language:** The filename looks like `.jpg`, but legacy IIS treats part of the name differently and runs it as a server script.
 
-**Technical:** CVE-2009-4444 — IIS uses the extension **before** `;`; the upload filter only checks `.jpg`.
+**Technical:** CVE-2009-4444 — IIS uses the extension **before** `;`; the upload filter only checks `.jpg`. Story slide: [`hist-07-iis-semicolon-story-720p.png`](illustrations/hist-07-iis-semicolon-story-720p.png).
 
 ---
 
