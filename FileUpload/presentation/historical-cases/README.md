@@ -154,6 +154,21 @@ Each case has a PNG in [`illustrations/`](illustrations/). Case **#1** uses **tw
 
 ---
 
+## 8. Many uploads → application DoS (disk quota)
+
+| | |
+|---|---|
+| **Illustration** | [`illustrations/hist-dos-upload-flood-story-720p.png`](illustrations/hist-dos-upload-flood-story-720p.png) — **Many uploads → application DoS** |
+| **CWE-434 + CWE-400** | https://cwe.mitre.org/data/definitions/434.html · https://cwe.mitre.org/data/definitions/400.html |
+
+**Plain language:** Each upload is small and passes the per-file MAX check. The server saves every file with no count or quota. The disk fills up and the shop stops working for everyone.
+
+**Technical:** Application-layer DoS — not a SYN flood. Abuse `POST /account/avatar` (or any upload endpoint): many requests under `UPLOAD_MAX_BYTES`, unique filenames, no rate limit. Defense: per-user quota, rate limits, replace-in-place avatar, monitor disk.
+
+**Story (English):** Three cards — (1) user uploads again and again · each file under 2 MB MAX, (2) server saves every file · no quota, (3) disk full · other members cannot upload.
+
+---
+
 ## Defense checklist — filter out malicious files
 
 | | |
@@ -179,6 +194,7 @@ illustrations/hist-04-svg-xss-story-720p.png
 illustrations/hist-05-fake-resume-story-720p.png
 illustrations/hist-06-imagetragick-story-720p.png
 illustrations/hist-07-iis-semicolon-story-720p.png
+illustrations/hist-dos-upload-flood-story-720p.png
 illustrations/hist-defense-filter-malicious-files-720p.png
 ```
 
