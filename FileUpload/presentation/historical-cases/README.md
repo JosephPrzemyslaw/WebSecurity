@@ -154,6 +154,21 @@ Each case has a PNG in [`illustrations/`](illustrations/). Case **#1** uses **tw
 
 ---
 
+## Defense checklist — filter out malicious files
+
+| | |
+|---|---|
+| **Illustration** | [`illustrations/hist-defense-filter-malicious-files-720p.png`](illustrations/hist-defense-filter-malicious-files-720p.png) (1280×720) |
+
+1. Only allowed extensions. Do not trust Content-Type.
+2. File not bigger than MAX bytes.
+3. Trust only authorized users.
+4. Store files on a dedicated server.
+5. Run the file through an antivirus / a sandbox.
+6. Protect the file upload against CSRF.
+
+---
+
 ## File order
 
 ```
@@ -164,6 +179,7 @@ illustrations/hist-04-svg-xss-story-720p.png
 illustrations/hist-05-fake-resume-story-720p.png
 illustrations/hist-06-imagetragick-story-720p.png
 illustrations/hist-07-iis-semicolon-story-720p.png
+illustrations/hist-defense-filter-malicious-files-720p.png
 ```
 
 Each story slide is **1280×720**, English, three cards (upload → what the server does → what happens next), same watercolor deck as case 1. A 1920×1080 copy sits beside each file without the `-720p` suffix.
