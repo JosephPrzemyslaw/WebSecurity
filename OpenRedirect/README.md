@@ -91,4 +91,4 @@ Open redirect is usually **low severity on the server**, but high **impact on us
 
 **Previous:** [FileUpload](../FileUpload/) — unrestricted upload (CWE-434).
 
-**Next:** topics not in the repo yet (e.g. SSTI, SSRF) or reuse an existing chapter from the root [README](../README.md).
+**Next:** [HtmlInjection](../HtmlInjection/) (HTML + CSS profile fields, port **3007**).
