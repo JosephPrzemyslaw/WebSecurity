@@ -2,15 +2,20 @@ import { randomUUID } from "node:crypto";
 import { mkdir, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import type { AppDeps } from "./appDeps.ts";
+import { bufferMatchesDeclaredImageMime } from "./imageMagic.ts";
 
 /**
  * CWE-434: avatar upload on /account (write under public/uploads).
  *
- * Exercises 1–2: leave the next line as-is (`false`).
- * Exercise 3: uncomment the line below and comment out `false`.
+ * Exercises 1–2 and DoS demo: `USE_SAFE_UPLOAD = false`.
+ * Exercises 3–4: `USE_SAFE_UPLOAD = true`, magic bytes off (exercise 4 MIME spoof).
+ * Exercise 5: both safe upload flags on.
  */
 const USE_SAFE_UPLOAD = false;
 // const USE_SAFE_UPLOAD = true;
+
+const VERIFY_IMAGE_MAGIC_BYTES = false;
+// const VERIFY_IMAGE_MAGIC_BYTES = true;
 
 export const UPLOAD_MAX_BYTES = 2_000_000;
 
@@ -58,6 +63,12 @@ export async function saveUploadedAvatar(
   let filename: string;
   if (USE_SAFE_UPLOAD) {
     if (file.mimetype !== "image/jpeg" && file.mimetype !== "image/png") {
+      return false;
+    }
+    if (
+      VERIFY_IMAGE_MAGIC_BYTES &&
+      !bufferMatchesDeclaredImageMime(file.buffer, file.mimetype)
+    ) {
       return false;
     }
     const ext = file.mimetype === "image/png" ? ".png" : ".jpg";

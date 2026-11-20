@@ -24,7 +24,8 @@ FileUpload/
   samples/evil.html, evil.svg   # exercise 2; exercise 4 reuses evil.html
   server/
     pages/account.html
-    src/upload.ts                 # USE_SAFE_UPLOAD
+    src/upload.ts                 # USE_SAFE_UPLOAD, VERIFY_IMAGE_MAGIC_BYTES
+    src/imageMagic.ts             # JPEG/PNG signature check (exercise 5)
     src/routes/account.ts
     public/uploads/
 ```
@@ -34,7 +35,7 @@ FileUpload/
 | `POST /account/avatar` | Saves file under `public/uploads/` |
 | `GET /uploads/…` | Static file (Express `public/`) |
 
-`USE_SAFE_UPLOAD` in [`server/src/upload.ts`](server/src/upload.ts) controls validation and filename generation.
+`USE_SAFE_UPLOAD` and `VERIFY_IMAGE_MAGIC_BYTES` in [`server/src/upload.ts`](server/src/upload.ts) control MIME whitelist, magic-byte checks, and filename generation.
 
 ## Exercises
 
@@ -76,7 +77,7 @@ Upload [`evil.svg`](samples/evil.svg). In the **anti-pattern** iframe, script ma
 
 ### 3. Enable safe upload (uncomment)
 
-`USE_SAFE_UPLOAD` must stay **off** for exercises **1–2**. Leave it **on** for exercises **3** and **4**.
+`USE_SAFE_UPLOAD` must stay **off** for exercises **1–2** and the **instructor DoS demo**. Leave it **on** for exercises **3–5** (keep magic bytes **off** for **3–4** only).
 
 At the top of [`server/src/upload.ts`](server/src/upload.ts):
 
@@ -103,8 +104,28 @@ Leave **`USE_SAFE_UPLOAD = true`**.
 
 **Debrief:** Production needs **magic-byte** checks or re-encoding (e.g. sharp), not MIME from the browser alone. Here the lesson is **disk + origin**, even when the shop UI looks fine.
 
+### 5. Magic-byte check (after exercise 4)
+
+Leave **`USE_SAFE_UPLOAD = true`**. In [`server/src/upload.ts`](server/src/upload.ts):
+
+1. Comment out: `const VERIFY_IMAGE_MAGIC_BYTES = false;`
+2. Uncomment: `// const VERIFY_IMAGE_MAGIC_BYTES = true;`
+3. Restart `npm run dev`.
+
+The server still whitelists MIME types, but now also checks **file signatures** in [`server/src/imageMagic.ts`](server/src/imageMagic.ts) (JPEG `FF D8 FF`, PNG standard header). Declared `Content-Type` must match those bytes.
+
+Repeat exercise **4** (Burp: `Content-Type: image/jpeg`, body still `evil.html`). **Expected:** **Upload failed** — spoofed MIME no longer enough.
+
+Upload a real **JPEG** or **PNG** again. **Expected:** succeeds as in exercise **1**.
+
+**Debrief:** Leading magic bytes alone are not a full security story (attackers may prepend `GIF89a` or fake headers). Production should **re-encode** or decode with a hardened library, not only read the first few bytes.
+
+### Demo — DoS via many uploads (ZAP / Burp, localhost only)
+
+With both upload flags **off**, fuzz `POST /account/avatar`: vary **`filename`** (e.g. `quota-demo-N.jpg`) so files accumulate under `server/public/uploads/`. Slide: [`presentation/historical-cases/illustrations/hist-dos-upload-flood-story-720p.png`](presentation/historical-cases/illustrations/hist-dos-upload-flood-story-720p.png). Prefer **ZAP Fuzzer** over throttled Burp Community Intruder.
+
 ## Next steps
 
 **Previous:** XSS — opinions and search (CWE-79).
 
-A future **open redirect** lab (CWE-601) may extend this shop.
+**Next:** Path traversal [PathTraversal](../PathTraversal/) (CWE-22 read) or roadmap topics not in the repo yet (e.g. open redirect).

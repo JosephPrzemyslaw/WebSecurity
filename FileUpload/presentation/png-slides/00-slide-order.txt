@@ -1,0 +1,11 @@
+Order for deck (English, AI PNG — watercolor + flat characters):
+
+01-what-is-it.png
+02-three-steps.png
+03-impact-tiles.png
+04-dev-mistakes.png
+05-bypasses.png
+06-defense-layers.png
+07-php-vs-static.png
+08-checklist.png
+09-rce-what-hackers-do.png
