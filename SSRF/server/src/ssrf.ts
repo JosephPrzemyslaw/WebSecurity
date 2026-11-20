@@ -1,8 +1,7 @@
 /**
  * CWE-918: server fetches user-supplied URL for "cover import" on /members.
  *
- * Exercises 1–2: `USE_SAFE_SSRF = false`.
- * Exercise 3: set to `true` — block private/loopback hosts.
+ * Ex 1–2: `USE_SAFE_SSRF = false`. Ex 3 (fix): `true` — block private/loopback hosts.
  */
 
 export const USE_SAFE_SSRF = false;
@@ -22,7 +21,7 @@ export function buildCoverImportSection(
       : `<div class="cover-fetch-result">${resultHtml}</div>`;
   return `<section class="cover-import-section">
           <h2>Import cover from URL</h2>
-          <p class="blurb">The shop server <strong>fetches</strong> the URL (SSRF). Default port <strong>3009</strong>. SSTI label is fixed from chapter 9.</p>
+          <p class="blurb">The server <strong>fetches</strong> this URL and shows the response below (SSRF lab).</p>
           ${preview}
           <form class="cover-import-form" method="get" action="/members">
             <div class="field">

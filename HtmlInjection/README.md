@@ -1,162 +1,72 @@
 # HTML & CSS injection (chapter 8)
 
-One folder for both topics: **untrusted data becomes part of the page** (tags or style), without focusing on **JavaScript** — that stays in **[XSS](../XSS/)** (chapter 5).
+Markup and **style** in the page — **not** JavaScript ([XSS](../XSS/) is chapter 5).
 
-Continuation from **[OpenRedirect](../OpenRedirect/)** (chapter 7, port **3006**). Port **3007**. Upload, redirect, and **opinions** are already hardened; this chapter adds **profile bio** (HTML) and **accent color** (CSS in an inline `style`).
+From **[OpenRedirect](../OpenRedirect/)** (port **3006**). **Port 3007.** Upload, redirect, and opinions are already safe; new fields: **bio** (HTML) and **accent** (CSS in `border-left-color`).
 
-- **Port:** `3007`
-- **Accounts:** `marc` / `marc123`, `ewa` / `ewa123`
-- **Stack:** Express + TypeScript, in-memory profile fields (restart clears bios/accents)
+| Flag | File | Sink |
+|------|------|------|
+| `USE_SAFE_PROFILE_HTML` | `server/src/profileInjection.ts` | bio in **Reader spotlight** on `/members` |
+| `USE_SAFE_PROFILE_CSS` | same | `style="border-left-color: …"` on spotlight card |
 
-## Why one directory?
-
-| Topic | Field | Sink |
-|--------|--------|------|
-| **HTML injection** | `bio` textarea | `<div class="profile-bio-preview">…</div>` on `/members` |
-| **CSS injection** | `accent` input | `style="border-left-color: …"` on spotlight card |
-
-Same feature (public profile), two sinks, two flags in [`server/src/profileInjection.ts`](server/src/profileInjection.ts).
+Accounts: `marc` / `marc123`, `ewa` / `ewa123`.
 
 ## Run
 
 ```bash
-cd server
-npm install
-npm run dev
+cd server && npm install && npm run dev
 ```
 
-Open **`http://localhost:3007/login`**.
+`http://localhost:3007/login` → **Your account** (edit profile) or **Library** (see others).
 
-## Layout
+## Exercises
 
-```text
-HtmlInjection/
-  README.md
-  server/
-    src/profileInjection.ts   # USE_SAFE_PROFILE_HTML, USE_SAFE_PROFILE_CSS
-    src/routes/account.ts     # POST /account/profile
-    src/routes/members.ts     # Reader spotlight
-```
+Keep **both flags `false`** until **Fix**.
 
-| Request | Meaning |
-|---------|---------|
-| `POST /account/profile` | Save `bio` and/or `accent` |
-| `GET /members` | **Reader spotlight** shows other members’ bios and accents |
+### 1. Stored HTML — integrity & phishing
 
-Opinions still use `POST /comments` but are **escaped** (`USE_SAFE_HTML = true` in `comments.ts`).
-
-## Exercises — HTML (CWE-80 / markup)
-
-Flags: keep **`USE_SAFE_PROFILE_HTML = false`** for exercises **1–3**.
-
-### 1. Bold and links
-
-Sign in as **marc** → **Your account**. In **Bio**, save:
+**marc** → **Your account** → **Bio**:
 
 ```html
-<p><b>Staff pick</b> — <a href="https://example.com/free-books">Download free PDFs here</a></p>
+<p><b>Staff pick</b> — <a href="https://example.com">Free member PDFs</a></p>
 ```
 
-On `/account`, the preview renders real HTML. Sign in as **ewa** → **Library**. Under **Reader spotlight**, marc’s bio shows a **clickable off-site link** (phishing / defacement without `<script>`).
+**ewa** → **Library** → **Reader spotlight**. She sees real HTML in marc’s card (link works; no `<script>`).
 
-### 2. Structure / defacement
+**Takeaway:** stored markup changes what **other users** trust on your site.
 
-As **marc**, set bio to:
+### 2. Stored HTML — forged action
 
-```html
-<h1>SALE — Everything 1 zł</h1>
-```
-
-**ewa** on `/members` sees the heading in another user’s profile (integrity of the page).
-
-### 3. Debrief vs XSS
-
-Compare with [XSS](../XSS/) exercise 1: same `<b>` in **opinions** there; here **opinions are escaped** on this port. This lab is **markup and style**, not `onerror` / `<script>`.
-
-### 4. OWASP WSTG — stored `<form>` (HTML injection → same-origin action)
-
-Maps to [WSTG-CLNT-03 HTML Injection](https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/11-Client-side/03-HTML_Injection) (*markup without script* can still change behaviour).
-
-As **marc**, set bio to:
+**marc**, bio:
 
 ```html
-<p>Member perk:</p>
+<p>Perk:</p>
 <form method="POST" action="/buy">
   <input type="hidden" name="bookId" value="1" />
   <button type="submit">Claim free book</button>
 </form>
 ```
 
-Sign in as **ewa** → **Library** → **Reader spotlight**. She did not use the catalog **Buy** form, but the button in marc’s bio is a real `POST /buy` in **her** session. **Expected:** after she submits, she owns the title (same as pressing **Buy now**). Debrief: forged UI + same-origin POST — related to [CSRF](../CSRF/), but here the HTML is **stored** in another user’s field.
+**ewa** on `/members` did not use **Buy now**, but the button is a real `POST /buy` in **her** session → she can own the title.
 
-### 5. OWASP WSTG — embed external document (`<iframe>`)
+**Takeaway:** HTML injection can drive **same-origin** requests ([CSRF](../CSRF/) uses another site; here the bad HTML is **stored**).
 
-Still on [WSTG HTML Injection](https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/11-Client-side/03-HTML_Injection): injected markup the browser treats as active content.
+### 3. CSS in one `style` attribute
 
-As **marc**:
-
-```html
-<iframe src="https://example.com" title="Partner promo" width="280" height="120"></iframe>
-```
-
-**ewa** sees third-party content framed inside your shop. Discuss CSP `frame-src` / avoiding raw HTML in profiles.
-
-## Exercises — CSS injection
-
-Keep **`USE_SAFE_PROFILE_CSS = false`** for exercises **6–8** (HTML flag can stay off or on).
-
-### 6. Extra declarations in `style` (style-attribute injection)
-
-As **marc**, set **Accent color** to:
+**marc**, **Accent color**:
 
 ```text
-crimson; background: #fff3cd; padding: 2rem
+crimson; background: #fff3cd; padding: 1.5rem
 ```
 
-Reload **ewa**’s `/members`. The spotlight card picks up extra CSS from the injected attribute (browser applies multiple declarations in one `style=""`).
+**ewa** → `/members`: extra rules apply inside the spotlight card (`style=""` injection).
 
-See [WSTG-CLNT-05 CSS Injection](https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/11-Client-side/05-CSS_Injection) — user-controlled value reaches a **style** sink.
+**Optional:** `background-image: url(https://example.com/x.gif)` and watch DevTools **Network** — browser loads the URL when painting the card ([WSTG CSS injection](https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/11-Client-side/05-CSS_Injection)).
 
-### 7. OWASP WSTG — `background` / outbound request (lab-safe)
+### Fix
 
-[WSTG CSS Injection](https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/11-Client-side/05-CSS_Injection) describes exfiltration via `background` / `url()`. In a full lab you might use Burp Collaborator; here use a harmless probe:
+In `profileInjection.ts` set **`USE_SAFE_PROFILE_HTML = true`** and **`USE_SAFE_PROFILE_CSS = true`**, restart.
 
-```text
-crimson; background-image: url(https://example.com/css-probe.gif)
-```
+Repeat **1** and **2**: bio should show **text**, not tags; accent only allows simple colours.
 
-Open **ewa**’s `/members` and watch DevTools → **Network** (or server logs on `example.com` if you control it). **Expected:** browser may request the image when painting the card. Debrief: blind CSS exfil is a separate advanced topic; our sink is a single `style=""` on one card, not a full stylesheet.
-
-### 8. UI redress (optional)
-
-```text
-red; outline: 9999px solid rgba(0,0,0,0.08); outline-offset: -8px
-```
-
-Discuss distraction / fake emphasis — still [WSTG](https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/11-Client-side/05-CSS_Injection) *impact*, not RCE.
-
-## Fix
-
-In `server/src/profileInjection.ts`:
-
-1. Set `USE_SAFE_PROFILE_HTML = true` (escape bio; show as text).
-2. Set `USE_SAFE_PROFILE_CSS = true` (allow only `#rgb` / simple color names).
-3. Restart `npm run dev`. Repeat exercises **1**, **4** (form), and **6** — markup and CSS tricks should fail or sanitize.
-
-## OWASP reading (no extra repo overhead)
-
-| Guide | Use on this lab |
-|-------|------------------|
-| [WSTG — HTML Injection (4.11.3)](https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/11-Client-side/03-HTML_Injection) | Exercises **4–5** (form, iframe) |
-| [WSTG — CSS Injection (4.11.5)](https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/11-Client-side/05-CSS_Injection) | Exercises **6–8** |
-| [XSS Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html) | Context-specific encoding (HTML vs CSS) |
-
-We do **not** duplicate XSS script labs here; use [XSS](../XSS/) for `<script>` / event handlers.
-
-**Slides (PNG):** [`presentation/`](presentation/README.md) — workshop deck for HTML/CSS + WSTG talking points.
-
-## Previous / next
-
-**Previous:** [OpenRedirect](../OpenRedirect/) (CWE-601).
-
-**Next:** [SSTI](../SSTI/) (EJS label, port **3008**).
+**Slides:** [`presentation/`](presentation/README.md) · **Next:** [SSTI](../SSTI/) (port **3008**).

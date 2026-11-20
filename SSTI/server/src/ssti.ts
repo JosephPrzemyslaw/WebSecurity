@@ -3,8 +3,7 @@ import ejs from "ejs";
 /**
  * CWE-1336: user-supplied EJS template on shipping label preview (`POST /account/shipping`).
  *
- * Exercises 1–2: `USE_SAFE_SSTI = false`.
- * Exercise 3: set to `true` — only the built-in template is rendered.
+ * Ex 1–3: `USE_SAFE_SSTI = false`. Fix: `true` — built-in template only.
  */
 export const USE_SAFE_SSTI = false;
 // export const USE_SAFE_SSTI = true;
@@ -36,7 +35,7 @@ export function buildShippingLabelSection(login: string): string {
   const fieldValue = escapeHtml(stored);
   return `<section class="shipping-label-section">
           <h2 class="shipping-label-section__title">Shipping label preview</h2>
-          <p class="blurb">EJS template you save is rendered server-side with <code>login</code> and <code>orderRef</code>. SSTI lab (not HTML in bio — that was chapter 8).</p>
+          <p class="blurb">Saved EJS is rendered on the server with <code>login</code> and <code>orderRef</code>.</p>
           <div class="shipping-label-preview">${preview}</div>
           <form class="shipping-form" method="post" action="/account/shipping">
             <div class="field">
