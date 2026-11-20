@@ -77,4 +77,4 @@ Defense: never `render()` user-controlled template strings; bind **data** only; 
 
 **Previous:** [HtmlInjection](../HtmlInjection/) (HTML/CSS).
 
-**Next:** SSRF (chapter 10, not in repo yet) — slides in `SSRF/presentation/` when the lab lands.
+**Next:** [SSRF](../SSRF/) (cover import fetch, port **3009**).

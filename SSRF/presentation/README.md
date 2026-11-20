@@ -1,6 +1,6 @@
-# SSRF — presentation PNG (chapter 10, lab TBD)
+# SSRF — presentation PNG (chapter 10)
 
-Slides for teaching **SSRF (CWE-918)** before the `SSRF/` app exists. When the lab is added, it will likely use port **3009**.
+Slides for **SSRF (CWE-918)**. Lab: **[`../README.md`](../README.md)** on port **3009** (`GET /members?coverUrl=`).
 
 | # | File |
 |---|------|
