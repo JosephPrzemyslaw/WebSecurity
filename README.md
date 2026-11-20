@@ -1,6 +1,8 @@
 # WebSecurity
 
-Work through the labs in **chapter order** (1–6). **Ports** are fixed so you can run different apps in parallel; chapter number is not the same as the port digit (e.g. chapter 5 is port **3002**, chapter 6 is **3005**).
+**Ports** are fixed so you can run different apps in parallel; chapter number is not the same as the port digit (e.g. chapter 5 is port **3002**, chapter 6 is **3005**).
+
+On the course you can teach **any topic in any order** — you do not have to follow the table below slide by slide. Many workshops **start with SQL injection** (chapter 1, port **3000**), then jump to File upload, XSS, CSRF, Path traversal, and the rest as needed. The table is how the **member shop** was built in the repo (storyline 1→6), not a mandatory classroom sequence.
 
 **SQL injection** is a separate login app. The **member shop** story starts in **Cookies** and gains new features each chapter.
 
