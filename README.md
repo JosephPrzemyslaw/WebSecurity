@@ -1,6 +1,6 @@
 # WebSecurity
 
-Each chapter has a fixed port: **port = 3000 + (chapter − 1)** (chapter 1 → **3000**, chapter 8 → **3007**). You can run several labs in parallel on different ports.
+Each chapter has a fixed port: **port = 3000 + (chapter − 1)** (chapter 1 → **3000**, chapter 9 → **3008**). You can run several labs in parallel on different ports.
 
 **SQL injection** is a separate login app. The **member shop** story starts in **Cookies** and gains new features each chapter.
 
@@ -14,6 +14,7 @@ Each chapter has a fixed port: **port = 3000 + (chapter − 1)** (chapter 1 → 
 | 6 | [FileUpload/](FileUpload/) | Unrestricted file upload (avatar → `public/uploads/`) | **3005** |
 | 7 | [OpenRedirect/](OpenRedirect/) | Open redirect after login (`next`, CWE-601) | **3006** |
 | 8 | [HtmlInjection/](HtmlInjection/) | Profile HTML + CSS injection (not XSS lab) | **3007** |
+| 9 | [SSTI/](SSTI/) | EJS shipping label (server-side template injection) | **3008** |
 
 ### What each chapter adds (shop line)
 
@@ -25,6 +26,7 @@ Each chapter has a fixed port: **port = 3000 + (chapter − 1)** (chapter 1 → 
 6. **File upload** — **avatar** on `/account`, files under **`/uploads`**.
 7. **Open redirect** — **`?next=`** on login; return URL after sign-in.
 8. **HTML/CSS injection** — profile **bio** + **accent** on `/members` spotlight.
+9. **SSTI** — custom **EJS** shipping label on `/account`.
 
 Clone this repository, then open the README in the lab folder you are working on. Install dependencies under each lab’s `server/` and run `npm run dev`.
 
