@@ -128,4 +128,4 @@ With both upload flags **off**, fuzz `POST /account/avatar`: vary **`filename`**
 
 **Previous:** XSS — opinions and search (CWE-79).
 
-**Next:** Path traversal [PathTraversal](../PathTraversal/) (CWE-22 read) or roadmap topics not in the repo yet (e.g. open redirect).
+**Next:** [OpenRedirect](../OpenRedirect/) (CWE-601, port **3006**).
