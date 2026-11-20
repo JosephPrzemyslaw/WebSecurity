@@ -37,6 +37,12 @@ FileUpload/
 
 `USE_SAFE_UPLOAD` and `VERIFY_IMAGE_MAGIC_BYTES` in [`server/src/upload.ts`](server/src/upload.ts) control MIME whitelist, magic-byte checks, and filename generation.
 
+## On-stage flow (see [`../docs/WORKSHOP-ORDER.md`](../docs/WORKSHOP-ORDER.md))
+
+1. Case study slides → lab 1–4 → optional lab 5 (magic bytes).
+2. DoS slide + [instructor demo](#instructor--application-layer-dos-live-demo-no-extra-code) (ZAP/Burp).
+3. Defense checklist + debrief → **Path traversal** if you follow the slide agenda.
+
 ## Exercises
 
 **CWE-434** · [PathTraversal](../PathTraversal/) = **read** a chapter from disk; this lab = **write** into web-served `uploads/`.
@@ -139,4 +145,6 @@ After the demo, remove test files: `rm server/public/uploads/quota-demo-*.jpg` (
 
 **Previous:** XSS — opinions and search (CWE-79).
 
-A future **open redirect** lab (CWE-601) may extend this shop.
+**Next (agenda order):** [PathTraversal](../PathTraversal/) port **3004** — CWE-22 read vs this chapter’s CWE-434 write. Presenter bullets: [`presentation/PRESENTER-BULLETS.md`](presentation/PRESENTER-BULLETS.md). Workshop order: [`../docs/WORKSHOP-ORDER.md`](../docs/WORKSHOP-ORDER.md).
+
+**Next (repo chapter order):** you already completed Path traversal before XSS; see [`../docs/WORKSHOP-ROADMAP.md`](../docs/WORKSHOP-ROADMAP.md) for Open Redirect, SSTI, SSRF.

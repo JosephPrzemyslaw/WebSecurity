@@ -33,6 +33,8 @@ Raw ZIP:
 
 Import PNGs into Keynote / PowerPoint (Insert → Picture). Text is baked into the image — tweak wording in an image editor if needed.
 
+Presenter bullets (English): [`PRESENTER-BULLETS.md`](PRESENTER-BULLETS.md)
+
 ## Historical cases (reading list + dual illustrations)
 
 See [`historical-cases/README.md`](historical-cases/README.md): reading list (TimThumb, ImageTragick, `.htaccess`, SVG XSS, IIS semicolon, etc.). Each case has a dual PNG (**PLAIN LANGUAGE | TECHNICAL**) in `historical-cases/illustrations/`.
