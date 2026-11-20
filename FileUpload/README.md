@@ -37,12 +37,6 @@ FileUpload/
 
 `USE_SAFE_UPLOAD` and `VERIFY_IMAGE_MAGIC_BYTES` in [`server/src/upload.ts`](server/src/upload.ts) control MIME whitelist, magic-byte checks, and filename generation.
 
-## On-stage flow (see [`../docs/WORKSHOP-ORDER.md`](../docs/WORKSHOP-ORDER.md))
-
-1. Case study slides → lab 1–4 → optional lab 5 (magic bytes).
-2. DoS slide + [instructor demo](#instructor--application-layer-dos-live-demo-no-extra-code) (ZAP/Burp).
-3. Defense checklist + debrief → **Path traversal** if you follow the slide agenda.
-
 ## Exercises
 
 **CWE-434** · [PathTraversal](../PathTraversal/) = **read** a chapter from disk; this lab = **write** into web-served `uploads/`.
@@ -126,25 +120,12 @@ Upload a real **JPEG** or **PNG** again. **Expected:** succeeds as in exercise *
 
 **Debrief:** Leading magic bytes alone are not a full security story (attackers may prepend `GIF89a` or fake headers). Production should **re-encode** or decode with a hardened library, not only read the first few bytes.
 
-### Instructor — application-layer DoS (live demo, no extra code)
+### Demo — DoS via many uploads (ZAP / Burp, localhost only)
 
-**Objective (EN):** Demonstrate an application-layer DoS — exhaust server disk by uploading many small avatars, each under MAX bytes.
-
-**Lab:** `USE_SAFE_UPLOAD = false`, `VERIFY_IMAGE_MAGIC_BYTES = false`, `npm run dev`. Illustration: [`presentation/historical-cases/illustrations/hist-dos-upload-flood-story-720p.png`](presentation/historical-cases/illustrations/hist-dos-upload-flood-story-720p.png).
-
-1. Log in as `marc`, upload once through the browser (proxy on).
-2. In **OWASP ZAP**: capture `POST /account/avatar` → **Attack → Fuzz…** → payload on **`filename`** (e.g. `quota-demo-§1§.jpg`, Numbers 1–30) so each request creates a **new** file (same name would only overwrite).
-3. **Fuzzer options:** ~6–10 concurrent threads; only **`http://localhost:3005`**.
-4. Proof: `ls server/public/uploads/` — many files; tie to slide: per-file MAX ≠ disk quota.
-
-**Burp:** fine for intercepting one request; **Community Intruder** is throttled — prefer **ZAP Fuzzer** for parallel uploads. **Burp Pro** Intruder works similarly (vary `filename`).
-
-After the demo, remove test files: `rm server/public/uploads/quota-demo-*.jpg` (or clear the folder).
+With both upload flags **off**, fuzz `POST /account/avatar`: vary **`filename`** (e.g. `quota-demo-N.jpg`) so files accumulate under `server/public/uploads/`. Slide: [`presentation/historical-cases/illustrations/hist-dos-upload-flood-story-720p.png`](presentation/historical-cases/illustrations/hist-dos-upload-flood-story-720p.png). Prefer **ZAP Fuzzer** over throttled Burp Community Intruder.
 
 ## Next steps
 
 **Previous:** XSS — opinions and search (CWE-79).
 
-**Next (agenda order):** [PathTraversal](../PathTraversal/) port **3004** — CWE-22 read vs this chapter’s CWE-434 write. Presenter bullets: [`presentation/PRESENTER-BULLETS.md`](presentation/PRESENTER-BULLETS.md). Workshop order: [`../docs/WORKSHOP-ORDER.md`](../docs/WORKSHOP-ORDER.md).
-
-**Next (repo chapter order):** you already completed Path traversal before XSS; see [`../docs/WORKSHOP-ROADMAP.md`](../docs/WORKSHOP-ROADMAP.md) for Open Redirect, SSTI, SSRF.
+**Next:** Path traversal [PathTraversal](../PathTraversal/) (CWE-22 read) or roadmap topics not in the repo yet (e.g. open redirect).

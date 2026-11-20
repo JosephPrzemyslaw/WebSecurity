@@ -85,12 +85,6 @@ Repeat exercise **2** (or **3**) — expected: **403 Forbidden** / “Not allowe
 
 Exercise **1** (legal chapter download) should still work.
 
-## Presentation
-
-No 720p slide deck in this folder yet. Instructor bullets: [`presentation/PRESENTER-BULLETS.md`](presentation/PRESENTER-BULLETS.md).
-
-If you teach **[FileUpload](../FileUpload/)** before this chapter, debrief **write** (`/uploads`) vs **read** (chapter path).
-
 ## Next module
 
 **Chapter 5 — [XSS](../XSS/)** (port **3002**, CWE-79): same member shop plus **opinions** (stored), library **search** (reflected), and optional **`key-receiver/`** on port **4000**. **File upload** is **[FileUpload](../FileUpload/)** (chapter 6, port **3005**); this folder’s `public/uploads/` placeholder describes that follow-on lab.
