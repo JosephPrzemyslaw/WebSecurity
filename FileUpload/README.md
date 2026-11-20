@@ -24,7 +24,8 @@ FileUpload/
   samples/evil.html, evil.svg   # exercise 2; exercise 4 reuses evil.html
   server/
     pages/account.html
-    src/upload.ts                 # USE_SAFE_UPLOAD
+    src/upload.ts                 # USE_SAFE_UPLOAD, VERIFY_IMAGE_MAGIC_BYTES
+    src/imageMagic.ts             # JPEG/PNG signature check (exercise 5)
     src/routes/account.ts
     public/uploads/
 ```
@@ -34,7 +35,7 @@ FileUpload/
 | `POST /account/avatar` | Saves file under `public/uploads/` |
 | `GET /uploads/…` | Static file (Express `public/`) |
 
-`USE_SAFE_UPLOAD` in [`server/src/upload.ts`](server/src/upload.ts) controls validation and filename generation.
+`USE_SAFE_UPLOAD` and `VERIFY_IMAGE_MAGIC_BYTES` in [`server/src/upload.ts`](server/src/upload.ts) control MIME whitelist, magic-byte checks, and filename generation.
 
 ## Exercises
 
@@ -76,7 +77,7 @@ Upload [`evil.svg`](samples/evil.svg). In the **anti-pattern** iframe, script ma
 
 ### 3. Enable safe upload (uncomment)
 
-`USE_SAFE_UPLOAD` must stay **off** for exercises **1–2**. Leave it **on** for exercises **3** and **4**.
+`USE_SAFE_UPLOAD` must stay **off** for exercises **1–2** and the **instructor DoS demo**. Leave it **on** for exercises **3–5** (keep magic bytes **off** for **3–4** only).
 
 At the top of [`server/src/upload.ts`](server/src/upload.ts):
 
@@ -102,6 +103,37 @@ Leave **`USE_SAFE_UPLOAD = true`**.
 **Expected (proof):** In `server/public/uploads/`, a new `marc-*.jpg` whose **contents** are still the HTML document (e.g. `cat server/public/uploads/marc-*.jpg` shows `<script>` / `shop-notice--urgent`, not JPEG bytes). Whitelist MIME was bypassed; **garbage landed in a public web directory**.
 
 **Debrief:** Production needs **magic-byte** checks or re-encoding (e.g. sharp), not MIME from the browser alone. Here the lesson is **disk + origin**, even when the shop UI looks fine.
+
+### 5. Magic-byte check (after exercise 4)
+
+Leave **`USE_SAFE_UPLOAD = true`**. In [`server/src/upload.ts`](server/src/upload.ts):
+
+1. Comment out: `const VERIFY_IMAGE_MAGIC_BYTES = false;`
+2. Uncomment: `// const VERIFY_IMAGE_MAGIC_BYTES = true;`
+3. Restart `npm run dev`.
+
+The server still whitelists MIME types, but now also checks **file signatures** in [`server/src/imageMagic.ts`](server/src/imageMagic.ts) (JPEG `FF D8 FF`, PNG standard header). Declared `Content-Type` must match those bytes.
+
+Repeat exercise **4** (Burp: `Content-Type: image/jpeg`, body still `evil.html`). **Expected:** **Upload failed** — spoofed MIME no longer enough.
+
+Upload a real **JPEG** or **PNG** again. **Expected:** succeeds as in exercise **1**.
+
+**Debrief:** Leading magic bytes alone are not a full security story (attackers may prepend `GIF89a` or fake headers). Production should **re-encode** or decode with a hardened library, not only read the first few bytes.
+
+### Instructor — application-layer DoS (live demo, no extra code)
+
+**Objective (EN):** Demonstrate an application-layer DoS — exhaust server disk by uploading many small avatars, each under MAX bytes.
+
+**Lab:** `USE_SAFE_UPLOAD = false`, `VERIFY_IMAGE_MAGIC_BYTES = false`, `npm run dev`. Illustration: [`presentation/historical-cases/illustrations/hist-dos-upload-flood-story-720p.png`](presentation/historical-cases/illustrations/hist-dos-upload-flood-story-720p.png).
+
+1. Log in as `marc`, upload once through the browser (proxy on).
+2. In **OWASP ZAP**: capture `POST /account/avatar` → **Attack → Fuzz…** → payload on **`filename`** (e.g. `quota-demo-§1§.jpg`, Numbers 1–30) so each request creates a **new** file (same name would only overwrite).
+3. **Fuzzer options:** ~6–10 concurrent threads; only **`http://localhost:3005`**.
+4. Proof: `ls server/public/uploads/` — many files; tie to slide: per-file MAX ≠ disk quota.
+
+**Burp:** fine for intercepting one request; **Community Intruder** is throttled — prefer **ZAP Fuzzer** for parallel uploads. **Burp Pro** Intruder works similarly (vary `filename`).
+
+After the demo, remove test files: `rm server/public/uploads/quota-demo-*.jpg` (or clear the folder).
 
 ## Next steps
 
