@@ -2,8 +2,6 @@
 
 Each chapter has a fixed port: **port = 3000 + (chapter − 1)** (chapter 1 → **3000**, chapter 6 → **3005**). You can run several labs in parallel on different ports.
 
-On the course you can teach **any topic in any order** — the table below is the shop **storyline** in the repo, not a mandatory slide sequence. Many workshops **start with SQL injection** (chapter 1).
-
 **SQL injection** is a separate login app. The **member shop** story starts in **Cookies** and gains new features each chapter.
 
 | Ch. | Folder | Topic | Port |
