@@ -85,6 +85,8 @@ Defense: [OWASP — Unvalidated Redirects and Forwards](https://cheatsheetseries
 
 Open redirect is usually **low severity on the server**, but high **impact on users**: attackers abuse **your domain** in the link, victims authenticate, then **`Location`** sends them elsewhere. It is not file read (path traversal) or code on disk (file upload).
 
+**Slides (PNG):** [`presentation/README.md`](presentation/README.md) — watercolor deck (phishing, impact, prevention/fix) + [`presentation/illustrations/hist-open-redirect-story-720p.png`](presentation/illustrations/hist-open-redirect-story-720p.png).
+
 ## Next steps
 
 **Previous:** [FileUpload](../FileUpload/) — unrestricted upload (CWE-434).
