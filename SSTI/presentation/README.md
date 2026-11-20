@@ -9,4 +9,4 @@ Four **16:9** slides (watercolor 3-panel workshop style).
 | 3 | `03-ssti-prevention.png` |
 | 4 | `04-ssti-lab-flow.png` |
 
-**SSRF** slides for chapter 10 live in [`../../SSRF/presentation/`](../SSRF/presentation/README.md) until the lab is implemented.
+Chapter 10 SSRF slides: [`../../SSRF/presentation/`](../SSRF/presentation/README.md).

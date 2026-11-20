@@ -15,6 +15,12 @@ const deps = createAppDeps(db, import.meta.dirname);
 
 app.use(express.urlencoded({ extended: false }));
 
+app.get("/internal/health", (_req, res) => {
+  res
+    .type("text/plain")
+    .send("internal-ok\ncatalog-sync-token=WORKSHOP-ONLY\n(reachable via SSRF lab — not linked in UI)");
+});
+
 registerAuthRoutes(app, deps);
 registerMembersRoutes(app, deps);
 registerLibraryRoutes(app, deps);

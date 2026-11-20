@@ -2,9 +2,8 @@
  * CWE-80 / markup in profile: HTML bio (stored) and CSS accent (stored, inline style).
  * XSS opinions are handled in comments.ts (fixed in this chapter).
  *
- * HTML exercises 1–3: `USE_SAFE_PROFILE_HTML = false`.
- * CSS exercises 4–5: `USE_SAFE_PROFILE_CSS = false`.
- * Fix: turn both flags on.
+ * Ex 1–2: `USE_SAFE_PROFILE_HTML = false`. Ex 3 (CSS): `USE_SAFE_PROFILE_CSS = false`.
+ * Fix: both `true`.
  */
 
 export const USE_SAFE_PROFILE_HTML = false;
@@ -54,7 +53,7 @@ export function buildAccountBioBlock(login: string): string {
   const accentValue = accentFor(login) ?? "";
   return `<section class="profile-bio-section">
           <h2 class="profile-bio-section__title">Public profile</h2>
-          <p class="blurb">Bio and accent are stored and shown on <code>/members</code> in <strong>Reader spotlight</strong> (HTML + CSS injection lab; opinions are escaped).</p>
+          <p class="blurb">Saved here, shown to other members under <strong>Reader spotlight</strong> on <code>/members</code>.</p>
           <div class="profile-bio-preview profile-bio-preview--account">${body || "<p class=\"empty\">No bio yet.</p>"}</div>
           <form class="profile-form" method="post" action="/account/profile">
             <div class="field">
