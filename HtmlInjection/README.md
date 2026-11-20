@@ -159,4 +159,4 @@ We do **not** duplicate XSS script labs here; use [XSS](../XSS/) for `<script>` 
 
 **Previous:** [OpenRedirect](../OpenRedirect/) (CWE-601).
 
-**Next:** use existing chapters from the [root README](../README.md) (SSTI/SSRF not in repo yet).
+**Next:** [SSTI](../SSTI/) (EJS label, port **3008**).
