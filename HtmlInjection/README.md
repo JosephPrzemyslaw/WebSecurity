@@ -153,6 +153,8 @@ In `server/src/profileInjection.ts`:
 
 We do **not** duplicate XSS script labs here; use [XSS](../XSS/) for `<script>` / event handlers.
 
+**Slides (PNG):** [`presentation/`](presentation/README.md) — workshop deck for HTML/CSS + WSTG talking points.
+
 ## Previous / next
 
 **Previous:** [OpenRedirect](../OpenRedirect/) (CWE-601).
