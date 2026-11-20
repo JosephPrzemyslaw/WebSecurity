@@ -1,8 +1,8 @@
 # XSS (chapter 5)
 
-Member shop continuation from **[PathTraversal](../PathTraversal/)** (chapter 4, port **3004**). Chapter download still works (safe path); this lab adds **Stored XSS** on opinions and **Reflected XSS** on library **Search** (`GET /members?q=…`, CWE-79). App port **3002**.
+Member shop continuation from **[PathTraversal](../PathTraversal/)** (chapter 4, port **3003**). Chapter download still works (safe path); this lab adds **Stored XSS** on opinions and **Reflected XSS** on library **Search** (`GET /members?q=…`, CWE-79). App port **3004**.
 
-- **Port:** `3002`
+- **Port:** `3004`
 - **Accounts:** `marc` / `marc123`, `ewa` / `ewa123` (admin)
 - **Stack:** Express + TypeScript, in-memory SQLite (`server/sql/init.sql`). Restarting `npm run dev` clears sessions, purchases, and opinions.
 
@@ -14,7 +14,7 @@ npm install
 npm run dev
 ```
 
-Open **`http://localhost:3002/login`**.
+Open **`http://localhost:3004/login`**.
 
 ## Layout
 
@@ -69,7 +69,7 @@ Sign in as `marc`. In **Opinion**, submit:
 <img src=x onerror="document.body.insertAdjacentHTML('afterbegin','<p class=shop-notice--urgent role=alert>Urgent: confirm your account at https://support.member-shop.invalid</p>')">
 ```
 
-Sign in as `ewa`. A red **urgent** banner appears at the top of `/members` when the page loads. The script runs as this origin (`localhost:3002`) and changes what the next reader sees.
+Sign in as `ewa`. A red **urgent** banner appears at the top of `/members` when the page loads. The script runs as this origin (`localhost:3004`) and changes what the next reader sees.
 
 **Debrief:** Try `document.cookie` in the console (or a one-line script) — the `session` cookie is not visible. It is `HttpOnly`, as in the [Cookies](../Cookies/) lab. The fake banner still runs; HttpOnly limits what script can read, not whether script can run.
 
@@ -135,7 +135,7 @@ At the top of [`server/src/comments.ts`](server/src/comments.ts), find `USE_SAFE
 2. Uncomment: `// const USE_SAFE_HTML = true;`
 3. Restart `npm run dev` (in-memory opinions are cleared).
 
-Repeat exercise **2**, **3**, or **4**, and **5**. Expected: payloads are visible as text. There is no fake banner, `/members` stays on port **3002**, and the receiver prints no keys. The prerequisite sentence still shows as plain text.
+Repeat exercise **2**, **3**, or **4**, and **5**. Expected: payloads are visible as text. There is no fake banner, `/members` stays on port **3004**, and the receiver prints no keys. The prerequisite sentence still shows as plain text.
 
 The escape replaces `&`, `<`, `>`, and `"` in opinions and in the search line.
 

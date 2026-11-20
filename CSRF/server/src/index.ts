@@ -7,7 +7,7 @@ import { registerAuthRoutes } from "./routes/auth.ts";
 import { registerMembersRoutes } from "./routes/members.ts";
 import { registerTeamRoutes } from "./routes/team.ts";
 
-const port = 3003;
+const port = 3002;
 const db = await prepareDatabase();
 const app: Express = express();
 const publicDir = join(import.meta.dirname, "..", "public");

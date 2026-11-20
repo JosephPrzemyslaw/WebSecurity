@@ -1,6 +1,6 @@
 # Path traversal (chapter 4)
 
-Member shop continuation from **[CSRF](../CSRF/)** (chapter 3, port **3003**). On port **3004** the new feature is chapter download:
+Member shop continuation from **[CSRF](../CSRF/)** (chapter 3, port **3002**). On port **3003** the new feature is chapter download:
 
 ```http
 GET /library/books/{book}/chapters/{file}
@@ -10,7 +10,7 @@ GET /library/books/{book}/chapters/{file}
 
 **Buy now** is shop continuity only; chapter download requires **sign-in**, not purchase.
 
-- **Port:** `3004`
+- **Port:** `3003`
 - **Accounts:** `marc` / `marc123`, `ewa` / `ewa123`
 
 ## Run
@@ -21,7 +21,7 @@ npm install
 npm run dev
 ```
 
-Open **`http://localhost:3004/login`**.
+Open **`http://localhost:3003/login`**.
 
 ## Layout
 
@@ -87,6 +87,6 @@ Exercise **1** (legal chapter download) should still work.
 
 ## Next module
 
-**Chapter 5 — [XSS](../XSS/)** (port **3002**, CWE-79): same member shop plus **opinions** (stored), library **search** (reflected), and optional **`key-receiver/`** on port **4000**. **File upload** is **[FileUpload](../FileUpload/)** (chapter 6, port **3005**); this folder’s `public/uploads/` placeholder describes that follow-on lab.
+**Chapter 5 — [XSS](../XSS/)** (port **3004**, CWE-79): same member shop plus **opinions** (stored), library **search** (reflected), and optional **`key-receiver/`** on port **4000**. **File upload** is **[FileUpload](../FileUpload/)** (chapter 6, port **3005**); this folder’s `public/uploads/` placeholder describes that follow-on lab.
 
 **Previous:** CSRF — shop nav, account/team, CSRF token, partner pages.

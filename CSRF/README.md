@@ -2,10 +2,10 @@
 
 Member shop continuation from **[Cookies](../Cookies/)** (chapter 2, port **3001**). Complete **Cookies exercise 5** first (SameSite and the partner `POST /buy` demo on port **3001**).
 
-This app reuses the same story on port **3003** with a hardened session cookie (`HttpOnly`, `Secure`, `SameSite=None` for partner demos). Fixes use a **synchronizer token** — not cookie flag changes.
+This app reuses the same story on port **3002** with a hardened session cookie (`HttpOnly`, `Secure`, `SameSite=None` for partner demos). Fixes use a **synchronizer token** — not cookie flag changes.
 
 - **Stack:** Express + TypeScript, in-memory SQLite (`server/sql/init.sql`).
-- **Port:** `3003`
+- **Port:** `3002`
 - **Accounts:** `ewa` / `ewa123` (admin), `marc` / `marc123`
 
 ## Partner pages
@@ -17,7 +17,7 @@ cd CSRF
 python3 -m http.server 8000
 ```
 
-Open partner URLs at **`http://127.0.0.1:8000/…`** (not `http://localhost:8000` — that is same-site with `http://localhost:3003` for `SameSite`).
+Open partner URLs at **`http://127.0.0.1:8000/…`** (not `http://localhost:8000` — that is same-site with `http://localhost:3002` for `SameSite`).
 
 | File | Used in |
 |------|---------|
@@ -33,7 +33,7 @@ npm install
 npm run dev
 ```
 
-Open **`http://localhost:3003/login`**.
+Open **`http://localhost:3002/login`**.
 
 After sign-in, use the shop nav: **`/members`** (library), **`/account`** (profile and delete), **`/team`** (create users — **ewa** only), **Sign out** (`POST /logout`).
 
@@ -125,4 +125,4 @@ Open `fake-inbox.html` again — `tom` should **not** be created via `<img>` (at
 
 ## Next module
 
-**Chapter 4 — [PathTraversal](../PathTraversal/)** (port **3004**): same shop, new **chapter download** endpoint (`GET /library/books/…/chapters/…`, CWE-22).
+**Chapter 4 — [PathTraversal](../PathTraversal/)** (port **3003**): same shop, new **chapter download** endpoint (`GET /library/books/…/chapters/…`, CWE-22).

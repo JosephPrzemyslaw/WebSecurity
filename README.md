@@ -1,8 +1,8 @@
 # WebSecurity
 
-**Ports** are fixed so you can run different apps in parallel; chapter number is not the same as the port digit (e.g. chapter 5 is port **3002**, chapter 6 is **3005**).
+Each chapter has a fixed port: **port = 3000 + (chapter − 1)** (chapter 1 → **3000**, chapter 6 → **3005**). You can run several labs in parallel on different ports.
 
-On the course you can teach **any topic in any order** — you do not have to follow the table below slide by slide. Many workshops **start with SQL injection** (chapter 1, port **3000**), then jump to File upload, XSS, CSRF, Path traversal, and the rest as needed. The table is how the **member shop** was built in the repo (storyline 1→6), not a mandatory classroom sequence.
+On the course you can teach **any topic in any order** — the table below is the shop **storyline** in the repo, not a mandatory slide sequence. Many workshops **start with SQL injection** (chapter 1).
 
 **SQL injection** is a separate login app. The **member shop** story starts in **Cookies** and gains new features each chapter.
 
@@ -10,9 +10,9 @@ On the course you can teach **any topic in any order** — you do not have to fo
 |-----|--------|--------|------|
 | 1 | [SQLInjection/](SQLInjection/) | SQL injection (login) | **3000** |
 | 2 | [Cookies/](Cookies/) | Cookie flags, SameSite, buy | **3001** |
-| 3 | [CSRF/](CSRF/) | CSRF token, forged POST/GET | **3003** |
-| 4 | [PathTraversal/](PathTraversal/) | Path traversal (chapter read); uploads placeholder | **3004** |
-| 5 | [XSS/](XSS/) | Stored + reflected XSS; optional `key-receiver/` on **4000** (exercise 4) | **3002** |
+| 3 | [CSRF/](CSRF/) | CSRF token, forged POST/GET | **3002** |
+| 4 | [PathTraversal/](PathTraversal/) | Path traversal (chapter read); uploads placeholder | **3003** |
+| 5 | [XSS/](XSS/) | Stored + reflected XSS; optional `key-receiver/` on **4000** (exercise 4) | **3004** |
 | 6 | [FileUpload/](FileUpload/) | Unrestricted file upload (avatar → `public/uploads/`) | **3005** |
 
 ### What each chapter adds (shop line)

@@ -1,6 +1,6 @@
 # File upload (chapter 6)
 
-Member shop continuation from **[XSS](../XSS/)** (chapter 5, port **3002**). The same app on port **3005** adds **profile photo upload** on `/account` (`POST /account/avatar` → `public/uploads/`, CWE-434). Earlier shop features (catalog, search, opinions, chapter download) remain.
+Member shop continuation from **[XSS](../XSS/)** (chapter 5, port **3004**). The same app on port **3005** adds **profile photo upload** on `/account` (`POST /account/avatar` → `public/uploads/`, CWE-434). Earlier shop features (catalog, search, opinions, chapter download) remain.
 
 - **Port:** `3005`
 - **Accounts:** `marc` / `marc123`, `ewa` / `ewa123` (admin)

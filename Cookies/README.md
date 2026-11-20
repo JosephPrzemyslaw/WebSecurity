@@ -115,6 +115,6 @@ Change the cookie to `SameSite=Lax`, sign in again on `localhost:3001`, and repe
 
 **Previous:** **[SQLInjection](../SQLInjection/)** (chapter 1, port **3000**) — login and parameterized queries.
 
-**Next module:** implement a **CSRF synchronizer token** in **[CSRF/](../CSRF/)** (chapter 3, port **3003**, exercise 1 continues this scenario).
+**Next module:** implement a **CSRF synchronizer token** in **[CSRF/](../CSRF/)** (chapter 3, port **3002**, exercise 1 continues this scenario).
 
 **OWASP Top 10:2025:** **[A01 Broken Access Control](https://owasp.org/Top10/2025/A01_2025-Broken_Access_Control/)** · **CWE-352** (Cross-Site Request Forgery) · **CWE-1275** (Sensitive Cookie with Improper SameSite Attribute). The risky `Set-Cookie` flag is misconfiguration in plain language; OWASP’s Top 10 data maps CSRF and bad `SameSite` to **A01**, not A02.
