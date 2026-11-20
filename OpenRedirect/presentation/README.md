@@ -1,6 +1,6 @@
 # Open redirect — presentation slides (PNG)
 
-Five **English** slides in **16:9 PNG** (same watercolor workshop look as File Upload): soft **watercolor corners**, **navy** titles, **pink** callouts, **yellow Lesson** bar, flat **characters** with **speech bubbles**.
+Five **English** slides in **16:9 PNG**, matching the **File Upload DoS story** layout: pastel **watercolor clouds + stars** in corners, **navy** title + gray CWE line, **three numbered panels** (pink / green / blue borders) with **blue hoodie** user and **white-blue robot** server, **speech bubbles**, **yellow Lesson** bar.
 
 General **CWE-601** teaching — not tied step-for-step to port **3006**, but matches the lab (`next`, `USE_SAFE_REDIRECT`).
 
